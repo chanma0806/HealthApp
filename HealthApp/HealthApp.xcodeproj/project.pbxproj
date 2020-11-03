@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EE5CFEA825516AE8009FB23C /* LinerGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5CFEA725516AE8009FB23C /* LinerGraphView.swift */; };
+		EE5CFEB025516B62009FB23C /* BarGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5CFEAF25516B62009FB23C /* BarGraphView.swift */; };
 		EE6534BA254DB0F600F1698A /* Triangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE6534B9254DB0F600F1698A /* Triangle.swift */; };
 		EE6534C2254E552400F1698A /* HealthCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE6534C1254E552400F1698A /* HealthCardView.swift */; };
 		EE6534CA254E561E00F1698A /* ColorDefine.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE6534C9254E561E00F1698A /* ColorDefine.swift */; };
@@ -40,6 +42,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		EE5CFEA725516AE8009FB23C /* LinerGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinerGraphView.swift; sourceTree = "<group>"; };
+		EE5CFEAF25516B62009FB23C /* BarGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarGraphView.swift; sourceTree = "<group>"; };
 		EE6534B9254DB0F600F1698A /* Triangle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Triangle.swift; sourceTree = "<group>"; };
 		EE6534C1254E552400F1698A /* HealthCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthCardView.swift; sourceTree = "<group>"; };
 		EE6534C9254E561E00F1698A /* ColorDefine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorDefine.swift; sourceTree = "<group>"; };
@@ -86,6 +90,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		EE5CFEA625516AA7009FB23C /* Graph */ = {
+			isa = PBXGroup;
+			children = (
+				EE5CFEA725516AE8009FB23C /* LinerGraphView.swift */,
+				EE5CFEAF25516B62009FB23C /* BarGraphView.swift */,
+			);
+			path = Graph;
+			sourceTree = "<group>";
+		};
 		EE6534A9254DB04200F1698A /* UIComponent */ = {
 			isa = PBXGroup;
 			children = (
@@ -99,6 +112,7 @@
 		EE6534B5254DB0D200F1698A /* UIPart */ = {
 			isa = PBXGroup;
 			children = (
+				EE5CFEA625516AA7009FB23C /* Graph */,
 				EE6534B9254DB0F600F1698A /* Triangle.swift */,
 				EE6534CE254E592300F1698A /* CircleArrow.swift */,
 				EE6534D3254E5B6D00F1698A /* SyncButton.swift */,
@@ -298,9 +312,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				EE6534CF254E592300F1698A /* CircleArrow.swift in Sources */,
+				EE5CFEB025516B62009FB23C /* BarGraphView.swift in Sources */,
 				EECB1DC9254D26F600B047E2 /* AppDelegate.swift in Sources */,
 				EECB1DCB254D26F600B047E2 /* SceneDelegate.swift in Sources */,
 				EE6534CA254E561E00F1698A /* ColorDefine.swift in Sources */,
+				EE5CFEA825516AE8009FB23C /* LinerGraphView.swift in Sources */,
 				EE6534D4254E5B6D00F1698A /* SyncButton.swift in Sources */,
 				EECB1DCD254D26F600B047E2 /* DashboardView.swift in Sources */,
 				EE6534BA254DB0F600F1698A /* Triangle.swift in Sources */,
