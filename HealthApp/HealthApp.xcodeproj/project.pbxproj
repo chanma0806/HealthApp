@@ -3,10 +3,15 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EE552C3125542A3A004360BD /* DashboardUsecaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE552C3025542A3A004360BD /* DashboardUsecaseService.swift */; };
+		EE552C4E2554310E004360BD /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EE552C4D2554310E004360BD /* Info.plist */; };
+		EE5627FC2551FF7D0078CD87 /* HealthCareComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5627FB2551FF7D0078CD87 /* HealthCareComponent.swift */; };
+		EE562805255200C80078CD87 /* PromiseKit in Frameworks */ = {isa = PBXBuildFile; productRef = EE562804255200C80078CD87 /* PromiseKit */; };
+		EE56280C255205790078CD87 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE56280B255205790078CD87 /* HealthKit.framework */; };
 		EE5CFEA825516AE8009FB23C /* LinerGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5CFEA725516AE8009FB23C /* LinerGraphView.swift */; };
 		EE5CFEB025516B62009FB23C /* BarGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5CFEAF25516B62009FB23C /* BarGraphView.swift */; };
 		EE6534BA254DB0F600F1698A /* Triangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE6534B9254DB0F600F1698A /* Triangle.swift */; };
@@ -42,6 +47,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		EE552C3025542A3A004360BD /* DashboardUsecaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardUsecaseService.swift; sourceTree = "<group>"; };
+		EE552C4D2554310E004360BD /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EE5627FB2551FF7D0078CD87 /* HealthCareComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthCareComponent.swift; sourceTree = "<group>"; };
+		EE562809255205790078CD87 /* HealthApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HealthApp.entitlements; sourceTree = "<group>"; };
+		EE56280B255205790078CD87 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		EE5CFEA725516AE8009FB23C /* LinerGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinerGraphView.swift; sourceTree = "<group>"; };
 		EE5CFEAF25516B62009FB23C /* BarGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarGraphView.swift; sourceTree = "<group>"; };
 		EE6534B9254DB0F600F1698A /* Triangle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Triangle.swift; sourceTree = "<group>"; };
@@ -62,7 +72,6 @@
 		EECB1DE1254D26F900B047E2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EECB1DE6254D26F900B047E2 /* HealthAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HealthAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EECB1DEA254D26F900B047E2 /* HealthAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthAppUITests.swift; sourceTree = "<group>"; };
-		EECB1DEC254D26F900B047E2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +79,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EE562805255200C80078CD87 /* PromiseKit in Frameworks */,
+				EE56280C255205790078CD87 /* HealthKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -90,6 +101,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		EE5627FA2551FF5C0078CD87 /* Gateway */ = {
+			isa = PBXGroup;
+			children = (
+				EE5627FB2551FF7D0078CD87 /* HealthCareComponent.swift */,
+			);
+			path = Gateway;
+			sourceTree = "<group>";
+		};
+		EE56280A255205790078CD87 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				EE56280B255205790078CD87 /* HealthKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		EE5CFEA625516AA7009FB23C /* Graph */ = {
 			isa = PBXGroup;
 			children = (
@@ -127,6 +154,7 @@
 				EECB1DDE254D26F900B047E2 /* HealthAppTests */,
 				EECB1DE9254D26F900B047E2 /* HealthAppUITests */,
 				EECB1DC6254D26F600B047E2 /* Products */,
+				EE56280A255205790078CD87 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -143,10 +171,13 @@
 		EECB1DC7254D26F600B047E2 /* HealthApp */ = {
 			isa = PBXGroup;
 			children = (
+				EE562809255205790078CD87 /* HealthApp.entitlements */,
+				EE5627FA2551FF5C0078CD87 /* Gateway */,
 				EE6534A9254DB04200F1698A /* UIComponent */,
 				EECB1DC8254D26F600B047E2 /* AppDelegate.swift */,
 				EECB1DCA254D26F600B047E2 /* SceneDelegate.swift */,
 				EECB1DCC254D26F600B047E2 /* DashboardView.swift */,
+				EE552C3025542A3A004360BD /* DashboardUsecaseService.swift */,
 				EECB1DCE254D26F900B047E2 /* Assets.xcassets */,
 				EECB1DD3254D26F900B047E2 /* LaunchScreen.storyboard */,
 				EECB1DD6254D26F900B047E2 /* Info.plist */,
@@ -175,8 +206,8 @@
 		EECB1DE9254D26F900B047E2 /* HealthAppUITests */ = {
 			isa = PBXGroup;
 			children = (
+				EE552C4D2554310E004360BD /* Info.plist */,
 				EECB1DEA254D26F900B047E2 /* HealthAppUITests.swift */,
-				EECB1DEC254D26F900B047E2 /* Info.plist */,
 			);
 			path = HealthAppUITests;
 			sourceTree = "<group>";
@@ -197,6 +228,9 @@
 			dependencies = (
 			);
 			name = HealthApp;
+			packageProductDependencies = (
+				EE562804255200C80078CD87 /* PromiseKit */,
+			);
 			productName = HealthApp;
 			productReference = EECB1DC5254D26F600B047E2 /* HealthApp.app */;
 			productType = "com.apple.product-type.application";
@@ -268,6 +302,9 @@
 				Base,
 			);
 			mainGroup = EECB1DBC254D26F600B047E2;
+			packageReferences = (
+				EE562803255200C80078CD87 /* XCRemoteSwiftPackageReference "PromiseKit" */,
+			);
 			productRefGroup = EECB1DC6254D26F600B047E2 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -301,6 +338,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EE552C4E2554310E004360BD /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -313,6 +351,7 @@
 			files = (
 				EE6534CF254E592300F1698A /* CircleArrow.swift in Sources */,
 				EE5CFEB025516B62009FB23C /* BarGraphView.swift in Sources */,
+				EE552C3125542A3A004360BD /* DashboardUsecaseService.swift in Sources */,
 				EECB1DC9254D26F600B047E2 /* AppDelegate.swift in Sources */,
 				EECB1DCB254D26F600B047E2 /* SceneDelegate.swift in Sources */,
 				EE6534CA254E561E00F1698A /* ColorDefine.swift in Sources */,
@@ -321,6 +360,7 @@
 				EECB1DCD254D26F600B047E2 /* DashboardView.swift in Sources */,
 				EE6534BA254DB0F600F1698A /* Triangle.swift in Sources */,
 				EE6534C2254E552400F1698A /* HealthCardView.swift in Sources */,
+				EE5627FC2551FF7D0078CD87 /* HealthCareComponent.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -488,11 +528,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = HealthApp/HealthApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"HealthApp/Preview Content\"";
 				DEVELOPMENT_TEAM = T95M5GQCDF;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = HealthApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -509,11 +551,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = HealthApp/HealthApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"HealthApp/Preview Content\"";
 				DEVELOPMENT_TEAM = T95M5GQCDF;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = HealthApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -649,6 +693,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		EE562803255200C80078CD87 /* XCRemoteSwiftPackageReference "PromiseKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mxcl/PromiseKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.13.3;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		EE562804255200C80078CD87 /* PromiseKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EE562803255200C80078CD87 /* XCRemoteSwiftPackageReference "PromiseKit" */;
+			productName = PromiseKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = EECB1DBD254D26F600B047E2 /* Project object */;
 }

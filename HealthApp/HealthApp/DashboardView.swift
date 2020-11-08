@@ -15,7 +15,6 @@ class DashBordData: ObservableObject {
         self.stepData = stepData
         self.heartRateData = heartRateData
     }
-
 }
 
 public struct DashboardView: View {
@@ -35,11 +34,20 @@ public struct DashboardView: View {
         heartRateData: LinerGraphView.getDummyDatas()
     )
     
+    let usecase: DashboardUsecaseService
+    @State var selectedDate: Date = Date()
+    
+    init() {
+        self.usecase = DashboardUsecaseService()
+        self.selectedDate = Date()
+    }
+    
     public var body: some View {
         GeometryReader { geo in
             VStack(alignment: .center, spacing: nil, content: {
                 DaySlider { (date: Date) in
                     self.reversed.toggle()
+                    self.selectedDate = date
                 }
                 Group {
                     CardFactory.StepCard(datas: self.$dashboardData.stepData)
@@ -49,13 +57,29 @@ public struct DashboardView: View {
                 Spacer()
                     .frame(height:.infinity)
                 SyncButton(size: 70.0, action: {
-                    self.reversed.toggle()
+                    self.synHealth()
                 })
                 
             }).padding(EdgeInsets(top: 0, leading: geo.size.width*0.05, bottom: 10, trailing: geo.size.width*0.05))
             .frame(width: .infinity, height: geo.size.height, alignment: .topLeading)
         }
         .background(dashbordBackColor)
+    }
+    
+    func synHealth() {
+        self.usecase.requestHealthAccess()
+            .then { _ in
+                self.usecase.getHeartRates(on: self.selectedDate)
+            }
+            .done { (entities: [DayHeartrRateEntity]) in
+                if (entities.count > 0) {
+                    self.dashboardData.heartRateData = entities[0].hearRates
+                }
+
+            }
+            .catch { _ in
+                
+            }
     }
 }
 
