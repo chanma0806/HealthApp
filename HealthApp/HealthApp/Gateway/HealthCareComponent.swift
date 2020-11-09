@@ -9,19 +9,24 @@ import Foundation
 import PromiseKit
 import HealthKit
 
-public struct DayHeartrRateEntity {
-    public let date: Date
-    let hearRates: [Int]
+protocol HealthCareEntity {
+    var date: Date { get }
+    var values: [Int]  { get }
 }
 
-public struct DayStepEntity {
+public struct DayHeartrRateEntity: HealthCareEntity {
     let date: Date
-    let steps: [Int]
+    let values: [Int]
 }
 
-public struct DayBurnCalorieEntity {
+public struct DayStepEntity: HealthCareEntity {
     let date: Date
-    let burnCalories: [Int]
+    let values: [Int]
+}
+
+public struct DayBurnCalorieEntity: HealthCareEntity {
+    let date: Date
+    let values: [Int]
 }
 
 public protocol HealthCareComponent {
@@ -78,63 +83,83 @@ public class HealthCareComponentService: HealthCareComponent {
     
     public func getHeartRates(from: Date, to: Date) -> Promise<[DayHeartrRateEntity]> {
         let promise = Promise<[DayHeartrRateEntity]> { seal in
-            let descriptor = NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: false)
-            let predicate = self.makeDateRangePredicate(from: from, to: to)
-            let sampleQuery = HKSampleQuery(
-                sampleType: HKQuantityType.quantityType(forIdentifier: .heartRate)!,
-                predicate: predicate,
-                limit: HKObjectQueryNoLimit,
-                sortDescriptors: [descriptor],
-                resultsHandler: { (query, results, error) in
-                    guard let samples = results else {
-                        return
-                    }
-                    // 日付ごとにデータ抽出
-                    var dict: Dictionary<String, [HKQuantitySample]> = [:]
-                    for sample in samples {
-                        let qSample: HKQuantitySample = sample as! HKQuantitySample
-                        if (dict[qSample.startDate.yyyy_mm_dd] != nil) {
-                            dict[qSample.startDate.yyyy_mm_dd]!.append(qSample)
-                        } else {
-                            dict[qSample.startDate.yyyy_mm_dd] = [qSample]
-                        }
-                    }
-                    // 日毎にエンティティに変換
-                    let calendar = Calendar.current
-                    var entities = [DayHeartrRateEntity]()
-                    for dateKey in dict.keys {
-                        // 時間ごとにデータを抽出
-                        var dayDict: Dictionary<String, [Int]> = [:]
-                        for sample in dict[dateKey]! {
-                            let hour = calendar.dateComponents([.hour], from: sample.startDate).hour!
-                            let hourStr = String(hour)
-                            let bpm: HKUnit = HKUnit.count().unitDivided(by: HKUnit.minute())
-                            let rate = Int(sample.quantity.doubleValue(for: bpm))
-                            if (dayDict[hourStr] != nil) {
-                                dayDict[hourStr]!.append(rate)
-                            } else {
-                                dayDict[hourStr] = [rate]
-                            }
-                        }
-                        let entity = self.convertToEntity(from: dayDict, day: dict[dateKey]![0].startDate)
-                        entities.append(entity)
-                    }
+            self.exequteSampleQuery(identifier: .heartRate, from: from, to: to) { (query, results, error) in
+                guard let samples = results else {
+                    seal.fulfill([])
+                    return
+                }
+                // 日付ごとにデータ抽出
+                let dict: Dictionary<String, [HKQuantitySample]> = self.collectSamplesAtDay(samples)
+                // 日ごとのデータをエンティティに変換
+                let bpm = HKUnit.count().unitDivided(by: .minute())
+                let entities: [DayHeartrRateEntity] = self.convertToEntities(
+                    dict: dict,
+                    unit: bpm,
+                    converter: { (dayDict: Dictionary<String, [Double]>, day: Date) in
+                        self.convertToHearRateEntity(from: dayDict, day: day)
+                }) as! [DayHeartrRateEntity]
 
-                    seal.fulfill(entities)
-            })
-            self.healthStore.execute(sampleQuery)
+                seal.fulfill(entities)
+            }
         }
         return promise
     }
     
     public func getSteps(from: Date, to: Date) -> Promise<[DayStepEntity]> {
-        let entity = DayStepEntity(date: Date(), steps: [])
-        return Promise.value([entity])
+        let promise = Promise<[DayStepEntity]> { seal in
+            self.exequteSampleQuery(identifier: .stepCount, from: from, to: to) { (query, results, error) in
+                guard let samples = results else {
+                    seal.fulfill([])
+                    return
+                }
+                // 日付ごとにデータ抽出
+                let dict: Dictionary<String, [HKQuantitySample]> = self.collectSamplesAtDay(samples)
+                let entities: [DayStepEntity] = self.convertToEntities(
+                    dict: dict,
+                    unit: .count(),
+                    converter: {(dayDict: Dictionary<String, [Double]>, day: Date) in
+                        self.convertToStepEntity(from: dayDict, day: day)
+                    }) as! [DayStepEntity]
+
+                seal.fulfill(entities)
+            }
+        }
+        return promise
     }
     
     public func getBurnCalories(from: Date, to: Date) -> Promise<[DayBurnCalorieEntity]> {
-        let entity = DayBurnCalorieEntity(date: Date(), burnCalories: [])
-        return Promise.value([entity])
+        let promise = Promise<[DayBurnCalorieEntity]> { seal in
+            self.exequteSampleQuery(identifier: .activeEnergyBurned, from: from, to: to) { (query, results, error) in
+                guard let samples = results else {
+                    seal.fulfill([])
+                    return
+                }
+                // 日付ごとにデータ抽出
+                let dict: Dictionary<String, [HKQuantitySample]> = self.collectSamplesAtDay(samples)
+                let entities: [DayBurnCalorieEntity] = self.convertToEntities(
+                    dict: dict,
+                    unit: .kilocalorie(),
+                    converter: {(dayDict: Dictionary<String, [Double]>, day: Date) in
+                        self.convertToBurnCalorieEntity(from: dayDict, day: day)
+                    }) as! [DayBurnCalorieEntity]
+
+                seal.fulfill(entities)
+            }
+        }
+        return promise
+    }
+    
+    private func exequteSampleQuery(identifier: HKQuantityTypeIdentifier, from:Date, to: Date, _ handler: @escaping (HKSampleQuery, [HKSample]?, Error?) -> Void) {
+        let descriptor = NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: false)
+        let predicate = self.makeDateRangePredicate(from: from, to: to)
+        let sampleQuery = HKSampleQuery(
+            sampleType: HKQuantityType.quantityType(forIdentifier: identifier)!,
+            predicate: predicate,
+            limit: HKObjectQueryNoLimit,
+            sortDescriptors: [descriptor],
+            resultsHandler:handler)
+        
+        self.healthStore.execute(sampleQuery)
     }
     
     private func makeDateRangePredicate(from: Date, to: Date) -> NSPredicate {
@@ -148,7 +173,8 @@ public class HealthCareComponentService: HealthCareComponent {
         return predicate
     }
     
-    private func convertToEntity(from dict:Dictionary<String, [Int]>, day: Date) -> DayHeartrRateEntity {
+    // 心拍エンティティのコンバーター
+    private func convertToHearRateEntity(from dict:Dictionary<String, [Double]>, day: Date) -> DayHeartrRateEntity {
         var values = [Int]()
         let hours_24: [String] = [Int]((0...23)).map{(hour: Int) in String(hour)}
         for hourKey in hours_24 {
@@ -156,10 +182,79 @@ public class HealthCareComponentService: HealthCareComponent {
                 values.append(0)
                 continue
             }
-            values.append(hourValues.mean())
+            values.append(Int(hourValues.mean()))
         }
-        let entity = DayHeartrRateEntity(date: day, hearRates: values)
+        let entity = DayHeartrRateEntity(date: day, values: values)
         return entity
+    }
+    
+    // 歩数エンティティのコンバーター
+    private func convertToStepEntity(from dict:Dictionary<String, [Double]>, day: Date) -> DayStepEntity {
+        var values = [Int]()
+        let hours_24: [String] = [Int]((0...23)).map{(hour: Int) in String(hour)}
+        for hourKey in hours_24 {
+            guard let hourValues = dict[hourKey] else {
+                values.append(0)
+                continue
+            }
+            values.append(Int(hourValues.total()))
+        }
+        let entity = DayStepEntity(date: day, values: values)
+        return entity
+    }
+    
+    // 消費カロリーエンティティのコンバーター
+    private func convertToBurnCalorieEntity(from dict:Dictionary<String, [Double]>, day: Date) -> DayBurnCalorieEntity {
+        var values = [Int]()
+        let hours_24: [String] = [Int]((0...23)).map{(hour: Int) in String(hour)}
+        for hourKey in hours_24 {
+            guard let hourValues = dict[hourKey] else {
+                values.append(0)
+                continue
+            }
+            values.append(Int(hourValues.total()))
+        }
+        let entity = DayBurnCalorieEntity(date: day, values: values)
+        return entity
+    }
+    
+    //　サンプリングを日毎に集約する
+    private func collectSamplesAtDay(_ samples: [HKSample]) -> Dictionary<String, [HKQuantitySample]> {
+        var dict: Dictionary<String, [HKQuantitySample]> = [:]
+        for sample in samples {
+            let qSample: HKQuantitySample = sample as! HKQuantitySample
+            if (dict[qSample.startDate.yyyy_mm_dd] != nil) {
+                dict[qSample.startDate.yyyy_mm_dd]!.append(qSample)
+            } else {
+                dict[qSample.startDate.yyyy_mm_dd] = [qSample]
+            }
+        }
+        
+        return dict
+    }
+    
+    //　エンティティへの変換
+    private func convertToEntities(dict: Dictionary<String, [HKQuantitySample]>, unit: HKUnit, converter:(_  dict:Dictionary<String, [Double]>, _ day: Date) -> HealthCareEntity) -> [HealthCareEntity] {
+        let calendar = Calendar.current
+        var entities = [HealthCareEntity]()
+        for dateKey in dict.keys {
+            // 時間ごとにデータを抽出
+            var dayDict: Dictionary<String, [Double]> = [:]
+            for sample in dict[dateKey]! {
+                let hour = calendar.dateComponents([.hour], from: sample.startDate).hour!
+                let hourStr = String(hour)
+                let value = sample.quantity.doubleValue(for: unit)
+                if (dayDict[hourStr] != nil) {
+                    dayDict[hourStr]!.append(value)
+                } else {
+                    dayDict[hourStr] = [value]
+                }
+            }
+            let entity = converter(dayDict, dict[dateKey]![0].startDate)
+            entities.append(entity)
+        }
+        
+        return entities
     }
 }
 
@@ -173,14 +268,14 @@ extension Date {
     }
 }
 
-extension Array where Element == Int{
-    func total() -> Int {
+extension Array where Element == Double {
+    func total() -> Double {
         self.reduce(0, {
             return ($0 + $1)
         })
     }
     
-    func mean() -> Int {
-        self.total() / self.count
+    func mean() -> Double {
+        self.total() / Double(self.count)
     }
 }

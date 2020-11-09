@@ -22,4 +22,12 @@ class DashboardUsecaseService {
     func getHeartRates(on date: Date) -> Promise<[DayHeartrRateEntity]> {
         self.healthComponet.getHeartRates(from: date, to: date)
     }
+    
+    func getSteps(on date: Date) -> Promise<[DayStepEntity]> {
+        self.healthComponet.getSteps(from: date, to: date)
+    }
+    
+    func getBurnCalories(on date: Date) -> Promise<[DayBurnCalorieEntity]> {
+        self.healthComponet.getBurnCalories(from: date, to: date)
+    }
 }
