@@ -6,14 +6,17 @@
 //
 
 import SwiftUI
+import PromiseKit
 
 class DashBordData: ObservableObject {
     @Published var stepData: [Int]
     @Published var heartRateData: [Int]
+    @Published var burnCalorieData: [Int]
     
-    init(stepData: [Int], heartRateData: [Int]) {
+    init(stepData: [Int], heartRateData: [Int], burnCalorieData: [Int]) {
         self.stepData = stepData
         self.heartRateData = heartRateData
+        self.burnCalorieData = burnCalorieData
     }
 }
 
@@ -31,7 +34,8 @@ public struct DashboardView: View {
     }
     @ObservedObject var dashboardData: DashBordData = DashBordData(
         stepData: BarGraphView.getDummyDatas(),
-        heartRateData: LinerGraphView.getDummyDatas()
+        heartRateData: LinerGraphView.getDummyDatas(),
+        burnCalorieData: BarGraphView.getDummyDatas()
     )
     
     let usecase: DashboardUsecaseService
@@ -52,6 +56,7 @@ public struct DashboardView: View {
                 Group {
                     CardFactory.StepCard(datas: self.$dashboardData.stepData)
                     CardFactory.HeartRateCard(datas: self.$dashboardData.heartRateData)
+                    CardFactory.BurnCalorieCard(datas: self.$dashboardData.burnCalorieData)
                 }.frame(height: geo.size.height*0.3,
                         alignment: .center)
                 Spacer()
@@ -68,18 +73,29 @@ public struct DashboardView: View {
     
     func synHealth() {
         self.usecase.requestHealthAccess()
-            .then { _ in
-                self.usecase.getHeartRates(on: self.selectedDate)
+        .then { _ in
+            self.usecase.getHeartRates(on: self.selectedDate)
+        }
+        .then { (entities: [DayHeartrRateEntity]) -> Promise<[DayStepEntity]> in
+            if (entities.count > 0) {
+                self.dashboardData.heartRateData = entities[0].values
             }
-            .done { (entities: [DayHeartrRateEntity]) in
-                if (entities.count > 0) {
-                    self.dashboardData.heartRateData = entities[0].hearRates
-                }
-
+            return self.usecase.getSteps(on: self.selectedDate)
+        }
+        .then { (entities: [DayStepEntity]) -> Promise<[DayBurnCalorieEntity]> in
+            if (entities.count > 0) {
+                self.dashboardData.stepData = entities[0].values
             }
-            .catch { _ in
-                
+            return self.usecase.getBurnCalories(on: self.selectedDate)
+        }
+        .done { (entities: [DayBurnCalorieEntity]) in
+            if (entities.count > 0) {
+                self.dashboardData.burnCalorieData = entities[0].values
             }
+        }
+        .catch { _ in
+            
+        }
     }
 }
 

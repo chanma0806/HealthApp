@@ -31,6 +31,11 @@ public class CardFactory {
     static func HeartRateCard(datas: Binding<[Int]>) -> some View {
         HealthCardView(title: "Heart Rate", cardColor: redGradient, graph: .Line, datas: datas)
     }
+    
+    @ViewBuilder
+    static func BurnCalorieCard(datas: Binding<[Int]>) -> some View {
+        HealthCardView(title: "Burn Calorie", cardColor: orangeGradient, graph: .Bar, datas: datas)
+    }
 }
 
 /**

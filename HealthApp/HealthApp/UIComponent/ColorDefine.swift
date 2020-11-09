@@ -17,6 +17,8 @@ let greenGradient: LinearGradient = LinearGradient(gradient: Gradient(colors: [C
 
 let redGradient: LinearGradient = LinearGradient(gradient: Gradient(colors: [Color(rgb: 0xFEB692), Color(rgb: 0xEA5455)]), startPoint: .topLeading, endPoint: .bottomTrailing)
 
+let orangeGradient: LinearGradient = LinearGradient(gradient: Gradient(colors: [Color(rgb: 0xFEC163), Color(rgb: 0xDE4313)]), startPoint: .topLeading, endPoint: .bottomTrailing)
+
 let pinkGradient: LinearGradient = LinearGradient(gradient: Gradient(colors: [Color(rgb: 0xFFE064), Color(rgb: 0xFF52E5)]), startPoint: .topLeading, endPoint: .bottomTrailing)
 
 let dashbordBackColor = Color(rgb: 0xF5F0F4)
