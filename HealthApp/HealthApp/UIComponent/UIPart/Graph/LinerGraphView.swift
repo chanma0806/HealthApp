@@ -137,17 +137,23 @@ public struct LinerGraphView: View {
         return controlPoint
     }
     
-    private func getPoints(_ datas: [Int], barAreaWidth: CGFloat, graphHeight: CGFloat, minValue:Int, maxValue: Int) -> [CGPoint] {
-        datas.enumerated().map {
+    private func getPoints(_ datas: [Int], barAreaWidth: CGFloat, graphHeight: CGFloat) -> [CGPoint] {
+        let maxValue = datas.max()!
+        let minValue = datas.filter{ $0 > 30 }.min()!
+        let points: [CGPoint] = datas.enumerated().map {
+            guard ($0.element) > 30  else {
+                return nil
+            }
             let x: CGFloat = (CGFloat($0.offset) + 0.5) * barAreaWidth
             let y: CGFloat = (1.0 - (CGFloat($0.element) - CGFloat(minValue)) / CGFloat(maxValue - minValue)) * graphHeight
             return CGPoint(x: x, y: y)
         }
+        .compactMap{ $0 }
+        
+        return points
     }
     
     public var body: some View {
-        let maxValue = self.rawDatas.max() ?? 0
-        let minValue = self.rawDatas.min() ?? 0
         let datas: [GraphData] = rawDatas.enumerated().map{
             GraphData(id: String($0.offset), value: $0.element)
         }
@@ -172,7 +178,7 @@ public struct LinerGraphView: View {
                         }).frame(height: graphHeight, alignment: .bottomTrailing)
                     })
                 })
-                let graphPoints: [CGPoint] = self.getPoints(rawDatas, barAreaWidth: barAreaWidth, graphHeight: drawHeiht, minValue: minValue, maxValue: maxValue)
+                let graphPoints: [CGPoint] = self.getPoints(rawDatas, barAreaWidth: barAreaWidth, graphHeight: drawHeiht)
                 VStack(alignment: .center, spacing:0, content: {
                     self.quadCurvedPath(points: graphPoints)
                 })
@@ -181,8 +187,14 @@ public struct LinerGraphView: View {
     }
 }
 
-//struct LinerGraphView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        LinerGraphView()
-//    }
-//}
+struct LinerGraphView_Previews: PreviewProvider {
+    static var previews: some View {
+        VStack {
+            LinerGraphView(LinerGraphView.getDummyDatas())
+        }
+        .frame(width: 300, height: 250, alignment: .center)
+        .padding()
+        .background(redGradient)
+        .cornerRadius(25.0)
+    }
+}
