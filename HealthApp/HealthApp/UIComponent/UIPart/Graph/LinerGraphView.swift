@@ -17,45 +17,70 @@ public struct GraphData: Identifiable{
     }
 }
 
+let MIN_VALUE_RANGE_Y: CGFloat = 30.0
+
+struct GraphScaleData {
+    /** y座標の上限 */
+    var topY: CGFloat
+    /** y座標の下限 */
+    var bottomY: CGFloat
+    /** y座標の幅 */
+    var rangeY: CGFloat
+    /** 入力データの最大値 */
+    var maxValue: CGFloat
+    /** 入力データの最小値 */
+    var minValue: CGFloat
+    /** 入力データ幅の中心*/
+    var centerY: CGFloat {
+        get {
+            (maxValue - minValue) / 2.0 + minValue
+        }
+    }
+}
+
 /**
     線形グラフビュー
  */
 public struct LinerGraphView: View {
     
     let rawDatas: [Int]
+    let grapScale: GraphScaleData
     
     init(_ datas: [Int]) {
         self.rawDatas = datas
+        self.grapScale = self.makeGraphScaleData(datas)
     }
     
     public static func getDummyDatas() -> [Int] {
-        return [
-            50, /* 00:00 */
-            70, /* 01:00 */
-            0, /* 02:00 */
-            55, /* 03:00 */
-            90, /* 04:00 */
-            60, /* 05:00 */
-            80, /* 06:00 */
-            72, /* 07:00 */
-            75, /* 08:00 */
-            110, /* 09:00 */
-            90, /* 10:00 */
-            69, /* 11:00 */
-            100, /* 12:00 */
-            122, /* 13:00 */
-            99, /* 14:00 */
-            101, /* 15:00 */
-            90, /* 16:00 */
-            80, /* 17:00 */
-            87, /* 18:00 */
-            80, /* 19:00 */
-            75, /* 20:00 */
-            80, /* 21:00 */
-            75, /* 22:00 */
-            70, /* 23:00 */
-            63, /* 24:00 */
-        ]
+        
+        return [0, 0, 0, 0, 0, 0, 0, 0, 94, 93, 88, 85, 85, 96, 97, 95, 90, 87, 87, 88, 91, 0, 0, 0]
+//        return [
+//            0, /* 00:00 */
+//            0, /* 01:00 */
+//            100, /* 02:00 */
+//            55, /* 03:00 */
+//            90, /* 04:00 */
+//            60, /* 05:00 */
+//            80, /* 06:00 */
+//            72, /* 07:00 */
+//            75, /* 08:00 */
+//            110, /* 09:00 */
+//            90, /* 10:00 */
+//            69, /* 11:00 */
+//            100, /* 12:00 */
+//            122, /* 13:00 */
+//            99, /* 14:00 */
+//            101, /* 15:00 */
+//            90, /* 16:00 */
+//            80, /* 17:00 */
+//            87, /* 18:00 */
+//            80, /* 19:00 */
+//            75, /* 20:00 */
+//            80, /* 21:00 */
+//            75, /* 22:00 */
+//            0, /* 23:00 */
+//            0, /* 24:00 */
+//        ]
     }
     
     @ViewBuilder
@@ -137,20 +162,37 @@ public struct LinerGraphView: View {
         return controlPoint
     }
     
-    private func getPoints(_ datas: [Int], barAreaWidth: CGFloat, graphHeight: CGFloat) -> [CGPoint] {
-        let maxValue = datas.max()!
-        let minValue = datas.filter{ $0 > 30 }.min()!
+    private func getPoints(_ datas: [Int], scale: GraphScaleData, barAreaWidth: CGFloat, graphHeight: CGFloat) -> [CGPoint] {
+        let height: CGFloat = scale.topY - scale.bottomY
         let points: [CGPoint] = datas.enumerated().map {
             guard ($0.element) > 30  else {
                 return nil
             }
             let x: CGFloat = (CGFloat($0.offset) + 0.5) * barAreaWidth
-            let y: CGFloat = (1.0 - (CGFloat($0.element) - CGFloat(minValue)) / CGFloat(maxValue - minValue)) * graphHeight
+            let y: CGFloat = (1.0 - (CGFloat($0.element) - scale.bottomY) / height) * graphHeight
             return CGPoint(x: x, y: y)
-        }
-        .compactMap{ $0 }
+        }.compactMap{ $0 }
         
         return points
+    }
+    
+    private func makeYticks(scale: GraphScaleData) -> [(Int, CGPoint)] {
+        return []
+    }
+    
+    private func makeGraphScaleData(_ datas: [Int]) -> GraphScaleData {
+        let maxValue = CGFloat(datas.max()!)
+        let minValue = CGFloat(datas.filter{ $0 > 30 }.min()!)
+        let valueRange = CGFloat(maxValue - minValue)
+        let centerValue = (maxValue - minValue) / 2.0 + minValue
+        var topValue = CGFloat(maxValue) * (1.05)
+        var bottomValue = CGFloat(minValue) * (0.95)
+        if (MIN_VALUE_RANGE_Y >= valueRange) {
+            topValue = ((centerValue + MIN_VALUE_RANGE_Y / 2)).roundedUp(tenPow: 1)
+            bottomValue = topValue - MIN_VALUE_RANGE_Y
+        }
+        
+        return GraphScaleData(topY: topValue, bottomY: bottomValue, rangeY: valueRange, maxValue: maxValue, minValue: minValues)
     }
     
     public var body: some View {
@@ -165,23 +207,32 @@ public struct LinerGraphView: View {
             let barWidth: CGFloat = barAreaWidth / 1.5
             let barOffset: CGFloat = barAreaWidth - barWidth
             let drawHeiht:CGFloat = graphHeight - (barWidth + barOffset)
-            ZStack {
-                HStack(alignment: .bottom, spacing: 0, content: {
-                    ForEach(datas, content: { d in
-                        VStack(alignment: .center , spacing: 0, content: {
-                            let xTick: String = Int(d.id)! % 2 == 0 ? d.id : ""
-                            Text(xTick)
-                                .font(.system(size: barWidth))
-                                .foregroundColor(.white)
-                                .bold()
-                                .frame(width: barWidth + barOffset, height: barWidth + barOffset, alignment: .center)
-                        }).frame(height: graphHeight, alignment: .bottomTrailing)
+            HStack {
+                // グラフ描画エリア
+                ZStack {
+                    // Y軸
+                    VStack {
+                        
+                    }
+                    // X軸
+                    HStack(alignment: .bottom, spacing: 0, content: {
+                        ForEach(datas, content: { d in
+                            VStack(alignment: .center , spacing: 0, content: {
+                                let xTick: String = Int(d.id)! % 2 == 0 ? d.id : ""
+                                Text(xTick)
+                                    .font(.system(size: barWidth))
+                                    .foregroundColor(.white)
+                                    .bold()
+                                    .frame(width: barWidth + barOffset, height: barWidth + barOffset, alignment: .center)
+                            }).frame(height: graphHeight, alignment: .bottomTrailing)
+                        })
                     })
-                })
-                let graphPoints: [CGPoint] = self.getPoints(rawDatas, barAreaWidth: barAreaWidth, graphHeight: drawHeiht)
-                VStack(alignment: .center, spacing:0, content: {
-                    self.quadCurvedPath(points: graphPoints)
-                })
+                    // グラフ
+                    let graphPoints: [CGPoint] = self.getPoints(rawDatas, scale: grapScale, barAreaWidth: barAreaWidth, graphHeight: drawHeiht)
+                    VStack(alignment: .center, spacing:0, content: {
+                        self.quadCurvedPath(points: graphPoints)
+                    })
+                }.padding(EdgeInsets(top: 0.0, leading: barWidth, bottom: 0.0, trailing: 0.0))
             }
         }
     }
@@ -198,3 +249,28 @@ struct LinerGraphView_Previews: PreviewProvider {
         .cornerRadius(25.0)
     }
 }
+
+extension CGFloat {
+    // 任意のくらいで切り上げ
+    func roundedUp(tenPow: Int) -> CGFloat {
+        let decimical = Decimal(10)
+        let digit: Double = pow(decimical, tenPow).doubleValue
+        return CGFloat((Double(self) / digit).rounded(.up) * digit)
+    }
+    
+    // 任意のくらいで切り下げ
+    func roundedDown(tenPow: Int) -> CGFloat {
+        let decimical = Decimal(10)
+        let digit: Double = pow(decimical, tenPow).doubleValue
+        return CGFloat((Double(self) / digit).rounded(.down) * digit)
+    }
+}
+
+extension Decimal {
+    var doubleValue: Double {
+        get {
+            (self as NSDecimalNumber).doubleValue
+        }
+    }
+}
+
