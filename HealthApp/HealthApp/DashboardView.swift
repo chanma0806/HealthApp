@@ -74,23 +74,23 @@ public struct DashboardView: View {
     func synHealth() {
         self.usecase.requestHealthAccess()
         .then { _ in
-            self.usecase.getHeartRates(on: self.selectedDate)
+            self.usecase.getHeartRate(on: self.selectedDate)
         }
-        .then { (entities: [DayHeartrRateEntity]) -> Promise<[DayStepEntity]> in
-            if (entities.count > 0) {
-                self.dashboardData.heartRateData = entities[0].values
+        .then { (entity: DayHeartrRateEntity?) -> Promise<DayStepEntity?> in
+            if (entity != nil) {
+                self.dashboardData.heartRateData = entity!.values
             }
-            return self.usecase.getSteps(on: self.selectedDate)
+            return self.usecase.getStep(on: self.selectedDate)
         }
-        .then { (entities: [DayStepEntity]) -> Promise<[DayBurnCalorieEntity]> in
-            if (entities.count > 0) {
-                self.dashboardData.stepData = entities[0].values
+        .then { (entity: DayStepEntity?) -> Promise<DayBurnCalorieEntity?> in
+            if (entity != nil) {
+                self.dashboardData.stepData = entity!.values
             }
-            return self.usecase.getBurnCalories(on: self.selectedDate)
+            return self.usecase.getBurnCalorie(on: self.selectedDate)
         }
-        .done { (entities: [DayBurnCalorieEntity]) in
-            if (entities.count > 0) {
-                self.dashboardData.burnCalorieData = entities[0].values
+        .done { (entity: DayBurnCalorieEntity?) in
+            if (entity != nil) {
+                self.dashboardData.burnCalorieData = entity!.values
             }
         }
         .catch { _ in
