@@ -92,7 +92,7 @@ public class HealthCareComponentService: HealthCareComponent {
                 let dict: Dictionary<String, [HKQuantitySample]> = self.collectSamplesAtDay(samples)
                 // 日ごとのデータをエンティティに変換
                 let bpm = HKUnit.count().unitDivided(by: .minute())
-                let entities: [DayHeartrRateEntity] = self.convertToEntities(
+                let entities: [DayHeartrRateEntity] = self.convertTo30minEntities(
                     dict: dict,
                     unit: bpm,
                     converter: { (dayDict: Dictionary<String, [Double]>, day: Date) in
@@ -114,7 +114,7 @@ public class HealthCareComponentService: HealthCareComponent {
                 }
                 // 日付ごとにデータ抽出
                 let dict: Dictionary<String, [HKQuantitySample]> = self.collectSamplesAtDay(samples)
-                let entities: [DayStepEntity] = self.convertToEntities(
+                let entities: [DayStepEntity] = self.convertToHourEntities(
                     dict: dict,
                     unit: .count(),
                     converter: {(dayDict: Dictionary<String, [Double]>, day: Date) in
@@ -136,7 +136,7 @@ public class HealthCareComponentService: HealthCareComponent {
                 }
                 // 日付ごとにデータ抽出
                 let dict: Dictionary<String, [HKQuantitySample]> = self.collectSamplesAtDay(samples)
-                let entities: [DayBurnCalorieEntity] = self.convertToEntities(
+                let entities: [DayBurnCalorieEntity] = self.convertToHourEntities(
                     dict: dict,
                     unit: .kilocalorie(),
                     converter: {(dayDict: Dictionary<String, [Double]>, day: Date) in
@@ -176,13 +176,13 @@ public class HealthCareComponentService: HealthCareComponent {
     // 心拍エンティティのコンバーター
     private func convertToHearRateEntity(from dict:Dictionary<String, [Double]>, day: Date) -> DayHeartrRateEntity {
         var values = [Int]()
-        let hours_24: [String] = [Int]((0...23)).map{(hour: Int) in String(hour)}
-        for hourKey in hours_24 {
-            guard let hourValues = dict[hourKey] else {
+        let every30mins: [String] = [Int]((0..<(24 * 2))).map{(index: Int) in String(Double(index) * 0.5)}
+        for minKey in every30mins {
+            guard let every30minValues = dict[minKey] else {
                 values.append(0)
                 continue
             }
-            values.append(Int(hourValues.mean()))
+            values.append(Int(every30minValues.mean()))
         }
         let entity = DayHeartrRateEntity(date: day, values: values)
         return entity
@@ -234,7 +234,7 @@ public class HealthCareComponentService: HealthCareComponent {
     }
     
     //　エンティティへの変換
-    private func convertToEntities(dict: Dictionary<String, [HKQuantitySample]>, unit: HKUnit, converter:(_  dict:Dictionary<String, [Double]>, _ day: Date) -> HealthCareEntity) -> [HealthCareEntity] {
+    private func convertToHourEntities(dict: Dictionary<String, [HKQuantitySample]>, unit: HKUnit, converter:(_  dict:Dictionary<String, [Double]>, _ day: Date) -> HealthCareEntity) -> [HealthCareEntity] {
         let calendar = Calendar.current
         var entities = [HealthCareEntity]()
         for dateKey in dict.keys {
@@ -243,6 +243,32 @@ public class HealthCareComponentService: HealthCareComponent {
             for sample in dict[dateKey]! {
                 let hour = calendar.dateComponents([.hour], from: sample.startDate).hour!
                 let hourStr = String(hour)
+                let value = sample.quantity.doubleValue(for: unit)
+                if (dayDict[hourStr] != nil) {
+                    dayDict[hourStr]!.append(value)
+                } else {
+                    dayDict[hourStr] = [value]
+                }
+            }
+            let entity = converter(dayDict, dict[dateKey]![0].startDate)
+            entities.append(entity)
+        }
+        
+        return entities
+    }
+    
+    //　エンティティへの変換
+    private func convertTo30minEntities(dict: Dictionary<String, [HKQuantitySample]>, unit: HKUnit, converter:(_  dict:Dictionary<String, [Double]>, _ day: Date) -> HealthCareEntity) -> [HealthCareEntity] {
+        let calendar = Calendar.current
+        var entities = [HealthCareEntity]()
+        for dateKey in dict.keys {
+            // 時間ごとにデータを抽出
+            var dayDict: Dictionary<String, [Double]> = [:]
+            for sample in dict[dateKey]! {
+                let hour = calendar.dateComponents([.hour], from: sample.startDate).hour!
+                let min = calendar.dateComponents([.minute], from: sample.startDate).minute!
+                let hourHalf = (min < 30) ? Double(hour) : (Double(hour) + 0.5)
+                let hourStr = String(hourHalf)
                 let value = sample.quantity.doubleValue(for: unit)
                 if (dayDict[hourStr] != nil) {
                     dayDict[hourStr]!.append(value)

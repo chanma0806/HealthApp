@@ -72,32 +72,38 @@ public struct LinerGraphView: View {
     public static func getDummyDatas() -> [Int] {
         
 //        return [0, 0, 0, 0, 0, 0, 0, 0, 94, 93, 88, 85, 85, 96, 97, 95, 90, 87, 87, 88, 91, 0, 0, 0]
-        return [
-            70, /* 00:00 */
-            60, /* 01:00 */
-            100, /* 02:00 */
-            55, /* 03:00 */
-            90, /* 04:00 */
-            60, /* 05:00 */
-            80, /* 06:00 */
-            72, /* 07:00 */
-            75, /* 08:00 */
-            110, /* 09:00 */
-            90, /* 10:00 */
-            69, /* 11:00 */
-            100, /* 12:00 */
-            122, /* 13:00 */
-            99, /* 14:00 */
-            101, /* 15:00 */
-            90, /* 16:00 */
-            80, /* 17:00 */
-            87, /* 18:00 */
-            80, /* 19:00 */
-            75, /* 20:00 */
-            80, /* 21:00 */
-            75, /* 22:00 */
-            80, /* 23:00 */
-        ]
+        
+        var dummies = [Int]()
+        for _ in 0..<(24 * 2) {
+            dummies.append(Int.random(in: (60..<121)))
+        }
+        return dummies
+//        return [
+//            70, /* 00:00 */
+//            60, /* 01:00 */
+//            100, /* 02:00 */
+//            55, /* 03:00 */
+//            90, /* 04:00 */
+//            60, /* 05:00 */
+//            80, /* 06:00 */
+//            72, /* 07:00 */
+//            75, /* 08:00 */
+//            110, /* 09:00 */
+//            90, /* 10:00 */
+//            69, /* 11:00 */
+//            100, /* 12:00 */
+//            122, /* 13:00 */
+//            99, /* 14:00 */
+//            101, /* 15:00 */
+//            90, /* 16:00 */
+//            80, /* 17:00 */
+//            87, /* 18:00 */
+//            80, /* 19:00 */
+//            75, /* 20:00 */
+//            80, /* 21:00 */
+//            75, /* 22:00 */
+//            80, /* 23:00 */
+//        ]
     }
     
     @ViewBuilder
@@ -185,7 +191,7 @@ public struct LinerGraphView: View {
             guard ($0.element) > 30  else {
                 return nil
             }
-            let x: CGFloat = (CGFloat($0.offset) + 0.5) * barAreaWidth
+            let x: CGFloat = (CGFloat($0.offset) + 0.5) * (barAreaWidth / 2)
             let y: CGFloat = (1.0 - (CGFloat($0.element) - scale.bottomY) / height) * graphHeight
             return CGPoint(x: x, y: y)
         }.compactMap{ $0 }
@@ -232,7 +238,7 @@ public struct LinerGraphView: View {
         return GeometryReader { geo in
             let graphWidth: CGFloat = geo.size.width
             let graphHeight: CGFloat = (geo.size.height * 0.9)
-            let barAreaWidth: CGFloat = graphWidth / CGFloat(datas.count)
+            let barAreaWidth: CGFloat = graphWidth / 24
             let barWidth: CGFloat = barAreaWidth / 1.5
             let barOffset: CGFloat = barAreaWidth - barWidth
             let drawHeiht:CGFloat = graphHeight - (barWidth + barOffset)
