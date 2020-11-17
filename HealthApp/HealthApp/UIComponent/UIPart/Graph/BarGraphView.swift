@@ -7,6 +7,9 @@
 
 import SwiftUI
 
+
+// MARK: View
+
 /**
     バーグラフビュー
  */
@@ -58,12 +61,13 @@ public struct BarGraphView: View {
             GraphData(id: String($0.offset), value: $0.element)
         }
         GeometryReader { geo in
-            let graphWidth = geo.size.width
-            let graphHeight = geo.size.height * 0.9
-            let barAreaWidth = graphWidth / CGFloat(datas.count)
-            let barWidth = barAreaWidth / 1.5
-            let barOffset = barAreaWidth - barWidth
-            let yticks = self.makeYticks(scale: self.grapScale, graphHeight: graphHeight)
+            let graphWidth: CGFloat = geo.size.width
+            let graphHeight: CGFloat  = geo.size.height * 0.9
+            let barAreaWidth: CGFloat  = graphWidth / CGFloat(datas.count)
+            let barWidth: CGFloat  = barAreaWidth / 1.5
+            let barOffset: CGFloat  = barAreaWidth - barWidth
+            let yticks: [YtickData] = self.makeYticks(scale: self.grapScale, graphHeight: graphHeight)
+            let property = BarGraph.calcProperty(graphHeight: graphHeight, graphWidth: graphWidth, barOffset: barOffset, barWidth: barWidth, maxValue: maxValue)
             
             HStack(alignment: .top, spacing: 0, content: {
                 // Y軸
@@ -79,15 +83,7 @@ public struct BarGraphView: View {
                 }
                 .frame(width: barWidth * 3.0, height: graphHeight, alignment: .topLeading)
                 VStack {
-                    HStack(alignment: .bottom, spacing: barOffset, content: {
-                        ForEach(datas, content: { d in
-                            // グラフエリア
-                            Rectangle()
-                                .fill(Color.white)
-                                .frame(width: barWidth, height: CGFloat(d.value) / CGFloat(maxValue) * graphHeight)
-                                .animation(.linear(duration: 0.5))
-                        })
-                    }).frame(alignment: .bottomTrailing)
+                    BarGraph(datas: datas, property: property)
                     // X軸
                     HStack(alignment: .bottom, spacing: 0, content: {
                         ForEach((0 ..< 24), content: { num in
@@ -174,6 +170,68 @@ public struct NoDataGraph: View {
         return ViewProperty(graphHeight: parentWidth, graphWidth: parentHeight, barWidth: barWidth, barOffset: offset)
     }
 }
+
+public struct BarGraph: View {
+    
+    let datas: [GraphData]
+    let viewProperty: ViewProperty
+    
+    init(datas: [GraphData], property: ViewProperty) {
+        self.datas = datas
+        self.viewProperty = property
+    }
+    
+    public var body: some View {
+        let calcBarHeight = viewProperty.heigthScaler!
+        HStack(alignment: .bottom, spacing: viewProperty.barOffset, content: {
+            ForEach(datas, content: { d in
+                // グラフエリア
+                Rectangle()
+                    .fill(Color.white)
+                    .frame(width: viewProperty.barWidth, height: calcBarHeight(d.value))
+                    .animation(.linear(duration: 0.5))
+            })
+        }).frame(height: viewProperty.graphHeight, alignment: .bottomTrailing)
+    }
+    
+    public static func calcProperty(graphHeight: CGFloat, graphWidth: CGFloat, barOffset: CGFloat, barWidth: CGFloat, maxValue: Int) -> ViewProperty {
+        
+        return ViewProperty(graphHeight: graphHeight, graphWidth: graphWidth, barWidth: barWidth, barOffset: barOffset, maxValue: maxValue)
+    }
+}
+
+// MARK: Model
+
+public struct ViewProperty {
+    let graphHeight: CGFloat
+    let graphWidth: CGFloat
+    let barWidth: CGFloat
+    let barOffset: CGFloat
+    private let maxValue: Int
+    var heigthScaler: ((_ dataValue: Int) -> CGFloat)? {
+        get {
+            guard maxValue != 0 else {
+                return nil
+            }
+            return {
+                (dataValue: Int) -> CGFloat in
+                return (CGFloat(dataValue) / CGFloat(maxValue) * graphHeight)
+            }
+        }
+    }
+    
+    init(graphHeight: CGFloat, graphWidth: CGFloat, barWidth: CGFloat = 0.0, barOffset: CGFloat = 0.0, maxValue: Int = 0) {
+        self.graphHeight = graphHeight
+        self.graphWidth = graphWidth
+        self.barWidth = barWidth
+        self.barOffset = barOffset
+        self.maxValue = maxValue
+    }
+}
+
+
+// MARK: Preview
+
 struct BarGraphView_Previews: PreviewProvider {
     static var previews: some View {
         VStack {
