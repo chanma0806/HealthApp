@@ -130,6 +130,50 @@ public struct BarGraphView: View {
     }
 }
 
+public struct NoDataGraph: View {
+    
+    private static var noDataRawValues: [Int] {
+        get {
+            [20, 60, 100, 80, 40, 15]
+        }
+    }
+    
+    let viewProperty: ViewProperty
+    
+    init(property: ViewProperty) {
+        self.viewProperty = property
+    }
+    
+    public var body: some View {
+        
+        let noDatas: [GraphData] = NoDataGraph.noDataRawValues.map { (num: Int) -> GraphData in
+            GraphData(id: String(num), value: num)
+        }
+        
+        ZStack {
+            Text("No Data")
+                .font(.system(size: 20.0))
+                .bold()
+                .foregroundColor(.white)
+                .zIndex(2.0)
+            HStack(alignment: .bottom, spacing: viewProperty.barOffset, content: {
+                ForEach(noDatas, content: { d in
+                    // グラフエリア
+                    Rectangle()
+                        .fill(noDataColor)
+                        .frame(width: viewProperty.barWidth, height: CGFloat(d.value) / CGFloat(150) * viewProperty.graphHeight)
+                })
+            }).frame(height: viewProperty.graphHeight,alignment: .bottomTrailing)
+        }
+    }
+    
+    public static func calcProperty(parentWidth: CGFloat, parentHeight: CGFloat) -> ViewProperty {
+        let offset: CGFloat = 5.0
+        let barWidth: CGFloat = (parentWidth - 5.0 * CGFloat(noDataRawValues.count - 1)) / CGFloat(noDataRawValues.count)
+        
+        return ViewProperty(graphHeight: parentWidth, graphWidth: parentHeight, barWidth: barWidth, barOffset: offset)
+    }
+}
 struct BarGraphView_Previews: PreviewProvider {
     static var previews: some View {
         VStack {
