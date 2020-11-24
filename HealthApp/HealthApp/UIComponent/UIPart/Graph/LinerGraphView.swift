@@ -53,22 +53,7 @@ struct GraphScaleData {
 /**
     線形グラフビュー
  */
-public struct LinerGraphView: View {
-    
-    let rawDatas: [Int]
-    lazy var _grapScale: GraphScaleData = self.makeGraphScaleData(rawDatas)
-    
-    var grapScale: GraphScaleData {
-        get {
-            var mutatingSelf = self
-            return mutatingSelf._grapScale
-        }
-    }
-    
-    init(_ datas: [Int]) {
-        self.rawDatas = datas
-    }
-    
+public struct LinerGraph: View {
     public static func getDummyDatas() -> [Int] {
         
 //        return [0, 0, 0, 0, 0, 0, 0, 0, 94, 93, 88, 85, 85, 96, 97, 95, 90, 87, 87, 88, 91, 0, 0, 0]
@@ -104,6 +89,30 @@ public struct LinerGraphView: View {
 //            75, /* 22:00 */
 //            80, /* 23:00 */
 //        ]
+    }
+    
+    let datas: [GraphData]
+    var property: ViewProperty
+    lazy var _grapScale: GraphScaleData = self.makeGraphScaleData(rawDatas)
+    
+    var grapScale: GraphScaleData {
+        get {
+            var mutatingSelf = self
+            return mutatingSelf._grapScale
+        }
+    }
+    
+    var rawDatas: [Int] {
+        get {
+            datas.map { d in d.value }
+        }
+    }
+    
+    init(_ datas: [GraphData], property: ViewProperty) {
+        self.datas = datas
+        self.property = property
+        self.property.barAreaWidth = self.property.graphWidth / 24
+        self.property.barWidth = self.property.barAreaWidth / 1.5
     }
     
     @ViewBuilder
@@ -185,30 +194,18 @@ public struct LinerGraphView: View {
         return controlPoint
     }
     
-    private func getPoints(_ datas: [Int], scale: GraphScaleData, barAreaWidth: CGFloat, graphHeight: CGFloat) -> [CGPoint] {
+    private func getPoints(_ datas: [GraphData], scale: GraphScaleData, barAreaWidth: CGFloat, graphHeight: CGFloat) -> [CGPoint] {
         let height: CGFloat = scale.topY - scale.bottomY
         let points: [CGPoint] = datas.enumerated().map {
-            guard ($0.element) > 30  else {
+            guard ($0.element.value) > 30  else {
                 return nil
             }
             let x: CGFloat = (CGFloat($0.offset) + 0.5) * (barAreaWidth / 2)
-            let y: CGFloat = (1.0 - (CGFloat($0.element) - scale.bottomY) / height) * graphHeight
+            let y: CGFloat = (1.0 - (CGFloat($0.element.value) - scale.bottomY) / height) * graphHeight
             return CGPoint(x: x, y: y)
         }.compactMap{ $0 }
         
         return points
-    }
-    
-    private func makeYticks(scale: GraphScaleData, height: CGFloat, graphHeight: CGFloat) -> [YtickData] {
-        var yticks: [YtickData] = []
-        var ytickValue: CGFloat = scale.topY
-        while ytickValue >= scale.bottomY {
-            let ytick: YtickData  = YtickData(id: "\(Int(ytickValue))", value: Int(ytickValue), bottom: scale.bottomY, height: height, graphHeight: graphHeight)
-            yticks.append(ytick)
-            ytickValue += -10.0
-        }
-        
-        return yticks
     }
     
     mutating private func makeGraphScaleData(_ datas: [Int]) -> GraphScaleData {
@@ -231,62 +228,19 @@ public struct LinerGraphView: View {
     }
     
     public var body: some View {
-        let datas: [GraphData] = rawDatas.enumerated().map{
-            GraphData(id: String($0.offset), value: $0.element)
-        }
-        
-        return GeometryReader { geo in
-            let graphWidth: CGFloat = geo.size.width
-            let graphHeight: CGFloat = (geo.size.height * 0.9)
-            let barAreaWidth: CGFloat = graphWidth / 24
-            let barWidth: CGFloat = barAreaWidth / 1.5
-            let barOffset: CGFloat = barAreaWidth - barWidth
-            let drawHeiht:CGFloat = graphHeight - (barWidth + barOffset)
-            let height: CGFloat = grapScale.topY - grapScale.bottomY
-            let yticks: [YtickData] = self.makeYticks(scale: self.grapScale, height: height, graphHeight: graphHeight)
-            HStack(alignment: .top, spacing: 0.0, content: {
-                // Y軸
-                ZStack {
-                    ForEach(yticks, content: { (d: YtickData) in
-                        Text(d.id)
-                        .font(.system(size: barWidth))
-                        .foregroundColor(.white)
-                        .bold()
-                        .position(x: barWidth / 2, y: d.yPosition)
-                        .frame(width: barWidth * 2.0, height: barWidth)
-                    })
-                }
-                .frame(width: barWidth * 2.0, height: graphHeight, alignment: .topLeading)
-                VStack(alignment: .leading, spacing: /*@START_MENU_TOKEN@*/nil/*@END_MENU_TOKEN@*/, content: {
-                    // グラフ描画エリア
-                    let graphPoints: [CGPoint] = self.getPoints(rawDatas, scale: self.grapScale, barAreaWidth: barAreaWidth, graphHeight: drawHeiht)
-                    VStack(alignment: .center, spacing:0, content: {
-                        self.quadCurvedPath(points: graphPoints)
-                    })
-                    .frame(height: graphHeight)
-                    // X軸
-                    HStack(alignment: .bottom, spacing: 0, content: {
-                        ForEach((0 ..< 24), content: { num in
-                            VStack(alignment: .center , spacing: 0, content: {
-                                let xTick: String = num % 2 == 0 ? String(num) : ""
-                                Text(xTick)
-                                    .font(.system(size: barWidth))
-                                    .foregroundColor(.white)
-                                    .bold()
-                                    .frame(width: barWidth + barOffset, height: barWidth + barOffset, alignment: .center)
-                            }).frame(height: barWidth + barOffset, alignment: .bottomTrailing)
-                        })
-                    })
-                })
-            })
-        }
+        let drawHeiht:CGFloat = self.property.graphHeight - (self.property.barWidth + self.property.barOffset)
+        let graphPoints: [CGPoint] = self.getPoints(datas, scale: self.grapScale, barAreaWidth: self.property.barAreaWidth, graphHeight: drawHeiht)
+        VStack(alignment: .center, spacing:0, content: {
+            self.quadCurvedPath(points: graphPoints)
+        })
+        .frame(height: self.property.graphHeight)
     }
 }
 
 struct LinerGraphView_Previews: PreviewProvider {
     static var previews: some View {
         VStack {
-            LinerGraphView(LinerGraphView.getDummyDatas())
+            GraphView(LinerGraph.getDummyDatas(), graphType: .line)
         }
         .frame(width: 300, height: 250, alignment: .center)
         .padding()

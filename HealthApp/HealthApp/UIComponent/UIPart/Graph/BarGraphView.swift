@@ -10,20 +10,27 @@ import SwiftUI
 
 // MARK: View
 
+public enum GraphType {
+    case line
+    case bar
+}
+
 /**
     バーグラフビュー
  */
-public struct BarGraphView: View {
+public struct GraphView: View {
     let rawDatas: [Int]
     lazy var _grapScale: GraphScaleData = self.makeGraphScaleData(rawDatas)
+    let graphType: GraphType
     var grapScale: GraphScaleData {
         get {
             var mutatingSelf = self
             return mutatingSelf._grapScale
         }
     }
-    init(_ datas: [Int]) {
+    init(_ datas: [Int], graphType: GraphType) {
         self.rawDatas = datas
+        self.graphType = graphType
     }
     
     public static func getDummyDatas() -> [Int] {
@@ -63,7 +70,7 @@ public struct BarGraphView: View {
         GeometryReader { geo in
             let graphWidth: CGFloat = geo.size.width
             let graphHeight: CGFloat  = geo.size.height * 0.9
-            let barAreaWidth: CGFloat  = graphWidth / CGFloat(datas.count)
+            let barAreaWidth: CGFloat  = graphWidth / 24
             let barWidth: CGFloat  = barAreaWidth / 1.5
             let barOffset: CGFloat  = barAreaWidth - barWidth
             let yticks: [YtickData] = self.makeYticks(scale: self.grapScale, graphHeight: graphHeight)
@@ -82,7 +89,7 @@ public struct BarGraphView: View {
                 }
                 .frame(width: barWidth * 3.0, height: graphHeight, alignment: .topLeading)
                 VStack {
-                    GraphFactory.Graph(data: rawDatas, width: geo.size.width, height: geo.size.height)
+                    GraphFactory.Graph(data: rawDatas, width: geo.size.width, height: geo.size.height, graphType: graphType)
                     // X軸
                     HStack(alignment: .bottom, spacing: 0, content: {
                         ForEach((0 ..< 24), content: { num in
@@ -132,7 +139,7 @@ public struct BarGraphView: View {
 
 public class GraphFactory {
     @ViewBuilder
-    public static func Graph(data: [Int], width: CGFloat, height: CGFloat) -> some View {
+    public static func Graph(data: [Int], width: CGFloat, height: CGFloat, graphType: GraphType) -> some View {
         let barAreaWidth: CGFloat  = width / CGFloat(data.count)
         let barWidth: CGFloat  = barAreaWidth / 1.5
         let barOffset: CGFloat  = barAreaWidth - barWidth
@@ -145,7 +152,13 @@ public class GraphFactory {
             let graphData: [GraphData] = data.enumerated().map{
                 GraphData(id: String($0.offset), value: $0.element)
             }
-            BarGraph(datas: graphData, property: property)
+            
+            switch graphType {
+            case .line:
+                LinerGraph(graphData, property: property)
+            case .bar:
+                BarGraph(datas: graphData, property: property)
+            }
         }
     }
     
@@ -228,6 +241,7 @@ public struct ViewProperty {
     var graphWidth: CGFloat
     var barWidth: CGFloat
     var barOffset: CGFloat
+    var barAreaWidth: CGFloat
     private var maxValue: Int
     var heigthScaler: ((_ dataValue: Int) -> CGFloat)? {
         get {
@@ -245,6 +259,7 @@ public struct ViewProperty {
         self.graphHeight = graphHeight
         self.graphWidth = graphWidth
         self.barWidth = barWidth
+        self.barAreaWidth = barWidth * 1.5
         self.barOffset = barOffset
         self.maxValue = maxValue
     }
@@ -258,9 +273,7 @@ struct BarGraphView_Previews: PreviewProvider {
     static var previews: some View {
         let noDatas = [Int](0...23).map{_ in 0 }
         VStack {
-//            BarGraphView(BarGraphView.getDummyDatas())
-            BarGraphView(noDatas)
-//            GraphFactory.Graph(data: noDatas, width: 300, height: 250)
+            GraphView(GraphView.getDummyDatas(), graphType: .bar)
         }
         .frame(width: 300, height: 250, alignment: .center)
         .padding()

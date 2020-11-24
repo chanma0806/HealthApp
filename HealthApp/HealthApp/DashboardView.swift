@@ -24,18 +24,18 @@ public struct DashboardView: View {
     @State var reversed: Bool = false {
         willSet(newReversed) {
             if (newReversed) {
-                self.dashboardData.stepData = LinerGraphView.getDummyDatas()
-                self.dashboardData.heartRateData = BarGraphView.getDummyDatas()
+                self.dashboardData.stepData = LinerGraph.getDummyDatas()
+                self.dashboardData.heartRateData = GraphView.getDummyDatas()
             } else {
-                self.dashboardData.stepData = BarGraphView.getDummyDatas()
-                self.dashboardData.heartRateData = LinerGraphView.getDummyDatas()
+                self.dashboardData.stepData = GraphView.getDummyDatas()
+                self.dashboardData.heartRateData = LinerGraph.getDummyDatas()
             }
         }
     }
     @ObservedObject var dashboardData: DashBordData = DashBordData(
-        stepData: BarGraphView.getDummyDatas(),
-        heartRateData: LinerGraphView.getDummyDatas(),
-        burnCalorieData: BarGraphView.getDummyDatas()
+        stepData: GraphView.getDummyDatas(),
+        heartRateData: LinerGraph.getDummyDatas(),
+        burnCalorieData: GraphView.getDummyDatas()
     )
     
     let usecase: DashboardUsecaseService
