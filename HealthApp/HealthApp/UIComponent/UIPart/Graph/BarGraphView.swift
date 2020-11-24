@@ -72,7 +72,7 @@ public struct GraphView: View {
             let graphHeight: CGFloat  = geo.size.height * 0.9
             let barAreaWidth: CGFloat  = graphWidth / 24
             let barWidth: CGFloat  = barAreaWidth / 1.5
-            let barOffset: CGFloat  = barAreaWidth - barWidth
+            let barOffset: CGFloat  = (graphWidth - barWidth * 3.0) / 24  - barWidth
             let yticks: [YtickData] = self.makeYticks(scale: self.grapScale, graphHeight: graphHeight)
             
             HStack(alignment: .top, spacing: 0, content: {
@@ -89,7 +89,7 @@ public struct GraphView: View {
                 }
                 .frame(width: barWidth * 3.0, height: graphHeight, alignment: .topLeading)
                 VStack {
-                    GraphFactory.Graph(data: rawDatas, width: geo.size.width, height: geo.size.height, graphType: graphType)
+                    GraphFactory.Graph(data: rawDatas, width: geo.size.width - barWidth * 3.0, height: geo.size.height * 0.9, graphType: graphType)
                     // X軸
                     HStack(alignment: .bottom, spacing: 0, content: {
                         ForEach((0 ..< 24), content: { num in
