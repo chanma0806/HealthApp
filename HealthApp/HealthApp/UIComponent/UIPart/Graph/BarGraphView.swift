@@ -116,10 +116,12 @@ public struct GraphView: View {
         
         var yticks: [YtickData] = []
         var ytickValue: CGFloat = scale.topY
+        var tenPow = Int(log10(scale.maxValue).rounded()) - 1
+        let yRange: CGFloat = (scale.rangeY / 6.0).roundedUp(tenPow: tenPow)
         while ytickValue >= scale.bottomY {
             let ytick: YtickData  = YtickData(id: "\(Int(ytickValue))", value: Int(ytickValue), bottom: scale.bottomY, height: scale.topY, graphHeight: graphHeight)
             yticks.append(ytick)
-            ytickValue += -100.0
+            ytickValue += -(yRange)
         }
         
         return yticks
@@ -131,7 +133,7 @@ public struct GraphView: View {
         
         return GraphScaleData(topY: topValue,
                               bottomY: 0.0,
-                              rangeY: 0.0,
+                              rangeY: topValue,
                               maxValue: maxValue,
                               minValue: 0.0)
     }
