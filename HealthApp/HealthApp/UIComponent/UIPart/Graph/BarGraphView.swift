@@ -67,7 +67,6 @@ public struct BarGraphView: View {
             let barWidth: CGFloat  = barAreaWidth / 1.5
             let barOffset: CGFloat  = barAreaWidth - barWidth
             let yticks: [YtickData] = self.makeYticks(scale: self.grapScale, graphHeight: graphHeight)
-            let property = BarGraph.calcProperty(graphHeight: graphHeight, graphWidth: graphWidth, barOffset: barOffset, barWidth: barWidth, maxValue: maxValue)
             
             HStack(alignment: .top, spacing: 0, content: {
                 // Y軸
@@ -83,7 +82,7 @@ public struct BarGraphView: View {
                 }
                 .frame(width: barWidth * 3.0, height: graphHeight, alignment: .topLeading)
                 VStack {
-                    BarGraph(datas: datas, property: property)
+                    GraphFactory.Graph(data: rawDatas, width: geo.size.width, height: geo.size.height)
                     // X軸
                     HStack(alignment: .bottom, spacing: 0, content: {
                         ForEach((0 ..< 24), content: { num in
@@ -103,6 +102,11 @@ public struct BarGraphView: View {
     }
     
     private func makeYticks(scale: GraphScaleData, graphHeight: CGFloat) -> [YtickData] {
+        
+        guard scale.maxValue > 0 else {
+            return []
+        }
+        
         var yticks: [YtickData] = []
         var ytickValue: CGFloat = scale.topY
         while ytickValue >= scale.bottomY {
@@ -126,6 +130,31 @@ public struct BarGraphView: View {
     }
 }
 
+public class GraphFactory {
+    @ViewBuilder
+    public static func Graph(data: [Int], width: CGFloat, height: CGFloat) -> some View {
+        let barAreaWidth: CGFloat  = width / CGFloat(data.count)
+        let barWidth: CGFloat  = barAreaWidth / 1.5
+        let barOffset: CGFloat  = barAreaWidth - barWidth
+        let maxValue = data.max()!
+        let property = GraphFactory.calcProperty(graphHeight: height, graphWidth: width, barOffset: barOffset, barWidth: barWidth, maxValue: maxValue)
+        let isNoData = (data.max()! <= 0)
+        if isNoData {
+            NoDataGraph(property: property)
+        } else {
+            let graphData: [GraphData] = data.enumerated().map{
+                GraphData(id: String($0.offset), value: $0.element)
+            }
+            BarGraph(datas: graphData, property: property)
+        }
+    }
+    
+    private static func calcProperty(graphHeight: CGFloat, graphWidth: CGFloat, barOffset: CGFloat, barWidth: CGFloat, maxValue: Int) -> ViewProperty {
+        
+        return ViewProperty(graphHeight: graphHeight, graphWidth: graphWidth, barWidth: barWidth, barOffset: barOffset, maxValue: maxValue)
+    }
+}
+
 public struct NoDataGraph: View {
     
     private static var noDataRawValues: [Int] {
@@ -134,10 +163,12 @@ public struct NoDataGraph: View {
         }
     }
     
-    let viewProperty: ViewProperty
+    var viewProperty: ViewProperty
     
     init(property: ViewProperty) {
         self.viewProperty = property
+        self.viewProperty.barOffset = 5.0
+        self.viewProperty.barWidth = (self.viewProperty.graphWidth - 5.0 * CGFloat(NoDataGraph.noDataRawValues.count - 1)) / CGFloat(NoDataGraph.noDataRawValues.count)
     }
     
     public var body: some View {
@@ -148,10 +179,12 @@ public struct NoDataGraph: View {
         
         ZStack {
             Text("No Data")
-                .font(.system(size: 20.0))
                 .bold()
                 .foregroundColor(.white)
+                .fixedSize()
+                .font(.system(size: 20.0))
                 .zIndex(2.0)
+                
             HStack(alignment: .bottom, spacing: viewProperty.barOffset, content: {
                 ForEach(noDatas, content: { d in
                     // グラフエリア
@@ -159,15 +192,8 @@ public struct NoDataGraph: View {
                         .fill(noDataColor)
                         .frame(width: viewProperty.barWidth, height: CGFloat(d.value) / CGFloat(150) * viewProperty.graphHeight)
                 })
-            }).frame(height: viewProperty.graphHeight,alignment: .bottomTrailing)
-        }
-    }
-    
-    public static func calcProperty(parentWidth: CGFloat, parentHeight: CGFloat) -> ViewProperty {
-        let offset: CGFloat = 5.0
-        let barWidth: CGFloat = (parentWidth - 5.0 * CGFloat(noDataRawValues.count - 1)) / CGFloat(noDataRawValues.count)
-        
-        return ViewProperty(graphHeight: parentWidth, graphWidth: parentHeight, barWidth: barWidth, barOffset: offset)
+            }).frame(width: viewProperty.graphWidth, height: viewProperty.graphHeight, alignment: .bottomTrailing)
+        }.frame(width: viewProperty.graphWidth, height: viewProperty.graphHeight)
     }
 }
 
@@ -193,21 +219,16 @@ public struct BarGraph: View {
             })
         }).frame(height: viewProperty.graphHeight, alignment: .bottomTrailing)
     }
-    
-    public static func calcProperty(graphHeight: CGFloat, graphWidth: CGFloat, barOffset: CGFloat, barWidth: CGFloat, maxValue: Int) -> ViewProperty {
-        
-        return ViewProperty(graphHeight: graphHeight, graphWidth: graphWidth, barWidth: barWidth, barOffset: barOffset, maxValue: maxValue)
-    }
 }
 
 // MARK: Model
 
 public struct ViewProperty {
-    let graphHeight: CGFloat
-    let graphWidth: CGFloat
-    let barWidth: CGFloat
-    let barOffset: CGFloat
-    private let maxValue: Int
+    var graphHeight: CGFloat
+    var graphWidth: CGFloat
+    var barWidth: CGFloat
+    var barOffset: CGFloat
+    private var maxValue: Int
     var heigthScaler: ((_ dataValue: Int) -> CGFloat)? {
         get {
             guard maxValue != 0 else {
@@ -230,12 +251,16 @@ public struct ViewProperty {
 }
 
 
+
 // MARK: Preview
 
 struct BarGraphView_Previews: PreviewProvider {
     static var previews: some View {
+        let noDatas = [Int](0...23).map{_ in 0 }
         VStack {
-            BarGraphView(BarGraphView.getDummyDatas())
+//            BarGraphView(BarGraphView.getDummyDatas())
+            BarGraphView(noDatas)
+//            GraphFactory.Graph(data: noDatas, width: 300, height: 250)
         }
         .frame(width: 300, height: 250, alignment: .center)
         .padding()
