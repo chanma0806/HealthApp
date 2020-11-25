@@ -25,6 +25,8 @@
 		EECB1DD2254D26F900B047E2 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EECB1DD1254D26F900B047E2 /* Preview Assets.xcassets */; };
 		EECB1DD5254D26F900B047E2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EECB1DD3254D26F900B047E2 /* LaunchScreen.storyboard */; };
 		EECB1DE0254D26F900B047E2 /* HealthAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EECB1DDF254D26F900B047E2 /* HealthAppTests.swift */; };
+		EEF5CD5F256E72DD00843D8D /* PedometerComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEF5CD5E256E72DD00843D8D /* PedometerComponent.swift */; };
+		EEF5CD65256E76EA00843D8D /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EEF5CD64256E76EA00843D8D /* CoreMotion.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,6 +64,8 @@
 		EECB1DDF254D26F900B047E2 /* HealthAppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthAppTests.swift; sourceTree = "<group>"; };
 		EECB1DE1254D26F900B047E2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EECB1DEA254D26F900B047E2 /* HealthAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthAppUITests.swift; sourceTree = "<group>"; };
+		EEF5CD5E256E72DD00843D8D /* PedometerComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PedometerComponent.swift; sourceTree = "<group>"; };
+		EEF5CD64256E76EA00843D8D /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +74,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EE562805255200C80078CD87 /* PromiseKit in Frameworks */,
+				EEF5CD65256E76EA00843D8D /* CoreMotion.framework in Frameworks */,
 				EE56280C255205790078CD87 /* HealthKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -88,6 +93,7 @@
 			isa = PBXGroup;
 			children = (
 				EE5627FB2551FF7D0078CD87 /* HealthCareComponent.swift */,
+				EEF5CD5E256E72DD00843D8D /* PedometerComponent.swift */,
 			);
 			path = Gateway;
 			sourceTree = "<group>";
@@ -95,6 +101,7 @@
 		EE56280A255205790078CD87 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				EEF5CD64256E76EA00843D8D /* CoreMotion.framework */,
 				EE56280B255205790078CD87 /* HealthKit.framework */,
 			);
 			name = Frameworks;
@@ -301,6 +308,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EE6534CF254E592300F1698A /* CircleArrow.swift in Sources */,
+				EEF5CD5F256E72DD00843D8D /* PedometerComponent.swift in Sources */,
 				EE5CFEB025516B62009FB23C /* BarGraphView.swift in Sources */,
 				EE552C3125542A3A004360BD /* DashboardUsecaseService.swift in Sources */,
 				EECB1DC9254D26F600B047E2 /* AppDelegate.swift in Sources */,
