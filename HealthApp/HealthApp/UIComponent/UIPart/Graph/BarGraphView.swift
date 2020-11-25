@@ -63,10 +63,8 @@ public struct GraphView: View {
     }
     
     public var body: some View {
-        let maxValue = self.rawDatas.max() ?? 0
-        let datas: [GraphData] = rawDatas.enumerated().map{
-            GraphData(id: String($0.offset), value: $0.element)
-        }
+        let datas: [GraphData] = self.makeGraphData(self.rawDatas)
+        let isNoData = self.rawDatas.max()! <= 0
         GeometryReader { geo in
             let graphWidth: CGFloat = geo.size.width
             let graphHeight: CGFloat  = geo.size.height * 0.9
@@ -101,7 +99,7 @@ public struct GraphView: View {
                                     .bold()
                                     .frame(width: barWidth + barOffset, height: barWidth + barOffset, alignment: .center)
                             }).frame(height: barWidth + barOffset, alignment: .bottomTrailing)
-                        })
+                        }).setHidden(isNoData)
                     })
                 }
             })
@@ -125,6 +123,18 @@ public struct GraphView: View {
         }
         
         return yticks
+    }
+    
+    private func makeGraphData(_ rawDatas: [Int]) -> [GraphData] {
+        guard rawDatas.max()! > 0 else {
+            return []
+        }
+        
+        let datas: [GraphData] = rawDatas.enumerated().map{
+            GraphData(id: String($0.offset), value: $0.element)
+        }
+        
+        return datas
     }
     
     mutating private func makeGraphScaleData(_ datas: [Int]) -> GraphScaleData {
@@ -275,11 +285,24 @@ struct BarGraphView_Previews: PreviewProvider {
     static var previews: some View {
         let noDatas = [Int](0...23).map{_ in 0 }
         VStack {
-            GraphView(GraphView.getDummyDatas(), graphType: .bar)
+            GraphView([0, 0, 0], graphType: .bar)
+//            GraphView(LinerGraph.getDummyDatas(), graphType: .line)
         }
         .frame(width: 300, height: 250, alignment: .center)
-        .padding()
+        .padding(30.0)
         .background(greenGradient)
         .cornerRadius(25.0)
+    }
+}
+
+extension View {
+    
+    @ViewBuilder
+    func setHidden(_ needHidden: Bool) -> some View {
+        if (needHidden) {
+            self.hidden()
+        } else {
+            self
+        }
     }
 }
