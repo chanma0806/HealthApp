@@ -58,9 +58,9 @@ struct HealthCardView: View {
     private func graphBuild() -> some View {
         switch self.graphCase {
         case .Bar:
-            BarGraphView(self.datas)
+            GraphView(self.datas, graphType: .bar)
         case .Line:
-            LinerGraphView(self.datas)
+            GraphView(self.datas, graphType: .line)
         }
     }
     
@@ -90,7 +90,7 @@ struct HealthCard_Previews: PreviewProvider {
     static var previews: some View {
         GeometryReader { geo in
             VStack(alignment: .center, spacing: nil, content: {
-                CardFactory.HeartRateCard(datas: .constant(LinerGraphView.getDummyDatas()))
+                CardFactory.HeartRateCard(datas: .constant(LinerGraph.getDummyDatas()))
                     .frame(height: geo.size.height*0.3)
             })
             .padding(EdgeInsets(top: 0.0, leading: geo.size.width*0.1, bottom: 0.0, trailing: geo.size.width*0.1))

@@ -24,18 +24,18 @@ public struct DashboardView: View {
     @State var reversed: Bool = false {
         willSet(newReversed) {
             if (newReversed) {
-                self.dashboardData.stepData = LinerGraphView.getDummyDatas()
-                self.dashboardData.heartRateData = BarGraphView.getDummyDatas()
+                self.dashboardData.stepData = LinerGraph.getDummyDatas()
+                self.dashboardData.heartRateData = GraphView.getDummyDatas()
             } else {
-                self.dashboardData.stepData = BarGraphView.getDummyDatas()
-                self.dashboardData.heartRateData = LinerGraphView.getDummyDatas()
+                self.dashboardData.stepData = GraphView.getDummyDatas()
+                self.dashboardData.heartRateData = LinerGraph.getDummyDatas()
             }
         }
     }
     @ObservedObject var dashboardData: DashBordData = DashBordData(
-        stepData: BarGraphView.getDummyDatas(),
-        heartRateData: LinerGraphView.getDummyDatas(),
-        burnCalorieData: BarGraphView.getDummyDatas()
+        stepData: GraphView.getDummyDatas(),
+        heartRateData: LinerGraph.getDummyDatas(),
+        burnCalorieData: GraphView.getDummyDatas()
     )
     
     let usecase: DashboardUsecaseService
@@ -74,23 +74,23 @@ public struct DashboardView: View {
     func synHealth() {
         self.usecase.requestHealthAccess()
         .then { _ in
-            self.usecase.getHeartRates(on: self.selectedDate)
+            self.usecase.getHeartRate(on: self.selectedDate)
         }
-        .then { (entities: [DayHeartrRateEntity]) -> Promise<[DayStepEntity]> in
-            if (entities.count > 0) {
-                self.dashboardData.heartRateData = entities[0].values
+        .then { (entity: DayHeartrRateEntity?) -> Promise<DayStepEntity?> in
+            if (entity != nil) {
+                self.dashboardData.heartRateData = entity!.values
             }
-            return self.usecase.getSteps(on: self.selectedDate)
+            return self.usecase.getStep(on: self.selectedDate)
         }
-        .then { (entities: [DayStepEntity]) -> Promise<[DayBurnCalorieEntity]> in
-            if (entities.count > 0) {
-                self.dashboardData.stepData = entities[0].values
+        .then { (entity: DayStepEntity?) -> Promise<DayBurnCalorieEntity?> in
+            if (entity != nil) {
+                self.dashboardData.stepData = entity!.values
             }
-            return self.usecase.getBurnCalories(on: self.selectedDate)
+            return self.usecase.getBurnCalorie(on: self.selectedDate)
         }
-        .done { (entities: [DayBurnCalorieEntity]) in
-            if (entities.count > 0) {
-                self.dashboardData.burnCalorieData = entities[0].values
+        .done { (entity: DayBurnCalorieEntity?) in
+            if (entity != nil) {
+                self.dashboardData.burnCalorieData = entity!.values
             }
         }
         .catch { _ in
