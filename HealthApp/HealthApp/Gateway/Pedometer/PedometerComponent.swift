@@ -9,7 +9,7 @@ import Foundation
 import PromiseKit
 import CoreMotion
 
-typealias StepEventCallBack = (_ stepCount: Int, _ distance: Double) -> Void
+typealias StepEventCallBack = (_ stepCount: Int, _ distance: Double, _ date: Date) -> Void
 
 public class PedometerComponent {
     
@@ -19,14 +19,31 @@ public class PedometerComponent {
         self.pedometer = CMPedometer()
     }
     
-    func requestStepEvent(date: Date, _ callback: @escaping StepEventCallBack) -> Void {
+    func requestStepEvent(_ callback: @escaping StepEventCallBack) -> Void {
+        let date = Date()
         pedometer.startUpdates(from: date, withHandler: { (data: CMPedometerData?, error: Error?) -> Void in
             guard let dataContext: CMPedometerData = data else {
                 return
             }
-            let steps: Int = dataContext.numberOfSteps.intValue
-            let distance: Double = dataContext.distance?.doubleValue ?? 0
-            callback(steps, distance)
+            
+            let exitAction = {
+                let steps: Int = dataContext.numberOfSteps.intValue
+                let distance: Double = dataContext.distance?.doubleValue ?? 0
+                callback(steps, distance, date)
+            }
+            
+            guard !Calendar.current.isDate(date, inSameDayAs: dataContext.endDate) else {
+                // 日付変更時は変更前の歩数を確定データとして別クエリで取得
+                self.pedometer.stopUpdates()
+                self.pedometer.queryPedometerData(from: date, to: date, withHandler: { (data: CMPedometerData?, error: Error?) -> Void in
+                    exitAction()
+                    // イベント配信再開
+                    self.requestStepEvent(callback)
+                })
+                return
+            }
+            
+            exitAction()
         })
     }
     
