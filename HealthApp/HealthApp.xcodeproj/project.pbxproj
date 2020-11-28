@@ -22,6 +22,7 @@
 		EE6534CF254E592300F1698A /* CircleArrow.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE6534CE254E592300F1698A /* CircleArrow.swift */; };
 		EE6534D4254E5B6D00F1698A /* SyncButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE6534D3254E5B6D00F1698A /* SyncButton.swift */; };
 		EE9C4784256FCFA90039ACAE /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = EE9C4783256FCFA90039ACAE /* Realm */; };
+		EE9C479025722F930039ACAE /* DaySummaryCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE9C478F25722F930039ACAE /* DaySummaryCardView.swift */; };
 		EECB1DC9254D26F600B047E2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EECB1DC8254D26F600B047E2 /* AppDelegate.swift */; };
 		EECB1DCB254D26F600B047E2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EECB1DCA254D26F600B047E2 /* SceneDelegate.swift */; };
 		EECB1DCD254D26F600B047E2 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EECB1DCC254D26F600B047E2 /* DashboardView.swift */; };
@@ -62,6 +63,7 @@
 		EE6534C9254E561E00F1698A /* ColorDefine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorDefine.swift; sourceTree = "<group>"; };
 		EE6534CE254E592300F1698A /* CircleArrow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleArrow.swift; sourceTree = "<group>"; };
 		EE6534D3254E5B6D00F1698A /* SyncButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncButton.swift; sourceTree = "<group>"; };
+		EE9C478F25722F930039ACAE /* DaySummaryCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaySummaryCardView.swift; sourceTree = "<group>"; };
 		EECB1DC5254D26F600B047E2 /* HealthApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HealthApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EECB1DC8254D26F600B047E2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EECB1DCA254D26F600B047E2 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -154,6 +156,7 @@
 			children = (
 				EE6534B5254DB0D200F1698A /* UIPart */,
 				EE6534C1254E552400F1698A /* HealthCardView.swift */,
+				EE9C478F25722F930039ACAE /* DaySummaryCardView.swift */,
 				EE6534C9254E561E00F1698A /* ColorDefine.swift */,
 			);
 			path = UIComponent;
@@ -392,6 +395,7 @@
 				EE6534D4254E5B6D00F1698A /* SyncButton.swift in Sources */,
 				EEE2BF21256E9126003B6F99 /* StepFetchUsecaeService.swift in Sources */,
 				EECB1DCD254D26F600B047E2 /* DashboardView.swift in Sources */,
+				EE9C479025722F930039ACAE /* DaySummaryCardView.swift in Sources */,
 				EE6534BA254DB0F600F1698A /* Triangle.swift in Sources */,
 				EE6534C2254E552400F1698A /* HealthCardView.swift in Sources */,
 				EE5627FC2551FF7D0078CD87 /* HealthCareComponent.swift in Sources */,

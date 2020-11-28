@@ -53,6 +53,9 @@ public struct DashboardView: View {
                     self.reversed.toggle()
                     self.selectedDate = date
                 }
+                DaySummaryCardView()
+                    .frame(height: geo.size.height*0.4,
+                            alignment: .center)
                 Group {
                     CardFactory.StepCard(datas: self.$dashboardData.stepData)
                     CardFactory.HeartRateCard(datas: self.$dashboardData.heartRateData)
