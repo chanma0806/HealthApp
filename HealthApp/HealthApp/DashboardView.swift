@@ -9,18 +9,38 @@ import SwiftUI
 import PromiseKit
 
 class DashBordData: ObservableObject {
+    @Published var dayTotalStep: Int
     @Published var stepData: [Int]
     @Published var heartRateData: [Int]
     @Published var burnCalorieData: [Int]
     
     init(stepData: [Int], heartRateData: [Int], burnCalorieData: [Int]) {
+        self.dayTotalStep = 0
         self.stepData = stepData
         self.heartRateData = heartRateData
         self.burnCalorieData = burnCalorieData
     }
+    
+    func startObserveTodayUpdate() {
+        NotificationCenter.default.addObserver(self, selector: #selector(recievedEvnet(_:)), name: .init(UPDATE_STEP_VALUE), object: nil)
+    }
+    
+    func stopObserveTodayUpdate() {
+        NotificationCenter.default.removeObserver(self, name: .init(UPDATE_STEP_VALUE), object: nil)
+    }
+    
+    @objc func recievedEvnet(_ notification: Notification) {
+        DispatchQueue.main.async {
+            if let entity = notification.object as? DailyStepData {
+                self.dayTotalStep = entity.step
+            }
+        }
+    }
 }
 
 public struct DashboardView: View {
+    
+    @EnvironmentObject var setting: SettingData
     @State var reversed: Bool = false {
         willSet(newReversed) {
             if (newReversed) {
@@ -38,11 +58,13 @@ public struct DashboardView: View {
         burnCalorieData: GraphView.getDummyDatas()
     )
     
-    let usecase: DashboardUsecaseService
+    let dashboardUsecase: DashboardUsecaseService
+    let fetchUsecase: StepFetchUsecaeService
     @State var selectedDate: Date = Date()
     
     init() {
-        self.usecase = DashboardUsecaseService()
+        self.dashboardUsecase = DashboardUsecaseService()
+        self.fetchUsecase = StepFetchUsecaeService()
         self.selectedDate = Date()
     }
     
@@ -52,41 +74,80 @@ public struct DashboardView: View {
                 DaySlider { (date: Date) in
                     self.reversed.toggle()
                     self.selectedDate = date
+                    
+                    if (Calendar.current.isDateInToday(date)) {
+                        self.dashboardData.startObserveTodayUpdate()
+                    } else {
+                        self.dashboardData.stopObserveTodayUpdate()
+                    }
+                    
+                    self.fetchUsecase.getDailyStep(on: selectedDate)
+                        .done { (entity: DailyStepData?) in
+                            let step = entity?.step ?? 0
+                            self.dashboardData.dayTotalStep = step
+                        }
+                        .catch { _ in
+                            
+                        }
                 }
-                Group {
-                    CardFactory.StepCard(datas: self.$dashboardData.stepData)
-                    CardFactory.HeartRateCard(datas: self.$dashboardData.heartRateData)
-                    CardFactory.BurnCalorieCard(datas: self.$dashboardData.burnCalorieData)
-                }.frame(height: geo.size.height*0.3,
-                        alignment: .center)
-                Spacer()
-                    .frame(height:.infinity)
-                SyncButton(size: 70.0, action: {
-                    self.synHealth()
-                })
+                ScrollView {
+                    Group {
+                        DaySummaryCardView(stepValue: self.$dashboardData.dayTotalStep)
+                            .frame(height: geo.size.height*0.4,
+                                    alignment: .center)
+                        Group {
+                            CardFactory.StepCard(datas: self.$dashboardData.stepData)
+                            CardFactory.HeartRateCard(datas: self.$dashboardData.heartRateData)
+                            CardFactory.BurnCalorieCard(datas: self.$dashboardData.burnCalorieData)
+                        }
+                        .frame(height: geo.size.height*0.3)
+                    }
+                     .frame(width: geo.size.width * 0.9)
+                    Spacer()
+                        .frame(height:.infinity)
+                    SyncButton(size: 70.0, action: {
+                        self.synHealth()
+                    })
+                }
+                .padding(EdgeInsets(top: 0, leading: geo.size.width*0.04, bottom: 10, trailing: geo.size.width*0.04))
                 
-            }).padding(EdgeInsets(top: 0, leading: geo.size.width*0.05, bottom: 10, trailing: geo.size.width*0.05))
+            })
             .frame(width: .infinity, height: geo.size.height, alignment: .topLeading)
         }
         .background(dashbordBackColor)
+        .onAppear {
+            /** フェッチ監視 */
+            self.fetchUsecase.startFetchStep()
+            self.dashboardData.startObserveTodayUpdate()
+            
+            /** 現在日のデータを取得 */
+            self.fetchUsecase.getDailyStep(on: selectedDate)
+                .done { (entity: DailyStepData?) in
+                    let step = entity?.step ?? 0
+                    self.dashboardData.dayTotalStep = step
+                }
+                .catch { _ in
+                    
+                }
+        }
     }
     
     func synHealth() {
-        self.usecase.requestHealthAccess()
+        self.dashboardUsecase.requestHealthAccess()
         .then { _ in
-            self.usecase.getHeartRate(on: self.selectedDate)
+            self.dashboardUsecase.getHeartRate(on: self.selectedDate)
         }
         .then { (entity: DayHeartrRateEntity?) -> Promise<DayStepEntity?> in
             if (entity != nil) {
                 self.dashboardData.heartRateData = entity!.values
             }
-            return self.usecase.getStep(on: self.selectedDate)
+            return self.dashboardUsecase.getStep(on: self.selectedDate)
         }
         .then { (entity: DayStepEntity?) -> Promise<DayBurnCalorieEntity?> in
             if (entity != nil) {
                 self.dashboardData.stepData = entity!.values
             }
-            return self.usecase.getBurnCalorie(on: self.selectedDate)
+            return self.dashboardUsecase.getBurnCalorie(on: self.selectedDate)
         }
         .done { (entity: DayBurnCalorieEntity?) in
             if (entity != nil) {

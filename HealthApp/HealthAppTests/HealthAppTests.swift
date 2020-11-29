@@ -6,12 +6,20 @@
 //
 
 import XCTest
+import PromiseKit
+import RealmSwift
+import Realm
+
 @testable import HealthApp
 
 class HealthAppTests: XCTestCase {
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
+        let realm = try! Realm()
+        try! realm.write {
+            realm.deleteAll()
+        }
     }
 
     override func tearDownWithError() throws {
@@ -19,15 +27,23 @@ class HealthAppTests: XCTestCase {
     }
 
     func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
-
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
+        let exp = XCTestExpectation()
+        let db = DatabaseComponent()
+        let enetity = DailyStepData(step: 100, date: Date(), distance: 10.0)
+        db.setStepData(enetity)
+        .then { _ in
+            db.getStepDatas(from: Date(), to: Date())
         }
+        .done { entities in
+            XCTAssertEqual(1, entities.count)
+        }
+        .catch { _ in
+            XCTFail()
+        }
+        .finally {
+            exp.fulfill()
+        }
+        wait(for: [exp], timeout: 5)
     }
 
 }
