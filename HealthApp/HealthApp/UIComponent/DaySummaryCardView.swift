@@ -10,11 +10,53 @@ import SwiftUI
 let MIN_DEGRESS = 360.0
 let MAX_DEGRESS = 300.0
 
-struct DaySummaryCardView: View {
+
+class SettingData: ObservableObject {
+    @Published var goalValue: Int
     
+    init() {
+        self.goalValue = 0
+    }
+}
+
+/**
+ - note:
+    bindingプロパティのオブザーバー
+    参考: https://stackoverflow.com/questions/58363563/swiftui-get-notified-when-binding-value-changes
+ */
+struct ChangeObserver<Base: View, Value: Equatable>: View {
+    let base: Base
+    let value: Value
+    let action: (Value) -> Void
+    @State private var oldValue: Value
+    
+    init(base: Base, value: Value, action: @escaping (Value) -> Void) {
+        self.base = base
+        self.value = value
+        self.action = action
+        _oldValue = State(initialValue: value)
+    }
+    
+    var body: some View {
+        if oldValue != value {
+            oldValue = value
+            self.action(self.value)
+        }
+        
+        return base
+    }
+}
+
+struct DaySummaryCardView: View {
+        
+    init (stepValue: Binding<Int>) {
+        self._stepValue = stepValue
+    }
+    
+    @EnvironmentObject var setting: SettingData
+    @Binding var stepValue: Int
     @State var ringeProgerss: Double = 0.0
-    var goalValue: Int = 10000
-    var stepValue: Int = 9000
+    
     var body: some View {
         GeometryReader { geo in
             ZStack {
@@ -43,12 +85,13 @@ struct DaySummaryCardView: View {
             .background(pinkGradient)
             .cornerRadius(20.0)
         }
-        .onAppear {
-            let ratio = Double(stepValue) / Double(goalValue)
+        .onDataChange(of: stepValue, perform: { _ in
+            /** binding変更時 */
+            let ratio = Double(stepValue) / Double(setting.goalValue)
             withAnimation(.linear, {
                 self.ringeProgerss = ratio >= 1.0 ? 1.0 : ratio
             })
-        }
+        })
     }
 }
 
@@ -78,7 +121,19 @@ struct ProgeressArcBar: Shape {
 
 struct DaySummaryCardView_Previews: PreviewProvider {
     static var previews: some View {
-        DaySummaryCardView()
+        DaySummaryCardView(stepValue: .constant(9000))
             .frame(width: 350, height: 300, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+    }
+}
+
+extension View {
+    func onDataChange<Value: Equatable>(of value: Value, perform action: @escaping (_ newValue: Value) -> Void) -> some View {
+        Group {
+            if #available(iOS 14.0, *) {
+                self.onChange(of: value, perform: action)
+            } else {
+                ChangeObserver(base: self, value: value, action: action)
+            }
+        }
     }
 }

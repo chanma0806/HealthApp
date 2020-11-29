@@ -285,8 +285,8 @@ struct BarGraphView_Previews: PreviewProvider {
     static var previews: some View {
         let noDatas = [Int](0...23).map{_ in 0 }
         VStack {
-            GraphView([0, 0, 0], graphType: .bar)
-//            GraphView(LinerGraph.getDummyDatas(), graphType: .line)
+//            GraphView([0, 0, 0], graphType: .bar)
+            GraphView(GraphView.getDummyDatas(), graphType: .bar)
         }
         .frame(width: 300, height: 250, alignment: .center)
         .padding(30.0)

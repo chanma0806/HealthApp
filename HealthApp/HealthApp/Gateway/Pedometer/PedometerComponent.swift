@@ -11,6 +11,10 @@ import CoreMotion
 
 typealias StepEventCallBack = (_ stepCount: Int, _ distance: Double, _ date: Date) -> Void
 
+enum PedometerError: Error {
+    case failureAccess
+}
+
 public class PedometerComponent {
     
     let pedometer: CMPedometer
@@ -19,8 +23,31 @@ public class PedometerComponent {
         self.pedometer = CMPedometer()
     }
     
+    
+    func requestAccess() {
+        _ = CMPedometer.isStepCountingAvailable()
+    }
+    
+    func getPastStep(on date: Date) -> Promise<DailyStepData> {
+        let promise = Promise<DailyStepData> { seal in
+            let from = Calendar.current.startOfDay(for: date)
+            let to = Calendar.current.date(byAdding: .second, value: -1, to: Calendar.current.date(byAdding: .day, value: 1, to: from)!)!
+            self.pedometer.queryPedometerData(from: from, to: to, withHandler: { (data: CMPedometerData?, error: Error?) -> Void in
+                guard let dataContext: CMPedometerData = data else {
+                    seal.reject(PedometerError.failureAccess)
+                    return
+                }
+                let distance = dataContext.distance?.doubleValue ?? 0.0
+                let entity = DailyStepData(step: dataContext.numberOfSteps.intValue, date: date, distance: distance)
+                seal.fulfill(entity)
+            })
+        }
+        
+        return promise
+    }
+    
     func requestStepEvent(_ callback: @escaping StepEventCallBack) -> Void {
-        let date = Date()
+        let date = Calendar.current.startOfDay(for: Date())
         pedometer.startUpdates(from: date, withHandler: { (data: CMPedometerData?, error: Error?) -> Void in
             guard let dataContext: CMPedometerData = data else {
                 return

@@ -80,7 +80,7 @@ struct HealthCardView: View {
             .padding(EdgeInsets(top: 10.0, leading: geo.size.width * 0.05, bottom: 10.0, trailing: geo.size.width * 0.05))
             .frame(width: geo.size.width, height: geo.size.height, alignment: .center)
             .background(self.cardColor)
-            .cornerRadius(25)
+            .cornerRadius(20)
             .shadow(radius: 5)
         }
     }

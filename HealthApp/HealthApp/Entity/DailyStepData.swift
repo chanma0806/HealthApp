@@ -11,4 +11,6 @@ public struct DailyStepData {
     var step: Int
     var date: Date
     var distance: Double
+    
+    
 }

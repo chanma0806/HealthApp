@@ -36,7 +36,7 @@ public class DatabaseComponent {
         let realm = try! Realm()
         let obj = DailyStepDataObject(step: entity.step, date: entity.date, distance: entity.distance)
         try! realm.write {
-            realm.add(obj)
+            realm.add(obj, update: .modified)
         }
         
         return Promise.value(())
