@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EE05D135257520780026B418 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE05D134257520780026B418 /* SettingView.swift */; };
 		EE33092D256E879400BDB483 /* DatabaseComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE33092C256E879400BDB483 /* DatabaseComponent.swift */; };
 		EE330932256E882900BDB483 /* DailyStepData.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE330931256E882900BDB483 /* DailyStepData.swift */; };
 		EE330936256E89BE00BDB483 /* TargetSettingData.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE330935256E89BE00BDB483 /* TargetSettingData.swift */; };
@@ -48,6 +49,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		EE05D134257520780026B418 /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
 		EE33092C256E879400BDB483 /* DatabaseComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseComponent.swift; sourceTree = "<group>"; };
 		EE330931256E882900BDB483 /* DailyStepData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyStepData.swift; sourceTree = "<group>"; };
 		EE330935256E89BE00BDB483 /* TargetSettingData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TargetSettingData.swift; sourceTree = "<group>"; };
@@ -203,6 +205,7 @@
 				EECB1DC8254D26F600B047E2 /* AppDelegate.swift */,
 				EE33093B256E8AAF00BDB483 /* Usecase */,
 				EECB1DCA254D26F600B047E2 /* SceneDelegate.swift */,
+				EE05D134257520780026B418 /* SettingView.swift */,
 				EECB1DCC254D26F600B047E2 /* DashboardView.swift */,
 				EECB1DCE254D26F900B047E2 /* Assets.xcassets */,
 				EECB1DD3254D26F900B047E2 /* LaunchScreen.storyboard */,
@@ -381,6 +384,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EEE2BF1B256E8F3C003B6F99 /* DailyStepDataObject.swift in Sources */,
+				EE05D135257520780026B418 /* SettingView.swift in Sources */,
 				EE33092D256E879400BDB483 /* DatabaseComponent.swift in Sources */,
 				EE6534CF254E592300F1698A /* CircleArrow.swift in Sources */,
 				EEF5CD5F256E72DD00843D8D /* PedometerComponent.swift in Sources */,
