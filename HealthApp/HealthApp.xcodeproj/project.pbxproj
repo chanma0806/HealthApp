@@ -15,6 +15,8 @@
 		EE5627FC2551FF7D0078CD87 /* HealthCareComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5627FB2551FF7D0078CD87 /* HealthCareComponent.swift */; };
 		EE562805255200C80078CD87 /* PromiseKit in Frameworks */ = {isa = PBXBuildFile; productRef = EE562804255200C80078CD87 /* PromiseKit */; };
 		EE56280C255205790078CD87 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE56280B255205790078CD87 /* HealthKit.framework */; };
+		EE5A38BD257A610000EB34FF /* CustomNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5A38BC257A610000EB34FF /* CustomNavigationView.swift */; };
+		EE5A38C1257A6B6D00EB34FF /* SettingUsecaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5A38C0257A6B6D00EB34FF /* SettingUsecaseService.swift */; };
 		EE5CFEA825516AE8009FB23C /* LinerGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5CFEA725516AE8009FB23C /* LinerGraphView.swift */; };
 		EE5CFEB025516B62009FB23C /* BarGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5CFEAF25516B62009FB23C /* BarGraphView.swift */; };
 		EE6534BA254DB0F600F1698A /* Triangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE6534B9254DB0F600F1698A /* Triangle.swift */; };
@@ -58,6 +60,8 @@
 		EE5627FB2551FF7D0078CD87 /* HealthCareComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthCareComponent.swift; sourceTree = "<group>"; };
 		EE562809255205790078CD87 /* HealthApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HealthApp.entitlements; sourceTree = "<group>"; };
 		EE56280B255205790078CD87 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
+		EE5A38BC257A610000EB34FF /* CustomNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationView.swift; sourceTree = "<group>"; };
+		EE5A38C0257A6B6D00EB34FF /* SettingUsecaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingUsecaseService.swift; sourceTree = "<group>"; };
 		EE5CFEA725516AE8009FB23C /* LinerGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinerGraphView.swift; sourceTree = "<group>"; };
 		EE5CFEAF25516B62009FB23C /* BarGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarGraphView.swift; sourceTree = "<group>"; };
 		EE6534B9254DB0F600F1698A /* Triangle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Triangle.swift; sourceTree = "<group>"; };
@@ -121,6 +125,7 @@
 			children = (
 				EE552C3025542A3A004360BD /* DashboardUsecaseService.swift */,
 				EEE2BF20256E9126003B6F99 /* StepFetchUsecaeService.swift */,
+				EE5A38C0257A6B6D00EB34FF /* SettingUsecaseService.swift */,
 			);
 			path = Usecase;
 			sourceTree = "<group>";
@@ -171,6 +176,7 @@
 				EE6534B9254DB0F600F1698A /* Triangle.swift */,
 				EE6534CE254E592300F1698A /* CircleArrow.swift */,
 				EE6534D3254E5B6D00F1698A /* SyncButton.swift */,
+				EE5A38BC257A610000EB34FF /* CustomNavigationView.swift */,
 			);
 			path = UIPart;
 			sourceTree = "<group>";
@@ -386,8 +392,10 @@
 				EEE2BF1B256E8F3C003B6F99 /* DailyStepDataObject.swift in Sources */,
 				EE05D135257520780026B418 /* SettingView.swift in Sources */,
 				EE33092D256E879400BDB483 /* DatabaseComponent.swift in Sources */,
+				EE5A38BD257A610000EB34FF /* CustomNavigationView.swift in Sources */,
 				EE6534CF254E592300F1698A /* CircleArrow.swift in Sources */,
 				EEF5CD5F256E72DD00843D8D /* PedometerComponent.swift in Sources */,
+				EE5A38C1257A6B6D00EB34FF /* SettingUsecaseService.swift in Sources */,
 				EE5CFEB025516B62009FB23C /* BarGraphView.swift in Sources */,
 				EE330936256E89BE00BDB483 /* TargetSettingData.swift in Sources */,
 				EE552C3125542A3A004360BD /* DashboardUsecaseService.swift in Sources */,

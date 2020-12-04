@@ -8,6 +8,13 @@
 import SwiftUI
 import PromiseKit
 
+public struct DashboardView: View {
+    public var body: some View {
+        CustomNavigationView(content: DashboardViewContext(), to: SettingView())
+        .edgesIgnoringSafeArea(.all)
+    }
+}
+
 class DashBordData: ObservableObject {
     @Published var dayTotalStep: Int
     @Published var stepData: [Int]
@@ -38,7 +45,8 @@ class DashBordData: ObservableObject {
     }
 }
 
-public struct DashboardView: View {
+struct DashboardViewContext: View, NavigateReuest {
+    var delegate: NavigateReuestDelegate?
     
     @EnvironmentObject var setting: SettingData
     @State var reversed: Bool = false {
@@ -70,49 +78,63 @@ public struct DashboardView: View {
     
     public var body: some View {
         GeometryReader { geo in
-            VStack(alignment: .center, spacing: nil, content: {
-                DaySlider { (date: Date) in
-                    self.reversed.toggle()
-                    self.selectedDate = date
-                    
-                    if (Calendar.current.isDateInToday(date)) {
-                        self.dashboardData.startObserveTodayUpdate()
-                    } else {
-                        self.dashboardData.stopObserveTodayUpdate()
-                    }
-                    
-                    self.fetchUsecase.getDailyStep(on: selectedDate)
-                        .done { (entity: DailyStepData?) in
-                            let step = entity?.step ?? 0
-                            self.dashboardData.dayTotalStep = step
-                        }
-                        .catch { _ in
+            ZStack {
+                dashbordBackColor
+                .edgesIgnoringSafeArea(.all)
+                VStack(alignment: .center, spacing: nil, content: {
+                    ZStack(alignment: Alignment(horizontal: .leading, vertical: .center), content: {
+                        Button(action: {
+                            self.requestNavigation()
+                        }, label: {
+                            MenuButton()
+                        })
+                        .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 0))
+                        DaySlider { (date: Date) in
+                            self.reversed.toggle()
+                            self.selectedDate = date
                             
-                        }
-                }
-                ScrollView {
-                    Group {
-                        DaySummaryCardView(stepValue: self.$dashboardData.dayTotalStep)
-                            .frame(height: geo.size.height*0.4,
-                                    alignment: .center)
-                        Group {
-                            CardFactory.StepCard(datas: self.$dashboardData.stepData)
-                            CardFactory.HeartRateCard(datas: self.$dashboardData.heartRateData)
-                            CardFactory.BurnCalorieCard(datas: self.$dashboardData.burnCalorieData)
-                        }
-                        .frame(height: geo.size.height*0.3)
-                    }
-                     .frame(width: geo.size.width * 0.9)
-                    Spacer()
-                        .frame(height:.infinity)
-                    SyncButton(size: 70.0, action: {
-                        self.synHealth()
+                            if (Calendar.current.isDateInToday(date)) {
+                                self.dashboardData.startObserveTodayUpdate()
+                            } else {
+                                self.dashboardData.stopObserveTodayUpdate()
+                            }
+                            
+                            self.fetchUsecase.getDailyStep(on: selectedDate)
+                                .done { (entity: DailyStepData?) in
+                                    let step = entity?.step ?? 0
+                                    self.dashboardData.dayTotalStep = step
+                                }
+                                .catch { _ in
+                                    
+                                }
+                        }.frame(width: geo.size.width)
                     })
-                }
-                .padding(EdgeInsets(top: 0, leading: geo.size.width*0.04, bottom: 10, trailing: geo.size.width*0.04))
-                
-            })
-            .frame(width: .infinity, height: geo.size.height, alignment: .topLeading)
+                    Spacer()
+                        .frame(height: 15)
+                    ScrollView {
+                        Group {
+                            DaySummaryCardView(stepValue: self.$dashboardData.dayTotalStep)
+                                .frame(height: geo.size.height*0.4,
+                                        alignment: .center)
+                            Group {
+                                CardFactory.StepCard(datas: self.$dashboardData.stepData)
+                                CardFactory.HeartRateCard(datas: self.$dashboardData.heartRateData)
+                                CardFactory.BurnCalorieCard(datas: self.$dashboardData.burnCalorieData)
+                            }
+                            .frame(height: geo.size.height*0.3)
+                        }
+                         .frame(width: geo.size.width * 0.9)
+                        Spacer()
+                            .frame(height:.infinity)
+                        SyncButton(size: 70.0, action: {
+                            self.synHealth()
+                        })
+                    }
+                    .padding(EdgeInsets(top: 0, leading: geo.size.width*0.04, bottom: 10, trailing: geo.size.width*0.04))
+                    
+                })
+                .frame(width: .infinity, height: geo.size.height, alignment: .topLeading)
+            }
         }
         .background(dashbordBackColor)
         .onAppear {
@@ -255,10 +277,23 @@ struct TriangleButton: View {
     }
 }
 
+struct MenuButton: View {
+    var body: some View {
+        VStack(alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/, spacing: 5, content: {
+            ForEach(0 ..< 3, content: { _ in
+                Rectangle()
+                    .fill()
+                    .frame(width: 20, height: 2)
+                    .foregroundColor(commonTextColor)
+            })
+        })
+    }
+}
+
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            DashboardView()
+            DashboardViewContext()
         }
     }
 }

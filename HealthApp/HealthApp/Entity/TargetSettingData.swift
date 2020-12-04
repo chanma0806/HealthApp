@@ -7,7 +7,22 @@
 
 import Foundation
 
-public struct TargetSettingData {
+protocol TargetSettingDataProtocol {
+    var stepTarget: Int { get set }
+    var settingDate: Date { get set}
+}
+
+public struct TargetSettingData: TargetSettingDataProtocol{
     var stepTarget: Int
     var settingDate: Date
+    
+    init () {
+        self.stepTarget = 0
+        self.settingDate = Date()
+    }
+    
+    init (step: Int) {
+        self.stepTarget = step
+        self.settingDate = Date()
+    }
 }

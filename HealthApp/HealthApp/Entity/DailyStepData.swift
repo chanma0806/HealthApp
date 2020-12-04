@@ -7,10 +7,14 @@
 
 import Foundation
 
-public struct DailyStepData {
+protocol DailyStepDataProtocol {
+    var step: Int {get set}
+    var date: Date {get set}
+    var distance: Double { get set}
+}
+
+public struct DailyStepData: DailyStepDataProtocol {
     var step: Int
     var date: Date
     var distance: Double
-    
-    
 }
