@@ -8,7 +8,7 @@
 import Foundation
 import RealmSwift
 
-class DailyStepDataObject: Object {
+class DailyStepDataObject: Object, DailyStepDataProtocol {
     @objc dynamic var step: Int = 0
     /** yyyy-MM-dd */
     @objc dynamic var date: Date = Date(timeIntervalSince1970: 0)
