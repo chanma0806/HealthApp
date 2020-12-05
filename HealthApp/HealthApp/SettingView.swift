@@ -31,13 +31,14 @@ struct SettingView: View {
     @EnvironmentObject var setting: SettingData
     @Environment(\.presentationMode) var presentation
     @State var targetStepValue: Int = 0
+    @State var healthCooperationEnabled: Bool = false
     
     let settingUsecase = SettingUsecaseServicce()
         
     var body: some View {
         GeometryReader { geo in
             List {
-                Section(header: Text(STR_TARGET_STEP), content: {
+                FixedSection(header: Text(STR_TARGET_STEP), content: {
                     HStack {
                         Button(action: {
                             tappedTargetEditAction(.Plus)
@@ -58,6 +59,7 @@ struct SettingView: View {
                             .bold()
                             .font(.system(size: 40.0))
                             .frame(width: 200, height: 30, alignment: .center)
+                            .fixedSize()
                         
                         Button(action: {
                             tappedTargetEditAction(.Minus)
@@ -76,9 +78,10 @@ struct SettingView: View {
                     }
                     .frame(width: geo.size.width, height: 100, alignment: .center)
                     .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 10))
+                    .fixedSize()
                 })
-                Section(header: Text(STR_SECTION_SETTING), content: {
-                    Toggle(isOn: .constant(true), label: {
+                FixedSection(header: Text(STR_SECTION_SETTING), content: {
+                    Toggle(isOn: self.$healthCooperationEnabled, label: {
                         Text(STR_SYNC_HEALTH)
                     })
                 })
@@ -86,6 +89,7 @@ struct SettingView: View {
             .background(dashbordBackColor)
             .onAppear {
                 self.targetStepValue = setting.goalValue
+                self.healthCooperationEnabled = self.settingUsecase.healthCooperationEnabled()
             }
             .navigationBarBackButtonHidden(true)
             /** クローズボタン */
@@ -128,17 +132,36 @@ struct SettingView: View {
     }
 }
 
+/**
+ boune scrollしないSecction
+ 
+ - note:
+ 　swiftUIにはboune srollをコントロールするプロパティがまだ無いようなので
+ 　SectionとContentを別に表示し、bouneをさせないSectionを実現
+ */
+struct FixedSection<Content>: View where Content: View {
+    private var header: Text
+    private var content: Content
+    init(header: Text, @ViewBuilder content: @escaping()->Content) {
+        self.header = header
+        self.content = content()
+    }
+    var body: some View {
+        Section(header: header, content: {})
+        content
+    }
+}
+
 struct SettingView_Previews: PreviewProvider {
     static var setting: SettingData {
         get {
             let setting = SettingData()
-            setting.goalValue = 9000
+            setting.goalValue = 10000
             return setting
         }
     }
     
     static var previews: some View {
-        
         SettingView().environmentObject(SettingView_Previews.setting)
     }
 }
