@@ -13,9 +13,11 @@ let INITIAL_STEP_TARGET: Int = 10000
 
 class SettingUsecaseServicce {
     private let database: DatabaseComponent
+    private var health: HealthCareComponent
     
     init () {
         self.database = DatabaseComponent()
+        self.health = HealthCareComponentService()
     }
     
     /**
@@ -36,5 +38,19 @@ class SettingUsecaseServicce {
         }
         
         return settingContext
+    }
+    
+    /**
+     ヘルスケア連携が有効か
+     */
+    func healthCooperationEnabled() -> Bool {
+        self.health.isCooperation
+    }
+    
+    /**
+     ヘルスケア連携の設定値を保存する
+     */
+    func setHealthCooperation(enabled: Bool) {
+        self.health.isCooperation = enabled
     }
 }
