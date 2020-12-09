@@ -26,3 +26,5 @@ let dashbordBackColor = Color(rgb: 0xF5F0F4)
 let commonTextColor: Color = Color(rgb: 0x606B6E)
 
 let noDataColor: Color = Color(rgb: 0xDDDDDD)
+
+let pinkColor: Color = Color(rgb: 0xFF52E5)

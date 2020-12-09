@@ -69,6 +69,16 @@ struct DashboardViewContext: View, NavigateReuest {
     let dashboardUsecase: DashboardUsecaseService
     let fetchUsecase: StepFetchUsecaeService
     @State var selectedDate: Date = Date()
+    @State var isShowingShareModal: Bool = false
+    
+    var shareCardData: ShareCardData {
+        get {
+            return ShareCardData(summaryTotalStep: dashboardData.dayTotalStep,
+                                 steps: dashboardData.stepData,
+                                 heartRates: dashboardData.heartRateData,
+                                 calories: dashboardData.burnCalorieData)
+        }
+    }
     
     init() {
         self.dashboardUsecase = DashboardUsecaseService()
@@ -79,16 +89,18 @@ struct DashboardViewContext: View, NavigateReuest {
     public var body: some View {
         GeometryReader { geo in
             ZStack {
+                /** バックグラウンドカラー */
                 dashbordBackColor
                 .edgesIgnoringSafeArea(.all)
+                
                 VStack(alignment: .center, spacing: nil, content: {
-                    ZStack(alignment: Alignment(horizontal: .leading, vertical: .center), content: {
+                    /** ヘッダー */
+                    HStack{
                         Button(action: {
                             self.requestNavigation()
                         }, label: {
                             MenuButton()
                         })
-                        .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 0))
                         DaySlider { (date: Date) in
                             self.reversed.toggle()
                             self.selectedDate = date
@@ -107,10 +119,24 @@ struct DashboardViewContext: View, NavigateReuest {
                                 .catch { _ in
                                     
                                 }
-                        }.frame(width: geo.size.width)
-                    })
+                        }.frame(width: geo.size.width * 0.8, height: 30)
+                        
+                        Button(action: {
+                            withAnimation {
+                                isShowingShareModal.toggle()
+                            }
+                        }, label: {
+                            Image(systemName: "square.and.arrow.up")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 30, height: 30)
+                                .foregroundColor(commonTextColor)
+                        })
+                    }
                     Spacer()
                         .frame(height: 15)
+                    
+                    /** カードエリア */
                     ScrollView {
                         Group {
                             DaySummaryCardView(stepValue: self.$dashboardData.dayTotalStep)
@@ -134,9 +160,24 @@ struct DashboardViewContext: View, NavigateReuest {
                     
                 })
                 .frame(width: .infinity, height: geo.size.height, alignment: .topLeading)
+                
+                ZStack {
+                    if isShowingShareModal {
+                        Color.black.opacity(0.4)
+                        SociaShareModalView(
+                            cardData: shareCardData,
+                            dismisssAction: {
+                                withAnimation {
+                                    isShowingShareModal.toggle()
+                                }
+                            })
+                            .frame(width: 320, height: 380, alignment: .center)
+                            .animation(.easeIn(duration: 0.2))
+                            .transition(.move(edge: .bottom))
+                        }
+                }.edgesIgnoringSafeArea(.all)
             }
         }
-        .background(dashbordBackColor)
         .onAppear {
             /** フェッチ監視 */
             self.fetchUsecase.startFetchStep()

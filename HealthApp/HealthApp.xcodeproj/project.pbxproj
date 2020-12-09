@@ -15,6 +15,7 @@
 		EE5627FC2551FF7D0078CD87 /* HealthCareComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5627FB2551FF7D0078CD87 /* HealthCareComponent.swift */; };
 		EE562805255200C80078CD87 /* PromiseKit in Frameworks */ = {isa = PBXBuildFile; productRef = EE562804255200C80078CD87 /* PromiseKit */; };
 		EE56280C255205790078CD87 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE56280B255205790078CD87 /* HealthKit.framework */; };
+		EE59E592257B6D1300CECA5C /* SociaShareModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE59E591257B6D1300CECA5C /* SociaShareModalView.swift */; };
 		EE5A38BD257A610000EB34FF /* CustomNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5A38BC257A610000EB34FF /* CustomNavigationView.swift */; };
 		EE5A38C1257A6B6D00EB34FF /* SettingUsecaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5A38C0257A6B6D00EB34FF /* SettingUsecaseService.swift */; };
 		EE5A38C5257A70A400EB34FF /* TargetSettingDataObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5A38C4257A70A400EB34FF /* TargetSettingDataObject.swift */; };
@@ -61,6 +62,7 @@
 		EE5627FB2551FF7D0078CD87 /* HealthCareComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthCareComponent.swift; sourceTree = "<group>"; };
 		EE562809255205790078CD87 /* HealthApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HealthApp.entitlements; sourceTree = "<group>"; };
 		EE56280B255205790078CD87 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
+		EE59E591257B6D1300CECA5C /* SociaShareModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SociaShareModalView.swift; sourceTree = "<group>"; };
 		EE5A38BC257A610000EB34FF /* CustomNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationView.swift; sourceTree = "<group>"; };
 		EE5A38C0257A6B6D00EB34FF /* SettingUsecaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingUsecaseService.swift; sourceTree = "<group>"; };
 		EE5A38C4257A70A400EB34FF /* TargetSettingDataObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TargetSettingDataObject.swift; sourceTree = "<group>"; };
@@ -214,6 +216,7 @@
 				EE33093B256E8AAF00BDB483 /* Usecase */,
 				EECB1DCA254D26F600B047E2 /* SceneDelegate.swift */,
 				EE05D134257520780026B418 /* SettingView.swift */,
+				EE59E591257B6D1300CECA5C /* SociaShareModalView.swift */,
 				EECB1DCC254D26F600B047E2 /* DashboardView.swift */,
 				EECB1DCE254D26F900B047E2 /* Assets.xcassets */,
 				EECB1DD3254D26F900B047E2 /* LaunchScreen.storyboard */,
@@ -406,6 +409,7 @@
 				EE330932256E882900BDB483 /* DailyStepData.swift in Sources */,
 				EECB1DCB254D26F600B047E2 /* SceneDelegate.swift in Sources */,
 				EE6534CA254E561E00F1698A /* ColorDefine.swift in Sources */,
+				EE59E592257B6D1300CECA5C /* SociaShareModalView.swift in Sources */,
 				EE5CFEA825516AE8009FB23C /* LinerGraphView.swift in Sources */,
 				EE5A38C5257A70A400EB34FF /* TargetSettingDataObject.swift in Sources */,
 				EE6534D4254E5B6D00F1698A /* SyncButton.swift in Sources */,
