@@ -206,6 +206,11 @@ struct PostContentList: View {
     @EnvironmentObject var setting: SettingData
     
     @ViewBuilder func getViewAt(page: Int) -> some View {
+        self._getViewAt(page: page)
+            .frame(width: layoutModel.cardWidth * 0.8, height: layoutModel.cardHeight * 0.8, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+    }
+    
+    @ViewBuilder private func _getViewAt(page: Int) -> some View {
         switch page {
         case 0:
             DaySummaryCardView(stepValue: .constant(shareCardData.summaryTotalStep)).environmentObject(setting)
@@ -221,6 +226,7 @@ struct PostContentList: View {
         }
     }
     
+    let layoutModel = DashboardLayout()
     let shareCardData: ShareCardData
     
     var body: some View {
@@ -250,7 +256,8 @@ struct PageViewControlView: UIViewRepresentable {
         let pageControl = UIPageControl()
         pageControl.currentPage = page
         pageControl.numberOfPages = pageMax
-        pageControl.pageIndicatorTintColor = .gray
+        pageControl.pageIndicatorTintColor = .lightGray
+        pageControl.currentPageIndicatorTintColor = .gray
         
         return pageControl
     }
@@ -273,9 +280,39 @@ extension UIView {
     }
 }
 
-//struct SociaShareModalView_Previews: PreviewProvider {
-//    static var previews: some View {
-////        TestView()
-////        SociaShareModalView()
-//    }
-//}
+struct SociaShareModalView_Previews: PreviewProvider {
+    
+    static var shareCardData: ShareCardData {
+        get {
+            let data = ShareCardData(summaryTotalStep: 9000, steps: GraphView.getDummyDatas(), heartRates: LinerGraph.getDummyDatas(), calories: GraphView.getDummyDatas())
+
+            return data
+        }
+    }
+    
+    static var setting: SettingData {
+        get {
+            let setting = SettingData()
+            setting.goalValue = 10000
+            return setting
+        }
+    }
+    
+    static var previews: some View {
+//        TestView()
+        GeometryReader { geo in
+            ZStack {
+                Color.black
+                    .edgesIgnoringSafeArea(.all)
+                SociaShareModalView(
+                    cardData: SociaShareModalView_Previews.shareCardData,
+                    dismisssAction: {
+                        withAnimation {
+        //                    isShowingShareModal.toggle()
+                        }
+                    }).environmentObject(SociaShareModalView_Previews.setting)
+                    .frame(width: geo.size.width * 0.8, height: geo.size.height * 0.5  , alignment: .center)
+            }
+        }
+    }
+}

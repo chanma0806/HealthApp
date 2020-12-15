@@ -45,6 +45,52 @@ class DashBordData: ObservableObject {
     }
 }
 
+struct DashboardLayout {
+    private var safeAreaTop: CGFloat
+    private var safeAreaBottom: CGFloat
+    private var windowHeight: CGFloat
+    private var windowWidth: CGFloat
+    var headerHeight: CGFloat {
+        get {
+            30.0
+        }
+    }
+    
+    var viewMarginHeight: CGFloat {
+        get {
+            15.0
+        }
+    }
+    
+    var cardMarginHeight: CGFloat {
+        get {
+            10.0
+        }
+    }
+    
+    var cardHeight: CGFloat {
+        get {
+            let height = (windowHeight - (safeAreaTop + headerHeight + viewMarginHeight + cardMarginHeight * 3)) / 3.0
+            
+            return height
+        }
+    }
+    
+    var cardWidth: CGFloat {
+        get {
+            windowWidth * 0.85
+        }
+    }
+    
+    init () {
+        let window = UIApplication.shared.windows[0]
+        safeAreaTop = window.safeAreaInsets.top
+        safeAreaBottom = window.safeAreaInsets.bottom
+        windowHeight = window.frame.height
+        windowWidth = window.frame.width
+    }
+}
+
 struct DashboardViewContext: View, NavigateReuest {
     var delegate: NavigateReuestDelegate?
     
@@ -70,6 +116,7 @@ struct DashboardViewContext: View, NavigateReuest {
     let fetchUsecase: StepFetchUsecaeService
     @State var selectedDate: Date = Date()
     @State var isShowingShareModal: Bool = false
+    var layoutModel = DashboardLayout()
     
     var shareCardData: ShareCardData {
         get {
@@ -134,32 +181,29 @@ struct DashboardViewContext: View, NavigateReuest {
                         })
                     }
                     Spacer()
-                        .frame(height: 15)
+                        .frame(height: layoutModel.viewMarginHeight)
                     
                     /** カードエリア */
                     ScrollView {
-                        Group {
-                            DaySummaryCardView(stepValue: self.$dashboardData.dayTotalStep)
-                                .frame(height: geo.size.height*0.4,
-                                        alignment: .center)
-                            Group {
-                                CardFactory.StepCard(datas: self.$dashboardData.stepData)
-                                CardFactory.HeartRateCard(datas: self.$dashboardData.heartRateData)
-                                CardFactory.BurnCalorieCard(datas: self.$dashboardData.burnCalorieData)
-                            }
-                            .frame(height: geo.size.height*0.3)
+                        ZStack {
+                            Color.clear
+                            VStack(alignment: .center, spacing: 0, content: {
+                                Group {
+                                    DaySummaryCardView(stepValue: self.$dashboardData.dayTotalStep)
+                                    CardFactory.StepCard(datas: self.$dashboardData.stepData)
+                                    CardFactory.HeartRateCard(datas: self.$dashboardData.heartRateData)
+                                    CardFactory.BurnCalorieCard(datas: self.$dashboardData.burnCalorieData)
+                                }
+                                .frame(width: layoutModel.cardWidth, height: layoutModel.cardHeight)
+                                .padding(.bottom, layoutModel.cardMarginHeight)
+                                SyncButton(size: 70.0, action: {
+                                    self.synHealth()
+                                })
+                            })
                         }
-                         .frame(width: geo.size.width * 0.9)
-                        Spacer()
-                            .frame(height:.infinity)
-                        SyncButton(size: 70.0, action: {
-                            self.synHealth()
-                        })
                     }
-                    .padding(EdgeInsets(top: 0, leading: geo.size.width*0.04, bottom: 10, trailing: geo.size.width*0.04))
-                    
                 })
-                .frame(width: .infinity, height: geo.size.height, alignment: .topLeading)
+                .frame(alignment: .topLeading)
                 
                 ZStack {
                     if isShowingShareModal {
@@ -171,7 +215,7 @@ struct DashboardViewContext: View, NavigateReuest {
                                     isShowingShareModal.toggle()
                                 }
                             })
-                            .frame(width: 320, height: 380, alignment: .center)
+                            .frame(width: geo.size.width * 0.8, height: geo.size.height * 0.5, alignment: .center)
                             .animation(.easeIn(duration: 0.2))
                             .transition(.move(edge: .bottom))
                         }
