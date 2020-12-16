@@ -9,6 +9,8 @@ import SwiftUI
 import UIKit
 
 let STR_SNS_SHARE_BUTTON = "投稿"
+let CARD_IMAGE_WIDTH: CGFloat = 281.6
+let CARD_IMAGE_HEIGHT: CGFloat = 204.8
 
 struct ShareCardData {
     var summaryTotalStep: Int
@@ -66,7 +68,7 @@ struct SociaShareModalView: View, SocialSharePost {
                 }
                 if (tapped) {
                     self.postShare(content: {
-                        caroucel.getPageContent().frame(width: 300, height: 200)
+                        caroucel.getPageContent().environmentObject(setting)
                     }, dismissAction: modalDismissAction)
                 }
             }
@@ -96,7 +98,7 @@ class SnsShareViewController<Content>: UIViewController where Content: View {
         self.view.isHidden = true
         
         addChild(hosting)
-        hosting.view.frame = CGRect(x: 0, y: 0, width: 300, height: 200)
+        hosting.view.frame = CGRect(x: 0, y: 0, width: CARD_IMAGE_WIDTH + 10.0, height: CARD_IMAGE_HEIGHT + 10.0)
         hosting.view.bounds = hosting.view.frame
         view.addSubview(hosting.view)
     }
@@ -146,6 +148,7 @@ struct Carousel: UIViewRepresentable {
     let cardData: ShareCardData
     var pages: PostContentList
     @Binding var page: Int
+    @EnvironmentObject var setting: SettingData
     
     init (width: CGFloat, height: CGFloat, numOfPages: Int, cardData: ShareCardData, page: Binding<Int>) {
         self.width = width
@@ -162,6 +165,8 @@ struct Carousel: UIViewRepresentable {
     
     func getPageContent() -> some View {
         self.pages.getViewAt(page: page)
+            .frame(width: CARD_IMAGE_WIDTH, height: CARD_IMAGE_HEIGHT)
+            .shadow(radius: 5)
     }
     
     func makeUIView(context: Context) -> UIScrollView {
@@ -196,7 +201,7 @@ struct Carousel: UIViewRepresentable {
         
         func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
             /** contentOffset が スクロール済みのページ数分ある */
-            let page = Int(scrollView.contentOffset.x / parent.width)
+            let page = Int(roundf(Float(scrollView.contentOffset.x / parent.width)))
             self.parent.page = page
         }
     }
@@ -207,13 +212,12 @@ struct PostContentList: View {
     
     @ViewBuilder func getViewAt(page: Int) -> some View {
         self._getViewAt(page: page)
-            .frame(width: layoutModel.cardWidth * 0.8, height: layoutModel.cardHeight * 0.8, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
     }
     
     @ViewBuilder private func _getViewAt(page: Int) -> some View {
         switch page {
         case 0:
-            DaySummaryCardView(stepValue: .constant(shareCardData.summaryTotalStep)).environmentObject(setting)
+            DaySummaryCardView(stepValue: .constant(shareCardData.summaryTotalStep))
         case 1:
             CardFactory.StepCard(datas: .constant(shareCardData.steps))
         case 2:
@@ -238,6 +242,8 @@ struct PostContentList: View {
                 Group {
                     ForEach(0 ..< 4, content: { index in
                         getViewAt(page: index)
+                            .frame(width: layoutModel.cardWidth * 0.8, height: layoutModel.cardHeight * 0.8, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+                            .shadow(radius: 5)
                     })
                 }
                 .padding(EdgeInsets(top: 50, leading: 50, bottom: 50, trailing: 50))

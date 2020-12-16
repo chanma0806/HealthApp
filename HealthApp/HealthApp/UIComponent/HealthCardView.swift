@@ -81,7 +81,7 @@ struct HealthCardView: View {
             .frame(width: geo.size.width, height: geo.size.height, alignment: .center)
             .background(self.cardColor)
             .cornerRadius(20)
-            .shadow(radius: 5)
+            
         }
     }
 }

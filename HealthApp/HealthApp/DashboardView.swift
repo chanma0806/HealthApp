@@ -10,8 +10,10 @@ import PromiseKit
 
 public struct DashboardView: View {
     public var body: some View {
-        CustomNavigationView(content: DashboardViewContext(), to: SettingView())
-        .edgesIgnoringSafeArea(.all)
+        GeometryReader { geo in
+            CustomNavigationView(content: DashboardViewContext(), to: SettingView())
+            .edgesIgnoringSafeArea(.all)
+        }
     }
 }
 
@@ -46,10 +48,6 @@ class DashBordData: ObservableObject {
 }
 
 struct DashboardLayout {
-    private var safeAreaTop: CGFloat
-    private var safeAreaBottom: CGFloat
-    private var windowHeight: CGFloat
-    private var windowWidth: CGFloat
     var headerHeight: CGFloat {
         get {
             30.0
@@ -70,24 +68,15 @@ struct DashboardLayout {
     
     var cardHeight: CGFloat {
         get {
-            let height = (windowHeight - (safeAreaTop + headerHeight + viewMarginHeight + cardMarginHeight * 3)) / 3.0
-            
-            return height
+            let ratio: CGFloat = (8.0 / 11.0)
+            return cardWidth * ratio
         }
     }
     
     var cardWidth: CGFloat {
         get {
-            windowWidth * 0.85
+            UIScreen.main.bounds.width * 0.85
         }
-    }
-    
-    init () {
-        let window = UIApplication.shared.windows[0]
-        safeAreaTop = window.safeAreaInsets.top
-        safeAreaBottom = window.safeAreaInsets.bottom
-        windowHeight = window.frame.height
-        windowWidth = window.frame.width
     }
 }
 
@@ -117,7 +106,7 @@ struct DashboardViewContext: View, NavigateReuest {
     @State var selectedDate: Date = Date()
     @State var isShowingShareModal: Bool = false
     var layoutModel = DashboardLayout()
-    
+
     var shareCardData: ShareCardData {
         get {
             return ShareCardData(summaryTotalStep: dashboardData.dayTotalStep,
@@ -196,6 +185,8 @@ struct DashboardViewContext: View, NavigateReuest {
                                 }
                                 .frame(width: layoutModel.cardWidth, height: layoutModel.cardHeight)
                                 .padding(.bottom, layoutModel.cardMarginHeight)
+                                .shadow(radius: 5)
+                                
                                 SyncButton(size: 70.0, action: {
                                     self.synHealth()
                                 })
@@ -376,9 +367,16 @@ struct MenuButton: View {
 }
 
 struct ContentView_Previews: PreviewProvider {
+    static var setting: SettingData {
+        get {
+            var s = SettingData()
+            s.goalValue = 10000
+            return s
+        }
+    }
     static var previews: some View {
         Group {
-            DashboardViewContext()
+            DashboardViewContext().environmentObject(ContentView_Previews.setting)
         }
     }
 }
