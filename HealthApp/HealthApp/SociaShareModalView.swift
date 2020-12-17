@@ -45,15 +45,40 @@ struct SociaShareModalView: View, SocialSharePost {
     
     var body: some View {
         GeometryReader { geo in
-            let caroucel: Carousel = Carousel(width: geo.size.width, height: 300, numOfPages: 4, cardData: cardData, page: self.$page)
+            let caroucel: Carousel = Carousel(width: geo.size.width, numOfPages: 4, cardData: cardData, page: self.$page)
             ZStack {
+                Button(action: {
+                    modalDismissAction()
+                }, label: {
+                    Text("×")
+                        .font(.system(size: 30))
+                        .bold()
+                        .frame(width: 30, height: 30)
+                        .foregroundColor(commonTextColor)
+                })
+                .position(x: geo.size.width / 2 - 30, y: 30 - (geo.size.height / 2))
+                .frame(width: 10, height: 10)
+                .zIndex(10)
+                
                 Color.white
                     .frame(width: geo.size.width, height: geo.size.height)
                     .cornerRadius(25.0)
                 VStack(alignment: .center, spacing: 0) {
+                    
+                    Spacer()
+                        .frame(height: 20)
+                    
                     caroucel
-                        .frame(width: geo.size.width, height: 300)
+                        .frame(height: caroucel.pages.cardHeight)
+                    
+                    Spacer()
+                        .frame(height: 10)
+                    
                     PageViewControlView(page: self.$page, pageMax: 4)
+                    
+                    Spacer()
+                        .frame(height: 10)
+                    
                     Button(action: {
                         tapped.toggle()
                     }, label: {
@@ -72,6 +97,7 @@ struct SociaShareModalView: View, SocialSharePost {
                     }, dismissAction: modalDismissAction)
                 }
             }
+
         }
     }
 }
@@ -143,16 +169,14 @@ struct Carousel: UIViewRepresentable {
     typealias UIViewType = UIScrollView
     
     var width: CGFloat
-    var height: CGFloat
     var numOfPages: Int
     let cardData: ShareCardData
     var pages: PostContentList
     @Binding var page: Int
     @EnvironmentObject var setting: SettingData
     
-    init (width: CGFloat, height: CGFloat, numOfPages: Int, cardData: ShareCardData, page: Binding<Int>) {
+    init (width: CGFloat, numOfPages: Int, cardData: ShareCardData, page: Binding<Int>) {
         self.width = width
-        self.height = height
         self.numOfPages = numOfPages
         self.cardData = cardData
         _page = page
@@ -173,14 +197,14 @@ struct Carousel: UIViewRepresentable {
         let scrollView = UIScrollView()
         scrollView.isPagingEnabled = true
         scrollView.bounces = true
-        scrollView.contentSize = CGSize(width: width * CGFloat(numOfPages), height: height)
+        scrollView.contentSize = CGSize(width: width * CGFloat(numOfPages), height: pages.cardHeight)
         scrollView.frame = CGRect(origin:CGPoint(x: 0, y: 0), size: scrollView.contentSize)
         scrollView.delegate = context.coordinator
         scrollView.showsVerticalScrollIndicator = false
         scrollView.showsHorizontalScrollIndicator = false
         
         let view = UIHostingController(rootView: pages)
-        view.view.frame = CGRect(x: 0, y: 0, width: width * CGFloat(numOfPages), height: height)
+        view.view.frame = CGRect(x: 0, y: 0, width: width * CGFloat(numOfPages), height: pages.cardHeight)
         view.view.backgroundColor = UIColor.clear
         scrollView.addSubview(view.view)
         scrollView.backgroundColor = UIColor.clear
@@ -230,8 +254,20 @@ struct PostContentList: View {
         }
     }
     
-    let layoutModel = DashboardLayout()
+    private let layoutModel = DashboardLayout()
     let shareCardData: ShareCardData
+    
+    var cardHeight: CGFloat {
+        get {
+            layoutModel.cardHeight * 0.8
+        }
+    }
+    
+    var cardWidth: CGFloat {
+        get {
+            layoutModel.cardWidth * 0.8
+        }
+    }
     
     var body: some View {
         let setting = SettingData()
@@ -242,7 +278,7 @@ struct PostContentList: View {
                 Group {
                     ForEach(0 ..< 4, content: { index in
                         getViewAt(page: index)
-                            .frame(width: layoutModel.cardWidth * 0.8, height: layoutModel.cardHeight * 0.8, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+                            .frame(width: cardWidth, height: cardHeight, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
                             .shadow(radius: 5)
                     })
                 }
@@ -317,7 +353,7 @@ struct SociaShareModalView_Previews: PreviewProvider {
         //                    isShowingShareModal.toggle()
                         }
                     }).environmentObject(SociaShareModalView_Previews.setting)
-                    .frame(width: geo.size.width * 0.8, height: geo.size.height * 0.5  , alignment: .center)
+                    .frame(idealWidth: geo.size.width * 0.8, maxHeight: geo.size.height * 0.5  , alignment: .center)
             }
         }
     }

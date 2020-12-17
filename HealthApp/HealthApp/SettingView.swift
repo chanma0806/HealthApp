@@ -109,6 +109,7 @@ struct SettingView: View {
         let promise = Promise<Void> { seal in
             let target = TargetSettingData(step: self.targetStepValue)
             self.settingUsecase.setTargteSetting(target)
+            setting.goalValue = target.stepTarget
             seal.fulfill(())
         }
         

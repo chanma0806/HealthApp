@@ -20,7 +20,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         // Create the SwiftUI view that provides the window contents.
         let setting = SettingData()
-        setting.goalValue = 10000
+        setting.goalValue = SettingUsecaseServicce().getTargetSetting().stepTarget
         let contentView = DashboardView().environmentObject(setting)
 
         // Use a UIHostingController as window root view controller.

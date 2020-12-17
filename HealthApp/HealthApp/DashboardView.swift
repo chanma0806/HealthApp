@@ -198,7 +198,15 @@ struct DashboardViewContext: View, NavigateReuest {
                 
                 ZStack {
                     if isShowingShareModal {
-                        Color.black.opacity(0.4)
+                        /** モーダル背景 */
+                        Button(action: {
+                            // 領域外タップ
+                            isShowingShareModal.toggle()
+                        }, label: {
+                            Color.black.opacity(0.4)
+                        })
+                        
+                        /** モーダル  */
                         SociaShareModalView(
                             cardData: shareCardData,
                             dismisssAction: {
@@ -206,7 +214,7 @@ struct DashboardViewContext: View, NavigateReuest {
                                     isShowingShareModal.toggle()
                                 }
                             })
-                            .frame(width: geo.size.width * 0.8, height: geo.size.height * 0.5, alignment: .center)
+                            .frame(width: geo.size.width * 0.8, height: geo.size.height * 0.45, alignment: .center)
                             .animation(.easeIn(duration: 0.2))
                             .transition(.move(edge: .bottom))
                         }
