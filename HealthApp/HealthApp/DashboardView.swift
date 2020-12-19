@@ -84,17 +84,6 @@ struct DashboardViewContext: View, NavigateReuest {
     var delegate: NavigateReuestDelegate?
     
     @EnvironmentObject var setting: SettingData
-    @State var reversed: Bool = false {
-        willSet(newReversed) {
-            if (newReversed) {
-                self.dashboardData.stepData = LinerGraph.getDummyDatas()
-                self.dashboardData.heartRateData = GraphView.getDummyDatas()
-            } else {
-                self.dashboardData.stepData = GraphView.getDummyDatas()
-                self.dashboardData.heartRateData = LinerGraph.getDummyDatas()
-            }
-        }
-    }
     @ObservedObject var dashboardData: DashBordData = DashBordData(
         stepData: GraphView.getDummyDatas(),
         heartRateData: LinerGraph.getDummyDatas(),
@@ -138,7 +127,6 @@ struct DashboardViewContext: View, NavigateReuest {
                             MenuButton()
                         })
                         DaySlider { (date: Date) in
-                            self.reversed.toggle()
                             self.selectedDate = date
                             
                             if (Calendar.current.isDateInToday(date)) {
@@ -155,6 +143,7 @@ struct DashboardViewContext: View, NavigateReuest {
                                 .catch { _ in
                                     
                                 }
+                            self.synHealth()
                         }.frame(width: geo.size.width * 0.8, height: 30)
                         
                         Button(action: {
