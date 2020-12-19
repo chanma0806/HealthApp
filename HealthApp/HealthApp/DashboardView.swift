@@ -312,7 +312,7 @@ struct DaySlider: View {
         let dateComponent: DateComponents = calendar.dateComponents(set, from: date)
         let compared = calendar.dateComponents(set, from: dateComponent, to: nowComponent)
         
-        return (compared.day! > 0 && compared.month! > 0 && compared.year! > 0)
+        return (compared.day! >= 0 && compared.month! >= 0 && compared.year! >= 0)
     }
     
     var dayString: String {
