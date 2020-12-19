@@ -351,7 +351,7 @@ public class HealthCareComponentService: HealthCareComponent {
     　クエリ実施の前処理
      */
     private func queryFirstly() -> Promise<Void> {
-        guard !isCooperation else {
+        guard isCooperation else {
             return Promise(error: HealthComponentError.notCoopreationEnabled)
         }
         
