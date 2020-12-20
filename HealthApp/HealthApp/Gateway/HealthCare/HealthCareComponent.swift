@@ -74,6 +74,7 @@ public class HealthCareComponentService: HealthCareComponent {
         /** プリファレンス初期値はfalse */
         self.isCooperation = userDefualt.bool(forKey: HEALTH_COOPERATION_KEY)
     }
+
     
     public var isCooperation: Bool {
         didSet {
@@ -145,11 +146,16 @@ public class HealthCareComponentService: HealthCareComponent {
         let promise = Promise<[DayStepEntity]> { seal in
             self.queryFirstly()
             .done { _ in
+                //TODO: wacth > iPhoneの優先順でマージ処理を追加
+                let device = HKDevice(name: "iPhone", manufacturer: nil, model: nil, hardwareVersion: nil, firmwareVersion: nil, softwareVersion: nil, localIdentifier: nil, udiDeviceIdentifier: nil)
                 self.exequteSampleQuery(identifier: .stepCount, from: from, to: to) { (query, results, error) in
-                    guard let samples = results else {
+                    guard var samples = results else {
                         seal.fulfill([])
                         return
                     }
+                    
+                    samples = samples.filtered(deviceNames: ["iPhone"])
+                    
                     // 日付ごとにデータ抽出
                     let dict: Dictionary<String, [HKQuantitySample]> = self.collectSamplesAtDay(samples)
                     let entities: [DayStepEntity] = self.convertToHourEntities(
@@ -182,10 +188,13 @@ public class HealthCareComponentService: HealthCareComponent {
             self.queryFirstly()
             .done { _ in
                 self.exequteSampleQuery(identifier: .activeEnergyBurned, from: from, to: to) { (query, results, error) in
-                    guard let samples = results else {
+                    guard var samples = results else {
                         seal.fulfill([])
                         return
                     }
+                    
+                    samples = samples.filtered(deviceNames: ["iPhone"])
+                    
                     // 日付ごとにデータ抽出
                     let dict: Dictionary<String, [HKQuantitySample]> = self.collectSamplesAtDay(samples)
                     let entities: [DayBurnCalorieEntity] = self.convertToHourEntities(
@@ -213,9 +222,9 @@ public class HealthCareComponentService: HealthCareComponent {
         return promise
     }
     
-    private func exequteSampleQuery(identifier: HKQuantityTypeIdentifier, from:Date, to: Date, _ handler: @escaping (HKSampleQuery, [HKSample]?, Error?) -> Void) {
+    private func exequteSampleQuery(identifier: HKQuantityTypeIdentifier, from:Date, to: Date,  _ handler: @escaping (HKSampleQuery, [HKSample]?, Error?) -> Void) {
         let descriptor = NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: false)
-        let predicate = self.makeDateRangePredicate(from: from, to: to)
+        var predicate = self.makeDateRangePredicate(from: from, to: to)
         let sampleQuery = HKSampleQuery(
             sampleType: HKQuantityType.quantityType(forIdentifier: identifier)!,
             predicate: predicate,
@@ -378,5 +387,19 @@ extension Array where Element == Double {
     
     func mean() -> Double {
         self.total() / Double(self.count)
+    }
+}
+
+private extension Array where Element == HKSample {
+    func filtered(deviceNames: [String]) -> [HKSample] {
+        let result = self.filter { (sample: HKSample) in
+            guard let deviceName = sample.device?.name, deviceNames.contains(deviceName) else {
+                return false
+            }
+            
+            return true
+        }
+        
+        return result
     }
 }
