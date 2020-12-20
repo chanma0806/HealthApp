@@ -51,9 +51,11 @@ struct SettingView: View {
                                 Text("+")
                                     .bold()
                                     .font(.system(size: 35.0))
+                                    .foregroundColor(.white)
                             }
                         })
                         .buttonStyle(BorderlessButtonStyle())
+                        .shadow(radius: 5)
                         
                         Text("\(self.targetStepValue)")
                             .bold()
@@ -72,9 +74,11 @@ struct SettingView: View {
                                 Text("-")
                                     .bold()
                                     .font(.system(size: 35.0))
+                                    .foregroundColor(.white)
                             }
                         })
                         .buttonStyle(BorderlessButtonStyle())
+                        .shadow(radius: 5)
                     }
                     .frame(width: geo.size.width, height: 100, alignment: .center)
                     .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 10))
@@ -101,6 +105,7 @@ struct SettingView: View {
             }))
             .navigationBarTitle(Text(SETTING_TITLE), displayMode: .inline)
         }
+        .background(Color.clear)
     }
     
     // 退場処理
@@ -109,6 +114,7 @@ struct SettingView: View {
         let promise = Promise<Void> { seal in
             let target = TargetSettingData(step: self.targetStepValue)
             self.settingUsecase.setTargteSetting(target)
+            self.settingUsecase.setHealthCooperation(enabled: self.healthCooperationEnabled)
             setting.goalValue = target.stepTarget
             seal.fulfill(())
         }
