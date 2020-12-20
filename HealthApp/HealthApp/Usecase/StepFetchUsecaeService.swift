@@ -7,7 +7,11 @@
 
 import Foundation
 import PromiseKit
+import BackgroundTasks
+import OSLog
 
+let BGTASK_FETCH_STEPS = "com.meters.fetch-steps"
+let BG_FETCHED_STEPS_DATE_KEY = "com.meters.fetched-steps-date"
 let UPDATE_STEP_VALUE: String = "step_fetch_event"
 let PEDOMETER_SAVED_DAY_RANGE = 7
 
@@ -59,6 +63,57 @@ class StepFetchUsecaeService {
         }
     }
     
+    func requestBackgroundFetch() {
+        BGTaskScheduler.shared.register(forTaskWithIdentifier: BGTASK_FETCH_STEPS, using: DispatchQueue.global(), launchHandler: { task in
+            self.fetchStepsFromLastToNow()
+                .done { _ in
+                    task.setTaskCompleted(success: true)
+                    self.setLastBackgroundFetchedDate()
+                    
+                    // 翌々日のフェッチをスケジューリング
+                    self.requestBackgroundFetch()
+                }
+                .catch { error in
+                    os_log("%@.%@: failure fetch task", String(describing: self), #function)
+                    task.setTaskCompleted(success: false)
+                    
+                }
+        })
+        
+        // 翌日を迎えたらフェッチさせる
+        let cal = Calendar.current
+        let request = BGAppRefreshTaskRequest(identifier: BGTASK_FETCH_STEPS)
+        let lastFetched = getLastBackgroundFetchedDate() ?? Date()
+        let taskFireTiming = cal.startOfDay(for: cal.date(byAdding: .day, value: 1, to: lastFetched)!)
+        request.earliestBeginDate = taskFireTiming
+        do {
+            try BGTaskScheduler.shared.submit(request)
+        } catch {
+            os_log("%@.%@: failure submit task", String(describing: self), #function)
+        }
+    }
+    
+    private func fetchStepsFromLastToNow() -> Promise<Void> {
+        let savedLastDay = Calendar.current.date(byAdding: .day, value: -PEDOMETER_SAVED_DAY_RANGE, to: Calendar.current.startOfDay(for: Date()))!
+        
+        // 日ごとのフェッチブロックを作成
+        var fetchBlocks = [PromiseBlock<Void>]()
+        for dayCount in 0 ..< PEDOMETER_SAVED_DAY_RANGE {
+            fetchBlocks.append { () -> Promise<Void> in
+                let promise: Promise<Void> = self.pedometer.getPastStep(on: Calendar.current.date(byAdding: .day, value: dayCount, to: savedLastDay)!)
+                    .then { (dayStep: DailyStepData) -> Promise<Void> in
+                    self.database.setStepData(dayStep)
+                    return  Promise.value(())
+                }
+                
+                return promise
+            }
+        }
+        
+        // 直列実行
+        return PromiseUtility.doSeriesPromises(fetchBlocks)
+    }
+    
     private func updateded(old: DailyStepData, new: DailyStepData) -> Bool {
         (old.date != new.date) || (old.step != new.step) || (old.distance != new.distance)
     }
@@ -66,5 +121,13 @@ class StepFetchUsecaeService {
     private func postNotify(_ entity: DailyStepData) {
         let notification = Notification(name: .init(UPDATE_STEP_VALUE), object: entity, userInfo: nil)
         NotificationCenter.default.post(notification)
+    }
+    
+    private func getLastBackgroundFetchedDate() -> Date? {
+        UserDefaults().value(forKey: BG_FETCHED_STEPS_DATE_KEY) as? Date
+    }
+    
+    private func setLastBackgroundFetchedDate() {
+        UserDefaults().setValue(Date(), forKey: BG_FETCHED_STEPS_DATE_KEY)
     }
 }
