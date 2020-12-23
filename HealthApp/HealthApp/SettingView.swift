@@ -162,7 +162,7 @@ struct FixedSection<Content>: View where Content: View {
 struct SettingView_Previews: PreviewProvider {
     static var setting: SettingData {
         get {
-            let setting = SettingData()
+            let setting = SettingData(neeedShowGuidance: true)
             setting.goalValue = 10000
             return setting
         }

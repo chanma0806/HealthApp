@@ -366,7 +366,7 @@ struct MenuButton: View {
 struct ContentView_Previews: PreviewProvider {
     static var setting: SettingData {
         get {
-            var s = SettingData()
+            let s = SettingData(neeedShowGuidance: true)
             s.goalValue = 10000
             return s
         }

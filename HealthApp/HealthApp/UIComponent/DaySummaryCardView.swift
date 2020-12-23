@@ -13,9 +13,11 @@ let MAX_DEGRESS = 300.0
 
 class SettingData: ObservableObject {
     @Published var goalValue: Int
+    let neeedShowGuidance: Bool
     
-    init() {
+    init(neeedShowGuidance: Bool) {
         self.goalValue = 0
+        self.neeedShowGuidance = neeedShowGuidance
     }
 }
 

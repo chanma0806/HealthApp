@@ -11,6 +11,8 @@ import PromiseKit
 /** 歩数目標初期値 */
 let INITIAL_STEP_TARGET: Int = 10000
 
+let DID_SHOW_INTRODUCTION_KEY = "did_show_introduction"
+
 class SettingUsecaseServicce {
     private let database: DatabaseComponent
     private var health: HealthCareComponent
@@ -41,6 +43,18 @@ class SettingUsecaseServicce {
     }
     
     /**
+     アプリの設定情報を取得する
+     */
+    func getSettingData() -> SettingData {
+        let needShowGuidance = !self.didShowGuidance()
+        let stepTarget = self.getTargetSetting().stepTarget
+        let setting = SettingData(neeedShowGuidance: needShowGuidance)
+        setting.goalValue = stepTarget
+        
+        return setting
+    }
+    
+    /**
      ヘルスケア連携が有効か
      */
     func healthCooperationEnabled() -> Bool {
@@ -52,5 +66,19 @@ class SettingUsecaseServicce {
      */
     func setHealthCooperation(enabled: Bool) {
         self.health.isCooperation = enabled
+    }
+    
+    /**
+     初回ガイダンスを表示したか？
+     */
+    func didShowGuidance() -> Bool {
+        UserDefaults().bool(forKey: DID_SHOW_INTRODUCTION_KEY)
+    }
+    
+    /**
+     初回ガイダンス表示済みを保存する
+     */
+    func setDidShowGuidance() {
+        UserDefaults().set(true, forKey: DID_SHOW_INTRODUCTION_KEY)
     }
 }

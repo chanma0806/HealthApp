@@ -270,8 +270,6 @@ struct PostContentList: View {
     }
     
     var body: some View {
-        let setting = SettingData()
-        setting.goalValue = 10000
         
         return GeometryReader { geo in
             HStack(spacing: 0) {
@@ -334,7 +332,7 @@ struct SociaShareModalView_Previews: PreviewProvider {
     
     static var setting: SettingData {
         get {
-            let setting = SettingData()
+            let setting = SettingData(neeedShowGuidance: true)
             setting.goalValue = 10000
             return setting
         }
