@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "EECB1DC4254D26F600B047E2"
-               BuildableName = "HealthApp.app"
-               BlueprintName = "HealthApp"
-               ReferencedContainer = "container:HealthApp.xcodeproj">
+               BuildableName = "Meters.app"
+               BlueprintName = "Meters"
+               ReferencedContainer = "container:Meters.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -31,7 +31,7 @@
       </Testables>
    </TestAction>
    <LaunchAction
-      buildConfiguration = "Debug"
+      buildConfiguration = "Release"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
@@ -45,11 +45,20 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "EECB1DC4254D26F600B047E2"
-            BuildableName = "HealthApp.app"
-            BlueprintName = "HealthApp"
+            BuildableName = "meters.app"
+            BlueprintName = "meters"
             ReferencedContainer = "container:HealthApp.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "EECB1DC4254D26F600B047E2"
+            BuildableName = "Meters.app"
+            BlueprintName = "Meters"
+            ReferencedContainer = "container:Meters.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -62,9 +71,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "EECB1DC4254D26F600B047E2"
-            BuildableName = "HealthApp.app"
-            BlueprintName = "HealthApp"
-            ReferencedContainer = "container:HealthApp.xcodeproj">
+            BuildableName = "Meters.app"
+            BlueprintName = "Meters"
+            ReferencedContainer = "container:Meters.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

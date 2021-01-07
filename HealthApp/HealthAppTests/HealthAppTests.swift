@@ -27,23 +27,24 @@ class HealthAppTests: XCTestCase {
     }
 
     func testExample() throws {
-        let exp = XCTestExpectation()
         let db = DatabaseComponent()
-        let enetity = DailyStepData(step: 100, date: Date(), distance: 10.0)
-        db.setStepData(enetity)
-        .then { _ in
-            db.getStepDatas(from: Date(), to: Date())
-        }
-        .done { entities in
-            XCTAssertEqual(1, entities.count)
-        }
-        .catch { _ in
+        let enetity = TargetSettingData(step: 100)
+        db.setTargetSettingData(enetity)
+        guard let ret_entity = db.getTargetSettingData() else {
             XCTFail()
+            return
         }
-        .finally {
-            exp.fulfill()
+        XCTAssertEqual(ret_entity.stepTarget, enetity.stepTarget)
+        
+        var entity_past = TargetSettingData(step: 200)
+        entity_past.settingDate = Calendar.current.date(byAdding: .day, value: -1, to: entity_past.settingDate)!
+        db.setTargetSettingData(enetity)
+        guard let ret_entity_2 = db.getTargetSettingData() else {
+            XCTFail()
+            return 
         }
-        wait(for: [exp], timeout: 5)
+        
+        XCTAssertEqual(ret_entity_2.stepTarget, enetity.stepTarget)
     }
 
 }
