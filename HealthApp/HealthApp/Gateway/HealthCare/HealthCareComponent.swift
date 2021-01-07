@@ -66,24 +66,37 @@ public protocol HealthCareComponent {
 
 public class HealthCareComponentService: HealthCareComponent {
     
+    static let share = HealthCareComponentService()
+        
+    /** HealthKit */
     private let healthStore: HKHealthStore
+    /** isCooperationの内部変数 */
+    private var _isCooperation: Bool?
     
-    init() {
+    private init() {
         self.healthStore = HKHealthStore()
         let userDefualt = UserDefaults()
-        /** プリファレンス初期値はfalse */
-        self.isCooperation = userDefualt.bool(forKey: HEALTH_COOPERATION_KEY)
+        // 初回の認証が未実施であればnil
+        self._isCooperation = userDefualt.objectIsForced(forKey: HEALTH_COOPERATION_KEY) ? userDefualt.bool(forKey: HEALTH_COOPERATION_KEY) : nil
     }
 
     
     public var isCooperation: Bool {
-        didSet {
+        get {
+            self._isCooperation ?? false
+        }
+        set (newValue) {
+            self._isCooperation = newValue
             let userDefualt = UserDefaults()
-            userDefualt.setValue(self.isCooperation, forKey: HEALTH_COOPERATION_KEY)
+            userDefualt.setValue(self._isCooperation, forKey: HEALTH_COOPERATION_KEY)
         }
     }
     
     public func requestAuthorization() -> Promise<Void> {
+        guard self._isCooperation != false else {
+            return Promise.value(())
+        }
+        
         let promise = Promise<Void> { seal in
         let reads: Set<HKObjectType> = [HKQuantityType.quantityType(forIdentifier: .stepCount)!,
                          HKQuantityType.quantityType(forIdentifier: .heartRate)!,

@@ -19,7 +19,7 @@ class SettingUsecaseServicce {
     
     init () {
         self.database = DatabaseComponent()
-        self.health = HealthCareComponentService()
+        self.health = HealthCareComponentService.share
     }
     
     /**

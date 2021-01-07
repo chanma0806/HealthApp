@@ -21,7 +21,7 @@ class DashboardUsecaseService {
     let healthComponet: HealthCareComponent
     
     init() {
-        self.healthComponet = HealthCareComponentService()
+        self.healthComponet = HealthCareComponentService.share
     }
     
     func requestHealthAccess() -> Promise<Void> {

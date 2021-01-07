@@ -15,7 +15,7 @@ enum GuidanceType {
 
 class IntroductionUsecaseServiece {
     private let pedmeter = PedometerComponent.share
-    private let health = HealthCareComponentService()
+    private let health = HealthCareComponentService.share
     
     func requestAuthorization(type: GuidanceType) -> Promise<Void> {
         switch type {
