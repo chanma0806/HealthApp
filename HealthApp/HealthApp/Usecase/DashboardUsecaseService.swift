@@ -29,6 +29,60 @@ class DashboardUsecaseService {
     }
     
     func getHeartRate(on date: Date) -> Promise<DayHeartrRateEntity> {
+        
+//        let data = [
+//            80, /** 0 */
+//            79, /** 1 */
+//            80, /** 2 */
+//            75, /** 3 */
+//            71, /** 4 */
+//            75, /** 5 */
+//            0, /** 6 */
+//            0, /** 7 */
+//            0, /** 8 */
+//            0, /** 9 */
+//            0, /** 10 */
+//            0, /** 11 */
+//            0, /** 12 */
+//            0, /** 13 */
+//            0, /** 14 */
+//            0, /** 15 */
+//            0, /** 16 */
+//            0, /** 17 */
+//            0, /** 18 */
+//            0, /** 19 */
+//            0, /** 20 */
+//            84, /** 21 */
+//            84, /** 22 */
+//            85, /** 23 */
+//            94, /** 24 */
+//            104, /** 25 */
+//            99, /** 26 */
+//            96, /** 27 */
+//            114, /** 28 */
+//            121, /** 29 */
+//            109, /** 30 */
+//            102, /** 31 */
+//            101, /** 32 */
+//            100, /** 33 */
+//            98, /** 34 */
+//            99, /** 35 */
+//            97, /** 36 */
+//            95, /** 37 */
+//            96, /** 38 */
+//            95, /** 39 */
+//            94, /** 40 */
+//            88, /** 41 */
+//            86, /** 42 */
+//            92, /** 43 */
+//            85, /** 44 */
+//            82, /** 45 */
+//            80, /** 46 */
+//            77, /** 47 */
+//        ]
+//
+//        return Promise.value(DayHeartrRateEntity(date: date, values: data))
+        
         let promise = Promise<DayHeartrRateEntity> { seal in
             self.healthComponet.getHeartRates(from: date, to: date)
             .done { (enities: [DayHeartrRateEntity]) in
@@ -37,7 +91,7 @@ class DashboardUsecaseService {
                     seal.fulfill(zeroEntity)
                     return
                 }
-                
+
                 // バリデーション後に返却
                 let values = enities[0].values.validated(max: MAX_HEART_RATE, min: MIN_HEART_RATE)
                 let entity = DayHeartrRateEntity(date: enities[0].date, values: values)
@@ -47,11 +101,39 @@ class DashboardUsecaseService {
                 seal.reject(error)
             }
         }
-        
+
         return promise
     }
     
     func getStep(on date: Date) -> Promise<DayStepEntity> {
+//        let data = [
+//            0, /* 0 */
+//            0, /* 1 */
+//            0, /* 2 */
+//            0, /* 3 */
+//            0, /* 4 */
+//            0, /* 5 */
+//            0, /* 6 */
+//            0, /* 7 */
+//            0, /* 8 */
+//            0, /* 9 */
+//            0, /* 10 */
+//            133, /* 11 */
+//            966, /* 12 */
+//            51, /* 13 */
+//            3310, /* 14 */
+//            589, /* 15 */
+//            109, /* 16 */
+//            224, /* 17 */
+//            16, /* 18 */
+//            0, /* 19 */
+//            0, /* 20 */
+//            43, /* 21 */
+//            24, /* 22 */
+//            0, /* 23 */
+//        ]
+//
+//        return Promise.value(DayStepEntity(date: date, values: data))
         let promise = Promise<DayStepEntity> { seal in
             self.healthComponet.getSteps(from: date, to: date)
             .done { (enities: [DayStepEntity]) in
@@ -60,7 +142,7 @@ class DashboardUsecaseService {
                     seal.fulfill(zeroEntity)
                     return
                 }
-                
+
                 // バリデーション後に返却
                 let values = enities[0].values.validated(max: MAX_STEPS, min: MIN_STEPS)
                 let entity = DayStepEntity(date: enities[0].date, values: values)
@@ -70,7 +152,7 @@ class DashboardUsecaseService {
                 seal.reject(error)
             }
         }
-        
+
         return promise
     }
     
@@ -79,7 +161,7 @@ class DashboardUsecaseService {
             when(fulfilled: self.healthComponet.getSteps(from: date, to: date),
                  self.healthComponet.getBurnCalories(from: date, to: date))
                 .done { (stepEnties: [DayStepEntity] , calorieEnties: [DayBurnCalorieEntity]) in
-                    guard stepEnties.count != 0 && calorieEnties.count != 0 else {
+                    guard stepEnties.count != 0 else {
                         let zeroEntity = DayBurnCalorieEntity(date: date, values: [0])
                         seal.fulfill(zeroEntity)
                         return

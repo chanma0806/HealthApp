@@ -85,9 +85,9 @@ struct DashboardViewContext: View, NavigateReuest {
     
     @EnvironmentObject var setting: SettingData
     @ObservedObject var dashboardData: DashBordData = DashBordData(
-        stepData: GraphView.getDummyDatas(),
-        heartRateData: LinerGraph.getDummyDatas(),
-        burnCalorieData: GraphView.getDummyDatas()
+        stepData: [],
+        heartRateData: [],
+        burnCalorieData: []
     )
     
     let dashboardUsecase: DashboardUsecaseService
@@ -107,7 +107,7 @@ struct DashboardViewContext: View, NavigateReuest {
     
     init() {
         self.dashboardUsecase = DashboardUsecaseService()
-        self.fetchUsecase = StepFetchUsecaeService()
+        self.fetchUsecase = StepFetchUsecaeService.shared
         self.selectedDate = Date()
     }
     
@@ -148,7 +148,9 @@ struct DashboardViewContext: View, NavigateReuest {
                         
                         Button(action: {
                             withAnimation {
-                                isShowingShareModal.toggle()
+                                ModalUsecaseService.share.requestSNSShareModal(content: shareCardData, dismiss: {
+                                    // モーダルのクローズアクション
+                                })
                             }
                         }, label: {
                             Image(systemName: "square.and.arrow.up")
@@ -184,30 +186,6 @@ struct DashboardViewContext: View, NavigateReuest {
                     }
                 })
                 .frame(alignment: .topLeading)
-                
-                ZStack {
-                    if isShowingShareModal {
-                        /** モーダル背景 */
-                        Button(action: {
-                            // 領域外タップ
-                            isShowingShareModal.toggle()
-                        }, label: {
-                            Color.black.opacity(0.4)
-                        })
-                        
-                        /** モーダル  */
-                        SociaShareModalView(
-                            cardData: shareCardData,
-                            dismisssAction: {
-                                withAnimation {
-                                    isShowingShareModal.toggle()
-                                }
-                            })
-                            .frame(width: geo.size.width * 0.8, height: geo.size.height * 0.45, alignment: .center)
-                            .animation(.easeIn(duration: 0.2))
-                            .transition(.move(edge: .bottom))
-                        }
-                }.edgesIgnoringSafeArea(.all)
             }
         }
         .onAppear {
@@ -224,6 +202,8 @@ struct DashboardViewContext: View, NavigateReuest {
                 .catch { _ in
                     
                 }
+            
+            self.synHealth()
         }
     }
     
@@ -232,22 +212,16 @@ struct DashboardViewContext: View, NavigateReuest {
         .then { _ in
             self.dashboardUsecase.getHeartRate(on: self.selectedDate)
         }
-        .then { (entity: DayHeartrRateEntity?) -> Promise<DayStepEntity?> in
-            if (entity != nil) {
-                self.dashboardData.heartRateData = entity!.values
-            }
+        .then { (entity: DayHeartrRateEntity) -> Promise<DayStepEntity> in
+            self.dashboardData.heartRateData = entity.values
             return self.dashboardUsecase.getStep(on: self.selectedDate)
         }
-        .then { (entity: DayStepEntity?) -> Promise<DayBurnCalorieEntity?> in
-            if (entity != nil) {
-                self.dashboardData.stepData = entity!.values
-            }
+        .then { (entity: DayStepEntity) -> Promise<DayBurnCalorieEntity> in
+            self.dashboardData.stepData = entity.values
             return self.dashboardUsecase.getBurnCalorie(on: self.selectedDate)
         }
-        .done { (entity: DayBurnCalorieEntity?) in
-            if (entity != nil) {
-                self.dashboardData.burnCalorieData = entity!.values
-            }
+        .done { (entity: DayBurnCalorieEntity) in
+            self.dashboardData.burnCalorieData = entity.values
         }
         .catch { _ in
             
