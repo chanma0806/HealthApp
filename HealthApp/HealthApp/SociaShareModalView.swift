@@ -11,6 +11,7 @@ import UIKit
 let STR_SNS_SHARE_BUTTON = "投稿"
 let CARD_IMAGE_WIDTH: CGFloat = 281.6
 let CARD_IMAGE_HEIGHT: CGFloat = 204.8
+let SHARE_TEXT = "#運動をもっとポップに\n#meters"
 
 struct ShareCardData {
     var summaryTotalStep: Int
@@ -46,58 +47,59 @@ struct SociaShareModalView: View, SocialSharePost {
     var body: some View {
         GeometryReader { geo in
             let caroucel: Carousel = Carousel(width: geo.size.width, numOfPages: 4, cardData: cardData, page: self.$page)
-            ZStack {
-                Button(action: {
-                    modalDismissAction()
-                }, label: {
-                    Text("×")
-                        .font(.system(size: 30))
-                        .bold()
-                        .frame(width: 30, height: 30)
-                        .foregroundColor(commonTextColor)
-                })
-                .position(x: geo.size.width / 2 - 30, y: 30 - (geo.size.height / 2))
-                .frame(width: 10, height: 10)
-                .zIndex(10)
-                
-                Color.white
-                    .frame(width: geo.size.width, height: geo.size.height)
-                    .cornerRadius(25.0)
-                VStack(alignment: .center, spacing: 0) {
-                    
-                    Spacer()
-                        .frame(height: 20)
-                    
-                    caroucel
-                        .frame(height: caroucel.pages.cardHeight)
-                    
-                    Spacer()
-                        .frame(height: 10)
-                    
-                    PageViewControlView(page: self.$page, pageMax: 4)
-                    
-                    Spacer()
-                        .frame(height: 10)
-                    
+            VStack(alignment: .center, spacing: 0) {
+                VStack {
                     Button(action: {
-                        tapped.toggle()
+                        modalDismissAction()
                     }, label: {
-                        Text(STR_SNS_SHARE_BUTTON)
-                            .font(.system(size: 16.0))
+                        Text("×")
+                            .font(.system(size: 30))
                             .bold()
+                            .frame(width: 30, height: 30)
+                            .foregroundColor(commonTextColor)
                     })
-                    .frame(width: 100, height: 40, alignment: .center)
-                    .foregroundColor(.white)
-                    .background(pinkColor)
-                    .cornerRadius(35.0)
+                    .frame(width: 10, height: 10)
                 }
-                if (tapped) {
-                    self.postShare(content: {
-                        caroucel.getPageContent().environmentObject(setting)
-                    }, dismissAction: modalDismissAction)
-                }
+                .frame(width: geo.size.width - 20, height: 20, alignment: .bottomTrailing)
+                .padding(.trailing, 20)
+                
+                Spacer()
+                    .frame(height: 20)
+                
+                caroucel
+                    .frame(height: caroucel.pages.cardHeight)
+                
+                Spacer()
+                    .frame(height: 10)
+                
+                PageViewControlView(page: self.$page, pageMax: 4)
+                
+                Spacer()
+                    .frame(height: 10)
+                
+                Button(action: {
+                    tapped.toggle()
+                }, label: {
+                    Text(STR_SNS_SHARE_BUTTON)
+                        .font(.system(size: 16.0))
+                        .bold()
+                })
+                .frame(width: 100, height: 40, alignment: .center)
+                .foregroundColor(.white)
+                .background(pinkColor)
+                .cornerRadius(35.0)
+                
+                Spacer()
+                    .frame(height: 10)
             }
-
+            .background(Color.white)
+            .cornerRadius(25)
+            
+            if (tapped) {
+                self.postShare(content: {
+                    caroucel.getPageContent().environmentObject(setting)
+                }, dismissAction: modalDismissAction)
+            }
         }
     }
 }
@@ -136,7 +138,7 @@ class SnsShareViewController<Content>: UIViewController where Content: View {
     }
     
     func share() {
-        let shareActivity = UIActivityViewController(activityItems: [hosting.view.asImage(), "test"], applicationActivities: nil)
+        let shareActivity = UIActivityViewController(activityItems: [hosting.view.asImage(), SHARE_TEXT], applicationActivities: nil)
         shareActivity.completionWithItemsHandler = self.handler
         self.present(shareActivity, animated: true, completion: nil)
     }
@@ -228,6 +230,11 @@ struct Carousel: UIViewRepresentable {
             let page = Int(roundf(Float(scrollView.contentOffset.x / parent.width)))
             self.parent.page = page
         }
+        
+        func scrollViewDidScroll(_ scrollView: UIScrollView) {
+            scrollView.contentOffset.y = 0
+        }
+        
     }
 }
 

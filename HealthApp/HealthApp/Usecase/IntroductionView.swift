@@ -9,37 +9,40 @@ import SwiftUI
 import PromiseKit
 
 let STEP_GUIDANCE_IMAGE = "pedmetor-authorization-sample"
-let STEP_GUIDANCE_TITLE = "モーション連携"
+let STEP_PHONE_ICON = "phone-step"
 let STEP_GUIDANCE_TEXT = "お使いのiPhoneから歩数データを取得します"
 
 let HEALTH_GUIDANCE_IMAGE = "health-authorization-sample"
-let HEALTH_GUIDANCE_TITLE = "ヘルスケア連携"
+let HEALTH_ICON = "health-icon"
 let HEALTH_GUIDANCE_TEXT = "「ヘルスケア」のデータをアプリに表示します"
 
-struct IntoductioContent {
+struct IntroductioContent {
     let imageSrc: String
-    let explainTitle: String
+    let modalImageSrc: String
     let explainText: String
     let guidanceType: GuidanceType
+    let imgaeSizeRatio: CGSize
 }
 
 struct IntroductionView: View {
     
-   @EnvironmentObject var setting: SettingData
+    @EnvironmentObject var setting: SettingData
+    @State var showingModal: Bool = true
     
     let usease = IntroductionUsecaseServiece()
     
-    var contents: [IntoductioContent] {
+    var contents: [IntroductioContent] {
         get {
-            [IntoductioContent(imageSrc: STEP_GUIDANCE_IMAGE,
-                               explainTitle: STEP_GUIDANCE_TITLE,
+            [IntroductioContent(imageSrc: STEP_PHONE_ICON,
+                                modalImageSrc: STEP_GUIDANCE_IMAGE,
                                explainText: STEP_GUIDANCE_TEXT,
-                               guidanceType: .Pedmeter),
-             
-            IntoductioContent(imageSrc: HEALTH_GUIDANCE_IMAGE,
-                              explainTitle: HEALTH_GUIDANCE_TITLE,
+                               guidanceType: .Pedmeter,
+                               imgaeSizeRatio: CGSize(width: 0.3, height: 0.3)),
+            IntroductioContent(imageSrc: HEALTH_ICON,
+                               modalImageSrc: HEALTH_GUIDANCE_IMAGE,
                               explainText: HEALTH_GUIDANCE_TEXT,
-                              guidanceType: .HealthCare)]
+                              guidanceType: .HealthCare,
+                              imgaeSizeRatio: CGSize(width: 0.25, height: 0.25)),]
         }
     }
     
@@ -60,45 +63,50 @@ struct IntroductionView: View {
     
     var body: some View {
         GeometryReader { geo in
-            VStack(alignment: .leading , content: {
-                HStack(alignment: .center, spacing: 0, content: {
-                    Group {
-                        IntroductionContentView(content: self.contents[0])
-                        IntroductionContentView(content: self.contents[1])
-                    }
-                    .frame(width: geo.size.width)
-                })
-                .frame(width: geo.size.width * CGFloat(self.contents.count), height: geo.size.height * 0.8)
-                .offset(x: -(CGFloat(page) * geo.size.width), y:0)
-                
-                VStack {
-                    Button(action: {
-                        let _ = usease.requestAuthorization(type: contents[page].guidanceType)
-                            .done {
-                                if (isLastPage) {
-                                    self.navigateActive = true
-                                    return
-                                }
-                                withAnimation {
-                                    self.page += 1
-                                }
-                            }
-                    }, label: {
-                        Text("OK")
-                            .foregroundColor(.white)
-                            .font(.system(size: 25))
+            ZStack {
+                VStack(alignment: .leading , content: {
+                    HStack(alignment: .center, spacing: 0, content: {
+                        Group {
+                            IntroductionContentView(content: self.contents[0])
+                            IntroductionContentView(content: self.contents[1])
+                        }
+                        .frame(width: geo.size.width)
                     })
-                    .frame(width: geo.size.width * 0.8, height: 60)
-                    .background(pinkColor)
-                    .cornerRadius(15)
+                    .frame(width: geo.size.width * CGFloat(self.contents.count), height: geo.size.height * 0.8)
+                    .offset(x: -(CGFloat(page) * geo.size.width), y:0)
                     
-                    PageViewControlView(page: $page, pageMax: contents.count)
-                }
-                .frame(width: geo.size.width ,height: geo.size.height * 0.2)
-            })
-            
-            NavigationLink(destination: destination(), isActive: $navigateActive, label: {})
-                .hidden()
+                    VStack {
+                        Button(action: {
+                            ModalUsecaseService.share.requestIntroductionModal(content: self.contents[self.page], dismiss: {
+                                let _ = usease.requestAuthorization(type: contents[page].guidanceType)
+                                    .done {
+                                        if (isLastPage) {
+                                            self.navigateActive = true
+                                            return
+                                        }
+                                        withAnimation {
+                                            self.page += 1
+                                        }
+                                    }
+                            })
+                        }, label: {
+                            Text("連携")
+                                .foregroundColor(.white)
+                                .font(.system(size: 25))
+                        })
+                        .frame(width: geo.size.width * 0.8, height: 60)
+                        .background(pinkColor)
+                        .cornerRadius(15)
+                        
+                        PageViewControlView(page: $page, pageMax: contents.count)
+                    }
+                    .frame(width: geo.size.width ,height: geo.size.height * 0.2)
+                })
+                
+                // 遷移先
+                NavigationLink(destination: destination(), isActive: $navigateActive, label: {})
+                    .hidden()
+            }
         }
         .navigationBarTitle(Text("初期設定"), displayMode: .inline)
         .navigationBarBackButtonHidden(true)
@@ -110,40 +118,58 @@ struct IntroductionView: View {
 }
 
 struct IntroductionContentView: View {
-    var content: IntoductioContent
+    var content: IntroductioContent
     
-    init (content: IntoductioContent) {
+    init (content: IntroductioContent) {
         self.content = content
+    }
+    
+    func GetAppIcon() -> UIImage {
+        
+      return UIImage(named: "AppIcon60x60")!
     }
     
     var body: some View {
         GeometryReader { geo in
             VStack {
                 VStack {
-                    Image(content.imageSrc, bundle: .main)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: geo.size.width * 0.8,
-                               height: geo.size.width * 0.8)
-                    
-                    VStack(spacing: 20, content: {
-                        Text(content.explainTitle)
-                            .font(.system(size: 20))
-                            .bold()
-                            .frame(width: geo.size.width * 0.8, alignment: .leading)
+                    HStack {
+                        ZStack {
+                            Image(content.imageSrc, bundle: .main)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: geo.size.width * content.imgaeSizeRatio.width, height: geo.size.width * content.imgaeSizeRatio.height)
+                                .shadow(radius: 0.5)
+                        }
+                        .frame(width: geo.size.width * 0.3, height: geo.size.width * 0.3)
                         
-                        Text(content.explainText)
-                            .font(.system(size: 20))
-                            .frame(width: geo.size.width * 0.8, alignment: .leading)
-                            .padding(.leading, 10)
-                    })
-                    .frame(width: geo.size.width * 0.8)
-                    .foregroundColor(commonTextColor)
+                        Arrow()
+                            .fill()
+                            .frame(width: 100, height: 100)
+                            .foregroundColor(pinkColor)
+                            .opacity(0.5)
+                            .rotationEffect(.degrees(90))
+                        ZStack {
+                            Image(uiImage: GetAppIcon())
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: geo.size.width * 0.25, height: geo.size.width * 0.25)
+                        }
+                        .frame(width: geo.size.width * 0.3, height: geo.size.width * 0.3)
+                    }
+                    
+                    Spacer()
+                        .frame(height: 40)
+                
+                    Text(content.explainText)
+                        .font(.system(size: 16))
+                        .frame(width: geo.size.width * 0.6, alignment: .leading)
+                        .padding(.leading, 10)
+                        .foregroundColor(commonTextColor)
                 }
-                .frame(alignment: .top)
+                .frame(alignment: .center)
             }
-            .padding(.leading, geo.size.width * 0.1)
-            .padding(.trailing, geo.size.width * 0.1)
+            .frame(width: geo.size.width, height: geo.size.height)
             .onAppear {
 
             }
@@ -153,8 +179,23 @@ struct IntroductionContentView: View {
 
 struct IntroductionView_Previews: PreviewProvider {
     static var previews: some View {
-        NavigationView {
-        IntroductionView()
+        Group {
+            ZStack {
+                NavigationView {
+                    IntroductionView().environmentObject(SettingData(neeedShowGuidance: false))
+                }
+                
+                Color.black.opacity(0.5)
+                    .edgesIgnoringSafeArea(.all)
+                VStack {
+                    
+                }
+                .frame(width: 300, height: 400)
+                .background(Color.white)
+            }
+//            NavigationView {
+//                IntroductionView().environmentObject(SettingData(neeedShowGuidance: false))
+//            }
         }
     }
 }

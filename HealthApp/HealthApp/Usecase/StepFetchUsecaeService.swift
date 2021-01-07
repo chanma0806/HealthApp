@@ -16,10 +16,13 @@ let UPDATE_STEP_VALUE: String = "step_fetch_event"
 let PEDOMETER_SAVED_DAY_RANGE = 7
 
 class StepFetchUsecaeService {
+    
+    static let shared = StepFetchUsecaeService()
+    
     private let pedometer: PedometerComponent
     private let database: DatabaseComponent
     
-    init() {
+    private init() {
         self.pedometer = PedometerComponent.share
         self.database = DatabaseComponent()
     }
@@ -35,11 +38,7 @@ class StepFetchUsecaeService {
             }
         }
     }
-    
-    func requestMotionAccess() {
-        self.pedometer.requestAccess()
-    }
-    
+        
     func getDailyStep(on date: Date) -> Promise<DailyStepData?> {
         let savedLastDay = Calendar.current.date(byAdding: .day, value: -(PEDOMETER_SAVED_DAY_RANGE - 1), to: Date())!
         let compare = Calendar.current.compare(date, to: savedLastDay, toGranularity: .day)
@@ -65,13 +64,21 @@ class StepFetchUsecaeService {
     
     func requestBackgroundFetch() {
         BGTaskScheduler.shared.register(forTaskWithIdentifier: BGTASK_FETCH_STEPS, using: DispatchQueue.global(), launchHandler: { task in
+            
+            DispatchQueue.main.async {
+                let path = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true).appendingPathComponent("background_feth_log").appendingPathExtension("txt").path
+                let date = Date()
+                let message = "background fecth on: \(date)"
+                FileManager.default.createFile(atPath: path, contents: message.data(using: .utf8), attributes: nil)
+            }
+            
             self.fetchStepsFromLastToNow()
                 .done { _ in
                     task.setTaskCompleted(success: true)
                     self.setLastBackgroundFetchedDate()
                     
                     // 翌々日のフェッチをスケジューリング
-                    self.requestBackgroundFetch()
+                    self.submitFetchTask()
                 }
                 .catch { error in
                     os_log("%@.%@: failure fetch task", String(describing: self), #function)
@@ -80,6 +87,10 @@ class StepFetchUsecaeService {
                 }
         })
         
+        self.submitFetchTask()
+    }
+    
+    private func submitFetchTask() {
         // 翌日を迎えたらフェッチさせる
         let cal = Calendar.current
         let request = BGAppRefreshTaskRequest(identifier: BGTASK_FETCH_STEPS)

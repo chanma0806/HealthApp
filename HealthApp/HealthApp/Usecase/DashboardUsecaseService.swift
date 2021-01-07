@@ -28,12 +28,13 @@ class DashboardUsecaseService {
         self.healthComponet.requestAuthorization()
     }
     
-    func getHeartRate(on date: Date) -> Promise<DayHeartrRateEntity?> {
-        let promise = Promise<DayHeartrRateEntity?> { seal in
+    func getHeartRate(on date: Date) -> Promise<DayHeartrRateEntity> {
+        let promise = Promise<DayHeartrRateEntity> { seal in
             self.healthComponet.getHeartRates(from: date, to: date)
             .done { (enities: [DayHeartrRateEntity]) in
                 guard enities.count != 0 else {
-                    seal.fulfill(nil)
+                    let zeroEntity = DayHeartrRateEntity(date: date, values: [0])
+                    seal.fulfill(zeroEntity)
                     return
                 }
                 
@@ -50,12 +51,13 @@ class DashboardUsecaseService {
         return promise
     }
     
-    func getStep(on date: Date) -> Promise<DayStepEntity?> {
-        let promise = Promise<DayStepEntity?> { seal in
+    func getStep(on date: Date) -> Promise<DayStepEntity> {
+        let promise = Promise<DayStepEntity> { seal in
             self.healthComponet.getSteps(from: date, to: date)
             .done { (enities: [DayStepEntity]) in
                 guard enities.count != 0 else {
-                    seal.fulfill(nil)
+                    let zeroEntity = DayStepEntity(date: date, values: [0])
+                    seal.fulfill(zeroEntity)
                     return
                 }
                 
@@ -72,18 +74,29 @@ class DashboardUsecaseService {
         return promise
     }
     
-    func getBurnCalorie(on date: Date) -> Promise<DayBurnCalorieEntity?> {
-        let promise = Promise<DayBurnCalorieEntity?> { seal in
-            self.healthComponet.getBurnCalories(from: date, to: date)
-            .done { (enities: [DayBurnCalorieEntity]) in
-                guard enities.count != 0 else {
-                    seal.fulfill(nil)
-                    return
+    func getBurnCalorie(on date: Date) -> Promise<DayBurnCalorieEntity> {
+        let promise = Promise<DayBurnCalorieEntity> { seal in
+            when(fulfilled: self.healthComponet.getSteps(from: date, to: date),
+                 self.healthComponet.getBurnCalories(from: date, to: date))
+                .done { (stepEnties: [DayStepEntity] , calorieEnties: [DayBurnCalorieEntity]) in
+                    guard stepEnties.count != 0 && calorieEnties.count != 0 else {
+                        let zeroEntity = DayBurnCalorieEntity(date: date, values: [0])
+                        seal.fulfill(zeroEntity)
+                        return
+                    }
+                var calories = calorieEnties.count > 0 ? calorieEnties[0].values : [Int](repeating: 0, count: 24)
+                let steps = stepEnties.count > 0 ? stepEnties[0].values : []
+                /** カロリー値がない時間帯は歩数から算出  */
+                for (index, step) in zip(steps.indices, steps) {
+                    if calories[index] < 1 {
+                        calories[index] = self.calcStepCalorie(step: step)
+                    }
                 }
                 
-                // バリデーション後に返却
-                let values = enities[0].values.validated(max: MAX_CALORIE, min: MIN_CALORIE)
-                let entity = DayBurnCalorieEntity(date: enities[0].date, values: values)
+                // バリデーション
+                calories = calories.validated(max: MAX_CALORIE, min: MIN_CALORIE)
+                let entity = DayBurnCalorieEntity(date: date, values: calories)
+
                 seal.fulfill(entity)
             }
             .catch { error in
@@ -92,6 +105,23 @@ class DashboardUsecaseService {
         }
         
         return promise
+    }
+    
+    private func calcStepCalorie(step: Int) -> Int {
+        // TODO: 身長、体重設定
+        let height = 170
+        let weight = 65
+        let strideCM: Float = Float(height) * 0.45
+        let mets: Float = 3.0
+        let speendMinMeter: Float = 67.0
+        let stepDurationMin: Float = strideCM * Float(step) / ( speendMinMeter * 100.0 )
+        
+        // 運動量 = メッツ * 時間
+        let exercise = mets * (stepDurationMin / 60)
+        
+        let calorie = 1.05 * exercise * Float(weight)
+        
+        return Int(calorie)
     }
 }
 

@@ -16,7 +16,7 @@ class SettingData: ObservableObject {
     let neeedShowGuidance: Bool
     
     init(neeedShowGuidance: Bool) {
-        self.goalValue = 0
+        self.goalValue = 6000 // 0
         self.neeedShowGuidance = neeedShowGuidance
     }
 }
@@ -52,6 +52,7 @@ struct ChangeObserver<Base: View, Value: Equatable>: View {
 struct DaySummaryCardView: View {
         
     init (stepValue: Binding<Int>) {
+//        self._stepValue = .constant(5465)
         self._stepValue = stepValue
     }
     
@@ -132,13 +133,18 @@ struct ProgeressArcBar: Shape {
     
 }
 
-
-struct DaySummaryCardView_Previews: PreviewProvider {
-    static var previews: some View {
-        DaySummaryCardView(stepValue: .constant(9000))
-            .frame(width: 350, height: 300, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
-    }
-}
+//struct DaySummaryCardView_Previews: PreviewProvider {
+//    static var layout: DashboardLayout {
+//        get {
+//            DashboardLayout()
+//        }
+//    }
+//    static var previews: some View {
+//        DaySummaryCardView(stepValue: .constant(9000))
+//            .environmentObject(SettingData())
+//            .frame(width: DaySummaryCardView_Previews.layout.cardWidth, height: DaySummaryCardView_Previews.layout.cardHeight, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+//    }
+//}
 
 extension View {
     func onDataChange<Value: Equatable>(of value: Value, perform action: @escaping (_ newValue: Value) -> Void) -> some View {

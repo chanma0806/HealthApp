@@ -92,13 +92,9 @@ public struct LinerGraph: View {
             
         var dummies = [Int]()
         for _ in 0..<(24 * 2) {
-            dummies.append(Int.random(in: (60..<121)))
+            dummies.append(Int.random(in: (100 ..< 110)))
         }
-        
-        dummies[3] = 0
-        dummies[10] = 0
-        dummies[1] = 0
-        
+                
         return dummies
 //        return [
 //            70, /* 00:00 */
@@ -290,8 +286,8 @@ public struct LinerGraph: View {
     }
     
     mutating private func makeGraphScaleData(_ datas: [Int]) -> GraphScaleData {
-        let maxValue = CGFloat(datas.max()!)
-        let minValue = CGFloat(datas.filter{ $0 > 30 }.min()!)
+        let maxValue = CGFloat(datas.max() ?? 0)
+        let minValue = CGFloat(datas.filter{ $0 > 30 }.min() ?? 0)
         let valueRange = CGFloat(maxValue - minValue)
         let centerValue = (maxValue - minValue) / 2.0 + minValue
         var topValue = (CGFloat(maxValue) * (1.05)).roundedUp(tenPow: 1)

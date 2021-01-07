@@ -64,7 +64,7 @@ public struct GraphView: View {
     
     public var body: some View {
         let datas: [GraphData] = self.makeGraphData(self.rawDatas)
-        let isNoData = self.rawDatas.max()! <= 0
+        let isNoData = (self.rawDatas.max() ?? 0) <= 0
         GeometryReader { geo in
             let graphWidth: CGFloat = geo.size.width
             let graphHeight: CGFloat  = geo.size.height * 0.9
@@ -126,7 +126,7 @@ public struct GraphView: View {
     }
     
     private func makeGraphData(_ rawDatas: [Int]) -> [GraphData] {
-        guard rawDatas.max()! > 0 else {
+        guard let maxValue = rawDatas.max(), maxValue > 0 else {
             return []
         }
         
@@ -138,7 +138,7 @@ public struct GraphView: View {
     }
     
     mutating private func makeGraphScaleData(_ datas: [Int]) -> GraphScaleData {
-        let maxValue = CGFloat(datas.max()!)
+        let maxValue = CGFloat(datas.max() ?? 0)
         let topValue = (CGFloat(maxValue) * (1.05)).roundedUp(tenPow: 2)
         
         return GraphScaleData(topY: topValue,
@@ -155,9 +155,9 @@ public class GraphFactory {
         let barAreaWidth: CGFloat  = width / CGFloat(data.count)
         let barWidth: CGFloat  = barAreaWidth / 1.5
         let barOffset: CGFloat  = barAreaWidth - barWidth
-        let maxValue = data.max()!
+        let maxValue = data.max() ?? 0
         let property = GraphFactory.calcProperty(graphHeight: height, graphWidth: width, barOffset: barOffset, barWidth: barWidth, maxValue: maxValue)
-        let isNoData = (data.max()! <= 0)
+        let isNoData = (maxValue <= 0)
         if isNoData {
             NoDataGraph(property: property)
         } else {

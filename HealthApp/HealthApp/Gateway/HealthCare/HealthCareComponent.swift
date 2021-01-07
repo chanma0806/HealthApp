@@ -91,6 +91,7 @@ public class HealthCareComponentService: HealthCareComponent {
             
             DispatchQueue.main.async {
                 self.healthStore.requestAuthorization(toShare: [], read: reads, completion: { didRequest, err in
+
                     if (didRequest) {
                         self.isCooperation = true
                         seal.fulfill(())
@@ -147,7 +148,6 @@ public class HealthCareComponentService: HealthCareComponent {
             self.queryFirstly()
             .done { _ in
                 //TODO: wacth > iPhoneの優先順でマージ処理を追加
-                let device = HKDevice(name: "iPhone", manufacturer: nil, model: nil, hardwareVersion: nil, firmwareVersion: nil, softwareVersion: nil, localIdentifier: nil, udiDeviceIdentifier: nil)
                 self.exequteSampleQuery(identifier: .stepCount, from: from, to: to) { (query, results, error) in
                     guard var samples = results else {
                         seal.fulfill([])
@@ -193,7 +193,6 @@ public class HealthCareComponentService: HealthCareComponent {
                         return
                     }
                     
-                    samples = samples.filtered(deviceNames: ["iPhone"])
                     
                     // 日付ごとにデータ抽出
                     let dict: Dictionary<String, [HKQuantitySample]> = self.collectSamplesAtDay(samples)
@@ -296,10 +295,10 @@ public class HealthCareComponentService: HealthCareComponent {
         var dict: Dictionary<String, [HKQuantitySample]> = [:]
         for sample in samples {
             let qSample: HKQuantitySample = sample as! HKQuantitySample
-            if (dict[qSample.startDate.yyyy_mm_dd] != nil) {
-                dict[qSample.startDate.yyyy_mm_dd]!.append(qSample)
+            if (dict[qSample.endDate.yyyy_mm_dd] != nil) {
+                dict[qSample.endDate.yyyy_mm_dd]!.append(qSample)
             } else {
-                dict[qSample.startDate.yyyy_mm_dd] = [qSample]
+                dict[qSample.endDate.yyyy_mm_dd] = [qSample]
             }
         }
         

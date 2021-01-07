@@ -1,0 +1,724 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   uuid = "7B0BC32A-EAF1-4703-9189-3CC9FC327047"
+   type = "1"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.ExceptionBreakpoint">
+         <BreakpointContent
+            uuid = "10954387-3FE8-47BF-9246-9297BAA4F8CB"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            breakpointStackSelectionBehavior = "1"
+            scope = "1"
+            stopOnStyle = "0">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "F3C650DB-A32E-4D94-92A3-AB636EE98C55"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HealthApp/UIComponent/UIPart/Graph/BarGraphView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "144"
+            endingLineNumber = "144"
+            landmarkName = "makeGraphScaleData(_:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "F3C650DB-A32E-4D94-92A3-AB636EE98C55 - 71495d857bd4f6d6"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "HealthApp.GraphView.(makeGraphScaleData in _8FB6C3793D2C304475E57D55CF9547FD)(Swift.Array&lt;Swift.Int&gt;) -&gt; HealthApp.GraphScaleData"
+                  moduleName = "HealthApp"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/maruyamahiroyuki/WorkPlace/HealthApp/HealthApp/HealthApp/UIComponent/UIPart/Graph/BarGraphView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "133"
+                  endingLineNumber = "133"
+                  offsetFromSymbolStart = "578">
+               </Location>
+               <Location
+                  uuid = "F3C650DB-A32E-4D94-92A3-AB636EE98C55 - cac8e6e7bf8db5b7"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(extension in HealthApp_PreviewReplacement_BarGraphView_6):HealthApp.GraphView.(__preview__makeGraphScaleData in _C0B6F34921E7E3E0EA74354198B5F1A0)(Swift.Array&lt;Swift.Int&gt;) -&gt; HealthApp.GraphScaleData"
+                  moduleName = "BarGraphView.6.preview-thunk.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/maruyamahiroyuki/WorkPlace/HealthApp/HealthApp/HealthApp/UIComponent/UIPart/Graph/BarGraphView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "133"
+                  endingLineNumber = "133"
+                  offsetFromSymbolStart = "1122">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "A9469425-0276-4FCC-B6D0-ACF044284CD2"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HealthApp/UIComponent/UIPart/Graph/BarGraphView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "122"
+            endingLineNumber = "122"
+            landmarkName = "makeYticks(scale:graphHeight:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "A9469425-0276-4FCC-B6D0-ACF044284CD2 - b5514313e1d76866"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "HealthApp.GraphView.(makeYticks in _8FB6C3793D2C304475E57D55CF9547FD)(scale: HealthApp.GraphScaleData, graphHeight: CoreGraphics.CGFloat) -&gt; Swift.Array&lt;HealthApp.YtickData&gt;"
+                  moduleName = "HealthApp"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/maruyamahiroyuki/WorkPlace/HealthApp/HealthApp/HealthApp/UIComponent/UIPart/Graph/BarGraphView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "124"
+                  endingLineNumber = "124"
+                  offsetFromSymbolStart = "1288">
+               </Location>
+               <Location
+                  uuid = "A9469425-0276-4FCC-B6D0-ACF044284CD2 - e4f759102d3a3d1"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(extension in HealthApp_PreviewReplacement_BarGraphView_6):HealthApp.GraphView.(__preview__makeYticks in _C0B6F34921E7E3E0EA74354198B5F1A0)(scale: HealthApp.GraphScaleData, graphHeight: CoreGraphics.CGFloat) -&gt; Swift.Array&lt;HealthApp.YtickData&gt;"
+                  moduleName = "BarGraphView.6.preview-thunk.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/maruyamahiroyuki/WorkPlace/HealthApp/HealthApp/HealthApp/UIComponent/UIPart/Graph/BarGraphView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "124"
+                  endingLineNumber = "124"
+                  offsetFromSymbolStart = "1712">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "451F630E-6747-48D0-BDC5-B35BF81A012F"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HealthApp/UIComponent/UIPart/Graph/BarGraphView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "119"
+            endingLineNumber = "119"
+            landmarkName = "makeYticks(scale:graphHeight:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "451F630E-6747-48D0-BDC5-B35BF81A012F - b5514313e1d76b83"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "HealthApp.GraphView.(makeYticks in _8FB6C3793D2C304475E57D55CF9547FD)(scale: HealthApp.GraphScaleData, graphHeight: CoreGraphics.CGFloat) -&gt; Swift.Array&lt;HealthApp.YtickData&gt;"
+                  moduleName = "HealthApp"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/maruyamahiroyuki/WorkPlace/HealthApp/HealthApp/HealthApp/UIComponent/UIPart/Graph/BarGraphView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "121"
+                  endingLineNumber = "121"
+                  offsetFromSymbolStart = "550">
+               </Location>
+               <Location
+                  uuid = "451F630E-6747-48D0-BDC5-B35BF81A012F - e4f759102d3a034"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(extension in HealthApp_PreviewReplacement_BarGraphView_6):HealthApp.GraphView.(__preview__makeYticks in _C0B6F34921E7E3E0EA74354198B5F1A0)(scale: HealthApp.GraphScaleData, graphHeight: CoreGraphics.CGFloat) -&gt; Swift.Array&lt;HealthApp.YtickData&gt;"
+                  moduleName = "BarGraphView.6.preview-thunk.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/maruyamahiroyuki/WorkPlace/HealthApp/HealthApp/HealthApp/UIComponent/UIPart/Graph/BarGraphView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "121"
+                  endingLineNumber = "121"
+                  offsetFromSymbolStart = "1002">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "3D3F2BFD-B911-4C41-873A-162D240B2A84"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HealthApp/UIComponent/DaySummaryCardView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "138"
+            endingLineNumber = "138"
+            landmarkName = "unknown"
+            landmarkType = "0">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "1D0D0BE4-2430-479A-BBD7-0BA298D136F6"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HealthApp/UIComponent/DaySummaryCardView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "142"
+            endingLineNumber = "142"
+            landmarkName = "unknown"
+            landmarkType = "0">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "DBFCB90E-23AE-4F5B-A181-6B56C9008EE2"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HealthApp/SociaShareModalView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "202"
+            endingLineNumber = "202"
+            landmarkName = "makeUIView(context:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "CBE7BBF3-EC35-474E-80D2-CE6B7945F491"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HealthApp/Usecase/DashboardUsecaseService.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "33"
+            endingLineNumber = "33"
+            landmarkName = "getHeartRate(on:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "A04A9DD6-FB7A-4A9F-9E13-D883251B540A"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HealthApp/Gateway/HealthCare/HealthCareComponent.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "109"
+            endingLineNumber = "109"
+            landmarkName = "getHeartRates(from:to:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "6BA1DEAA-802D-42DE-95C4-5F028A717DB2"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HealthApp/Gateway/HealthCare/HealthCareComponent.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "111"
+            endingLineNumber = "111"
+            landmarkName = "getHeartRates(from:to:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "6BA1DEAA-802D-42DE-95C4-5F028A717DB2 - 58cc2f03c3c23ac2"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (()) -&gt; () in closure #1 (PromiseKit.Resolver&lt;Swift.Array&lt;HealthApp.DayHeartrRateEntity&gt;&gt;) -&gt; () in HealthApp.HealthCareComponentService.getHeartRates(from: Foundation.Date, to: Foundation.Date) -&gt; PromiseKit.Promise&lt;Swift.Array&lt;HealthApp.DayHeartrRateEntity&gt;&gt;"
+                  moduleName = "HealthApp"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/maruyamahiroyuki/WorkPlace/HealthApp/HealthApp/HealthApp/Gateway/HealthCare/HealthCareComponent.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "110"
+                  endingLineNumber = "110"
+                  offsetFromSymbolStart = "58">
+               </Location>
+               <Location
+                  uuid = "6BA1DEAA-802D-42DE-95C4-5F028A717DB2 - 715261449dca5c92"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (__C.HKSampleQuery, Swift.Optional&lt;Swift.Array&lt;__C.HKSample&gt;&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in closure #1 (()) -&gt; () in closure #1 (PromiseKit.Resolver&lt;Swift.Array&lt;HealthApp.DayHeartrRateEntity&gt;&gt;) -&gt; () in HealthApp.HealthCareComponentService.getHeartRates(from: Foundation.Date, to: Foundation.Date) -&gt; PromiseKit.Promise&lt;Swift.Array&lt;HealthApp.DayHeartrRateEntity&gt;&gt;"
+                  moduleName = "HealthApp"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/maruyamahiroyuki/WorkPlace/HealthApp/HealthApp/HealthApp/Gateway/HealthCare/HealthCareComponent.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "111"
+                  endingLineNumber = "111"
+                  offsetFromSymbolStart = "317">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "26FFA220-22CE-4C91-9AEA-022384C8714F"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HealthApp/Usecase/DashboardUsecaseService.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "42"
+            endingLineNumber = "42"
+            landmarkName = "getHeartRate(on:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "45565CF8-AAED-4A47-9667-EF5F13D8EFC2"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HealthApp/UIComponent/DaySummaryCardView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "100"
+            endingLineNumber = "100"
+            landmarkName = "body"
+            landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "F7EF06D7-9370-4249-8282-FF282DE81625"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HealthApp/Gateway/HealthCare/HealthCareComponent.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "151"
+            endingLineNumber = "151"
+            landmarkName = "getSteps(from:to:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "23DDD3AF-37A7-4C54-A322-6A6CA361B680"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HealthApp/DashboardView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "239"
+            endingLineNumber = "239"
+            landmarkName = "synHealth()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "A4FF794A-A5E9-4BA8-BDC8-624D189146D8"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HealthApp/Usecase/DashboardUsecaseService.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "56"
+            endingLineNumber = "56"
+            landmarkName = "getStep(on:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "D4A4E0A6-798D-49D6-9152-996AE5CF102C"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HealthApp/UIComponent/UIPart/Graph/LinerGraphView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "159"
+            endingLineNumber = "159"
+            landmarkName = "quadCurvedPath(plots:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "41AC653F-8143-4C4C-9F8E-D82AC5A811AD"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HealthApp/Usecase/DashboardUsecaseService.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "58"
+            endingLineNumber = "58"
+            landmarkName = "getStep(on:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "276BC006-FE7F-4E56-A985-7AB88C0CC1D4"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HealthApp/UIComponent/UIPart/Graph/LinerGraphView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "158"
+            endingLineNumber = "158"
+            landmarkName = "quadCurvedPath(plots:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "276BC006-FE7F-4E56-A985-7AB88C0CC1D4 - 3e4ffcb24c9a59e1"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "HealthApp.LinerGraph.(quadCurvedPath in _67305DB27C4CD49979B3A97D1060ED2D)(plots: Swift.Array&lt;HealthApp.GraphPlotSeries&gt;) -&gt; some"
+                  moduleName = "HealthApp"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/maruyamahiroyuki/WorkPlace/HealthApp/HealthApp/HealthApp/UIComponent/UIPart/Graph/LinerGraphView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "158"
+                  endingLineNumber = "158"
+                  offsetFromSymbolStart = "364">
+               </Location>
+               <Location
+                  uuid = "276BC006-FE7F-4E56-A985-7AB88C0CC1D4 - 7dcd3a5e3a514698"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (HealthApp.GraphPlotSeries) -&gt; SwiftUI._ConditionalContent&lt;SwiftUI._ConditionalContent&lt;&lt;&lt;opaque return type of (extension in SwiftUI):SwiftUI.Shape.stroke&lt;A where A1: SwiftUI.ShapeStyle&gt;(_: A1, style: SwiftUI.StrokeStyle) -&gt; some&gt;&gt;.0, &lt;&lt;opaque return type of (extension in SwiftUI):SwiftUI.View.position(__C.CGPoint) -&gt; some&gt;&gt;.0&gt;, Swift.Optional&lt;SwiftUI.AnyView&gt;&gt; in HealthApp.LinerGraph.(quadCurvedPath in _67305DB27C4CD49979B3A97D1060ED2D)(plots: Swift.Array&lt;HealthApp.GraphPlotSeries&gt;) -&gt; some"
+                  moduleName = "HealthApp"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/maruyamahiroyuki/WorkPlace/HealthApp/HealthApp/HealthApp/UIComponent/UIPart/Graph/LinerGraphView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "159"
+                  endingLineNumber = "159"
+                  offsetFromSymbolStart = "324">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "9A7E31D9-EC91-457A-9215-E83BD11A1B43"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HealthApp/UIComponent/UIPart/Graph/LinerGraphView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "163"
+            endingLineNumber = "163"
+            landmarkName = "quadCurvedPath(plots:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "9A7E31D9-EC91-457A-9215-E83BD11A1B43 - 7dcd3a5e3a514504"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (HealthApp.GraphPlotSeries) -&gt; SwiftUI._ConditionalContent&lt;SwiftUI._ConditionalContent&lt;&lt;&lt;opaque return type of (extension in SwiftUI):SwiftUI.Shape.stroke&lt;A where A1: SwiftUI.ShapeStyle&gt;(_: A1, style: SwiftUI.StrokeStyle) -&gt; some&gt;&gt;.0, &lt;&lt;opaque return type of (extension in SwiftUI):SwiftUI.View.position(__C.CGPoint) -&gt; some&gt;&gt;.0&gt;, Swift.Optional&lt;SwiftUI.AnyView&gt;&gt; in HealthApp.LinerGraph.(quadCurvedPath in _67305DB27C4CD49979B3A97D1060ED2D)(plots: Swift.Array&lt;HealthApp.GraphPlotSeries&gt;) -&gt; some"
+                  moduleName = "HealthApp"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/maruyamahiroyuki/WorkPlace/HealthApp/HealthApp/HealthApp/UIComponent/UIPart/Graph/LinerGraphView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "163"
+                  endingLineNumber = "163"
+                  offsetFromSymbolStart = "388">
+               </Location>
+               <Location
+                  uuid = "9A7E31D9-EC91-457A-9215-E83BD11A1B43 - 306786e25b911f4a"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (inout SwiftUI.Path) -&gt; () in closure #1 (HealthApp.GraphPlotSeries) -&gt; SwiftUI._ConditionalContent&lt;SwiftUI._ConditionalContent&lt;&lt;&lt;opaque return type of (extension in SwiftUI):SwiftUI.Shape.stroke&lt;A where A1: SwiftUI.ShapeStyle&gt;(_: A1, style: SwiftUI.StrokeStyle) -&gt; some&gt;&gt;.0, &lt;&lt;opaque return type of (extension in SwiftUI):SwiftUI.View.position(__C.CGPoint) -&gt; some&gt;&gt;.0&gt;, Swift.Optional&lt;SwiftUI.AnyView&gt;&gt; in HealthApp.LinerGraph.(quadCurvedPath in _67305DB27C4CD49979B3A97D1060ED2D)(plots: Swift.Array&lt;HealthApp.GraphPlotSeries&gt;) -&gt; some"
+                  moduleName = "HealthApp"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/maruyamahiroyuki/WorkPlace/HealthApp/HealthApp/HealthApp/UIComponent/UIPart/Graph/LinerGraphView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "164"
+                  endingLineNumber = "164"
+                  offsetFromSymbolStart = "92">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "3D4C13FD-234B-4206-A9B4-2647ACB869EF"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HealthApp/Gateway/HealthCare/HealthCareComponent.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "113"
+            endingLineNumber = "113"
+            landmarkName = "getHeartRates(from:to:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "FBFFDE93-E559-4DA8-ABC1-F1AC07F81825"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HealthApp/Gateway/HealthCare/HealthCareComponent.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "112"
+            endingLineNumber = "112"
+            landmarkName = "getHeartRates(from:to:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "F45CD8F5-9AF9-4C99-9737-4171DF0C61B9"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HealthApp/Gateway/HealthCare/HealthCareComponent.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "117"
+            endingLineNumber = "117"
+            landmarkName = "getHeartRates(from:to:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "56C2E47C-B0A1-46A6-A681-FBB6E1F21B74"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HealthApp/Gateway/HealthCare/HealthCareComponent.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "196"
+            endingLineNumber = "196"
+            landmarkName = "getBurnCalories(from:to:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "37BD9A8E-E503-46F9-86A9-57C5AEF49843"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HealthApp/Gateway/HealthCare/HealthCareComponent.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "160"
+            endingLineNumber = "160"
+            landmarkName = "getSteps(from:to:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "AB39D715-6A7D-4D91-A6A8-3D7E5FEC8B51"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HealthApp/Gateway/HealthCare/HealthCareComponent.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "159"
+            endingLineNumber = "159"
+            landmarkName = "getSteps(from:to:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "7D9159EC-9984-4BC5-BC23-67FF6D4E73D0"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HealthApp/Gateway/HealthCare/HealthCareComponent.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "400"
+            endingLineNumber = "400"
+            landmarkName = "filtered(deviceNames:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "5FDE4798-9C0D-4098-80D8-1583CEE86398"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HealthApp/Gateway/HealthCare/HealthCareComponent.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "75"
+            endingLineNumber = "75"
+            landmarkName = "init()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "56AA63EA-D534-433F-8A56-BF82EB8E3A3D"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HealthApp/Gateway/HealthCare/HealthCareComponent.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "82"
+            endingLineNumber = "82"
+            landmarkName = "isCooperation"
+            landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "A930918E-1855-4E32-81BE-771A50AF35AB"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HealthApp/Gateway/HealthCare/HealthCareComponent.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "81"
+            endingLineNumber = "81"
+            landmarkName = "isCooperation"
+            landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "9D25F5F2-54CA-40F6-AA4C-3FB1BDD6D692"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HealthApp/Usecase/IntroductionUsecaseServiece.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "33"
+            endingLineNumber = "33"
+            landmarkName = "requestAuthorizationForPedmeter()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "49DE61BC-0512-4DD8-A7F5-625A7604CD01"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HealthApp/Usecase/StepFetchUsecaeService.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "90"
+            endingLineNumber = "90"
+            landmarkName = "requestBackgroundFetch()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "334B9CED-7067-4A33-A57C-BA417ACBDF58"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HealthApp/DashboardView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "246"
+            endingLineNumber = "246"
+            landmarkName = "synHealth()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "741BDB4B-CDEB-4CA7-91B8-FAC705A2A8F7"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HealthApp/Usecase/DashboardUsecaseService.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "90"
+            endingLineNumber = "90"
+            landmarkName = "getBurnCalorie(on:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>

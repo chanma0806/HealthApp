@@ -55,7 +55,7 @@ struct HealthCardView: View {
     }
     
     @ViewBuilder
-    private func graphBuild() -> some View {
+    private func graph() -> some View {
         switch self.graphCase {
         case .Bar:
             GraphView(self.datas, graphType: .bar)
@@ -70,15 +70,15 @@ struct HealthCardView: View {
                 Text(self.title)
                     .foregroundColor(commonTextColor)
                     .font(.system(size: 25))
-                    .frame(width: geo.size.width*0.9, alignment: .leading)
+                    .frame(width: geo.size.width*0.9, height: 25, alignment: .leading)
                 Spacer()
                     .frame(height: 20)
-                self.graphBuild()
-                    .frame(width: geo.size.width*0.9, height: 100)
+                self.graph()
+                    .frame(width: geo.size.width*0.9, height: geo.size.height - 85)
                     
             })
-            .padding(EdgeInsets(top: 10.0, leading: geo.size.width * 0.05, bottom: 10.0, trailing: geo.size.width * 0.05))
-            .frame(width: geo.size.width, height: geo.size.height, alignment: .center)
+            .padding(20)
+            .frame(width: geo.size.width, height: geo.size.height, alignment: .top)
             .background(self.cardColor)
             .cornerRadius(20)
             
@@ -90,8 +90,10 @@ struct HealthCard_Previews: PreviewProvider {
     static var previews: some View {
         GeometryReader { geo in
             VStack(alignment: .center, spacing: nil, content: {
-                CardFactory.HeartRateCard(datas: .constant(LinerGraph.getDummyDatas()))
-                    .frame(height: geo.size.height*0.3)
+                CardFactory.StepCard(datas: .constant(GraphView.getDummyDatas()))
+                    .frame(height: geo.size.height * 0.3, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+//                CardFactory.HeartRateCard(datas: .constant(LinerGraph.getDummyDatas()))
+//                    .frame(height: geo.size.height*0.3)
             })
             .padding(EdgeInsets(top: 0.0, leading: geo.size.width*0.1, bottom: 0.0, trailing: geo.size.width*0.1))
         }
