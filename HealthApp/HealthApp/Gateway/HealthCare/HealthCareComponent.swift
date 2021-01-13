@@ -9,6 +9,12 @@ import Foundation
 import PromiseKit
 import HealthKit
 
+let HEALTH_COOPERATION_KEY = "health-cooperation-key"
+
+enum HealthComponentError: Error {
+    case notCoopreationEnabled
+}
+
 protocol HealthCareEntity {
     var date: Date { get }
     var values: [Int]  { get }
@@ -32,17 +38,22 @@ public struct DayBurnCalorieEntity: HealthCareEntity {
 public protocol HealthCareComponent {
     
     /**
-     - Attention:アクセス許可をリクエストする
+    　ヘルケア連携が有効か
+     */
+    var isCooperation: Bool { get set }
+    
+    /**
+     アクセス許可をリクエストする
      */
     func requestAuthorization() -> Promise<Void>
     
     /**
-     - Attention: 心拍数を取得する
+     心拍数を取得する
      */
     func getHeartRates(from: Date, to: Date) -> Promise<[DayHeartrRateEntity]>
     
     /**
-     - Attention: 歩数を取得する
+     歩数を取得する
      */
     func getSteps(from: Date, to: Date) -> Promise<[DayStepEntity]>
     
@@ -55,21 +66,47 @@ public protocol HealthCareComponent {
 
 public class HealthCareComponentService: HealthCareComponent {
     
+    static let share = HealthCareComponentService()
+        
+    /** HealthKit */
     private let healthStore: HKHealthStore
+    /** isCooperationの内部変数 */
+    private var _isCooperation: Bool?
     
-    init() {
+    private init() {
         self.healthStore = HKHealthStore()
+        let userDefualt = UserDefaults()
+        // 初回の認証が未実施であればnil
+        self._isCooperation = userDefualt.objectIsForced(forKey: HEALTH_COOPERATION_KEY) ? userDefualt.bool(forKey: HEALTH_COOPERATION_KEY) : nil
+    }
+
+    
+    public var isCooperation: Bool {
+        get {
+            self._isCooperation ?? false
+        }
+        set (newValue) {
+            self._isCooperation = newValue
+            let userDefualt = UserDefaults()
+            userDefualt.setValue(self._isCooperation, forKey: HEALTH_COOPERATION_KEY)
+        }
     }
     
     public func requestAuthorization() -> Promise<Void> {
+        guard self._isCooperation != false else {
+            return Promise.value(())
+        }
+        
         let promise = Promise<Void> { seal in
-            let reads: Set<HKObjectType> = [HKQuantityType.quantityType(forIdentifier: .stepCount)!,
+        let reads: Set<HKObjectType> = [HKQuantityType.quantityType(forIdentifier: .stepCount)!,
                          HKQuantityType.quantityType(forIdentifier: .heartRate)!,
                          HKQuantityType.quantityType(forIdentifier: .activeEnergyBurned)!]
             
             DispatchQueue.main.async {
                 self.healthStore.requestAuthorization(toShare: [], read: reads, completion: { didRequest, err in
+
                     if (didRequest) {
+                        self.isCooperation = true
                         seal.fulfill(())
                         return
                     }
@@ -83,23 +120,37 @@ public class HealthCareComponentService: HealthCareComponent {
     
     public func getHeartRates(from: Date, to: Date) -> Promise<[DayHeartrRateEntity]> {
         let promise = Promise<[DayHeartrRateEntity]> { seal in
-            self.exequteSampleQuery(identifier: .heartRate, from: from, to: to) { (query, results, error) in
-                guard let samples = results else {
-                    seal.fulfill([])
+            self.queryFirstly()
+            .done { _ in
+                self.exequteSampleQuery(identifier: .heartRate, from: from, to: to) { (query, results, error) in
+                    guard let samples = results else {
+                        seal.fulfill([])
+                        return
+                    }
+                    // 日付ごとにデータ抽出
+                    let dict: Dictionary<String, [HKQuantitySample]> = self.collectSamplesAtDay(samples)
+                    // 日ごとのデータをエンティティに変換
+                    let bpm = HKUnit.count().unitDivided(by: .minute())
+                    let entities: [DayHeartrRateEntity] = self.convertTo30minEntities(
+                        dict: dict,
+                        unit: bpm,
+                        converter: { (dayDict: Dictionary<String, [Double]>, day: Date) in
+                            self.convertToHearRateEntity(from: dayDict, day: day)
+                    }) as! [DayHeartrRateEntity]
+
+                    seal.fulfill(entities)
+                }
+            }
+            .catch { (e: Error) in
+                guard let componentError = e as? HealthComponentError else {
+                    seal.reject(e)
                     return
                 }
-                // 日付ごとにデータ抽出
-                let dict: Dictionary<String, [HKQuantitySample]> = self.collectSamplesAtDay(samples)
-                // 日ごとのデータをエンティティに変換
-                let bpm = HKUnit.count().unitDivided(by: .minute())
-                let entities: [DayHeartrRateEntity] = self.convertTo30minEntities(
-                    dict: dict,
-                    unit: bpm,
-                    converter: { (dayDict: Dictionary<String, [Double]>, day: Date) in
-                        self.convertToHearRateEntity(from: dayDict, day: day)
-                }) as! [DayHeartrRateEntity]
-
-                seal.fulfill(entities)
+                
+                switch componentError {
+                case.notCoopreationEnabled:
+                    seal.fulfill([])
+                }
             }
         }
         return promise
@@ -107,21 +158,39 @@ public class HealthCareComponentService: HealthCareComponent {
     
     public func getSteps(from: Date, to: Date) -> Promise<[DayStepEntity]> {
         let promise = Promise<[DayStepEntity]> { seal in
-            self.exequteSampleQuery(identifier: .stepCount, from: from, to: to) { (query, results, error) in
-                guard let samples = results else {
-                    seal.fulfill([])
+            self.queryFirstly()
+            .done { _ in
+                //TODO: wacth > iPhoneの優先順でマージ処理を追加
+                self.exequteSampleQuery(identifier: .stepCount, from: from, to: to) { (query, results, error) in
+                    guard var samples = results else {
+                        seal.fulfill([])
+                        return
+                    }
+                    
+                    samples = samples.filtered(deviceNames: ["iPhone"])
+                    
+                    // 日付ごとにデータ抽出
+                    let dict: Dictionary<String, [HKQuantitySample]> = self.collectSamplesAtDay(samples)
+                    let entities: [DayStepEntity] = self.convertToHourEntities(
+                        dict: dict,
+                        unit: .count(),
+                        converter: {(dayDict: Dictionary<String, [Double]>, day: Date) in
+                            self.convertToStepEntity(from: dayDict, day: day)
+                        }) as! [DayStepEntity]
+
+                    seal.fulfill(entities)
+                }
+            }
+            .catch { (e: Error) in
+                guard let componentError = e as? HealthComponentError else {
+                    seal.reject(e)
                     return
                 }
-                // 日付ごとにデータ抽出
-                let dict: Dictionary<String, [HKQuantitySample]> = self.collectSamplesAtDay(samples)
-                let entities: [DayStepEntity] = self.convertToHourEntities(
-                    dict: dict,
-                    unit: .count(),
-                    converter: {(dayDict: Dictionary<String, [Double]>, day: Date) in
-                        self.convertToStepEntity(from: dayDict, day: day)
-                    }) as! [DayStepEntity]
-
-                seal.fulfill(entities)
+                
+                switch componentError {
+                case.notCoopreationEnabled:
+                    seal.fulfill([])
+                }
             }
         }
         return promise
@@ -129,29 +198,45 @@ public class HealthCareComponentService: HealthCareComponent {
     
     public func getBurnCalories(from: Date, to: Date) -> Promise<[DayBurnCalorieEntity]> {
         let promise = Promise<[DayBurnCalorieEntity]> { seal in
-            self.exequteSampleQuery(identifier: .activeEnergyBurned, from: from, to: to) { (query, results, error) in
-                guard let samples = results else {
-                    seal.fulfill([])
+            self.queryFirstly()
+            .done { _ in
+                self.exequteSampleQuery(identifier: .activeEnergyBurned, from: from, to: to) { (query, results, error) in
+                    guard var samples = results else {
+                        seal.fulfill([])
+                        return
+                    }
+                    
+                    
+                    // 日付ごとにデータ抽出
+                    let dict: Dictionary<String, [HKQuantitySample]> = self.collectSamplesAtDay(samples)
+                    let entities: [DayBurnCalorieEntity] = self.convertToHourEntities(
+                        dict: dict,
+                        unit: .kilocalorie(),
+                        converter: {(dayDict: Dictionary<String, [Double]>, day: Date) in
+                            self.convertToBurnCalorieEntity(from: dayDict, day: day)
+                        }) as! [DayBurnCalorieEntity]
+
+                    seal.fulfill(entities)
+                }
+            }
+            .catch { (e: Error) in
+                guard let componentError = e as? HealthComponentError else {
+                    seal.reject(e)
                     return
                 }
-                // 日付ごとにデータ抽出
-                let dict: Dictionary<String, [HKQuantitySample]> = self.collectSamplesAtDay(samples)
-                let entities: [DayBurnCalorieEntity] = self.convertToHourEntities(
-                    dict: dict,
-                    unit: .kilocalorie(),
-                    converter: {(dayDict: Dictionary<String, [Double]>, day: Date) in
-                        self.convertToBurnCalorieEntity(from: dayDict, day: day)
-                    }) as! [DayBurnCalorieEntity]
-
-                seal.fulfill(entities)
+                
+                switch componentError {
+                case.notCoopreationEnabled:
+                    seal.fulfill([])
+                }
             }
         }
         return promise
     }
     
-    private func exequteSampleQuery(identifier: HKQuantityTypeIdentifier, from:Date, to: Date, _ handler: @escaping (HKSampleQuery, [HKSample]?, Error?) -> Void) {
+    private func exequteSampleQuery(identifier: HKQuantityTypeIdentifier, from:Date, to: Date,  _ handler: @escaping (HKSampleQuery, [HKSample]?, Error?) -> Void) {
         let descriptor = NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: false)
-        let predicate = self.makeDateRangePredicate(from: from, to: to)
+        var predicate = self.makeDateRangePredicate(from: from, to: to)
         let sampleQuery = HKSampleQuery(
             sampleType: HKQuantityType.quantityType(forIdentifier: identifier)!,
             predicate: predicate,
@@ -223,10 +308,10 @@ public class HealthCareComponentService: HealthCareComponent {
         var dict: Dictionary<String, [HKQuantitySample]> = [:]
         for sample in samples {
             let qSample: HKQuantitySample = sample as! HKQuantitySample
-            if (dict[qSample.startDate.yyyy_mm_dd] != nil) {
-                dict[qSample.startDate.yyyy_mm_dd]!.append(qSample)
+            if (dict[qSample.endDate.yyyy_mm_dd] != nil) {
+                dict[qSample.endDate.yyyy_mm_dd]!.append(qSample)
             } else {
-                dict[qSample.startDate.yyyy_mm_dd] = [qSample]
+                dict[qSample.endDate.yyyy_mm_dd] = [qSample]
             }
         }
         
@@ -282,6 +367,17 @@ public class HealthCareComponentService: HealthCareComponent {
         
         return entities
     }
+    
+    /**
+    　クエリ実施の前処理
+     */
+    private func queryFirstly() -> Promise<Void> {
+        guard isCooperation else {
+            return Promise(error: HealthComponentError.notCoopreationEnabled)
+        }
+        
+        return Promise.value(())
+    }
 }
 
 extension Date {
@@ -303,5 +399,19 @@ extension Array where Element == Double {
     
     func mean() -> Double {
         self.total() / Double(self.count)
+    }
+}
+
+private extension Array where Element == HKSample {
+    func filtered(deviceNames: [String]) -> [HKSample] {
+        let result = self.filter { (sample: HKSample) in
+            guard let deviceName = sample.device?.name, deviceNames.contains(deviceName) else {
+                return false
+            }
+            
+            return true
+        }
+        
+        return result
     }
 }

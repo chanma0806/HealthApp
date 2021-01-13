@@ -50,18 +50,51 @@ struct GraphScaleData {
     }
 }
 
+// 連続なプロットの集合
+struct GraphPlotSeries: Identifiable {
+    enum PlotStyle {
+        case Path
+        case Dot
+        case None
+    }
+    
+    // 連続な座標リスト
+    var points: [CGPoint]
+    var index: Int
+    
+    var id: String {
+        get {
+            String(index)
+        }
+    }
+    
+    var plotStyle: PlotStyle {
+        get {
+            switch points.count {
+                case let count where count > 2:
+                    return .Path
+                case let count where count == 1:
+                    return .Dot
+                case let count where count < 1:
+                    return .None
+            default:
+                return .None
+            }
+        }
+    }
+}
+
 /**
     線形グラフビュー
  */
 public struct LinerGraph: View {
     public static func getDummyDatas() -> [Int] {
-        
-//        return [0, 0, 0, 0, 0, 0, 0, 0, 94, 93, 88, 85, 85, 96, 97, 95, 90, 87, 87, 88, 91, 0, 0, 0]
-        
+            
         var dummies = [Int]()
         for _ in 0..<(24 * 2) {
-            dummies.append(Int.random(in: (60..<121)))
+            dummies.append(Int.random(in: (100 ..< 110)))
         }
+                
         return dummies
 //        return [
 //            70, /* 00:00 */
@@ -116,28 +149,45 @@ public struct LinerGraph: View {
     }
     
     @ViewBuilder
-    private func quadCurvedPath(points: [CGPoint]) -> some View {
+    private func quadCurvedPath(plots: [GraphPlotSeries]) -> some View {
 
-        Path { path in
-            var oldControlP: CGPoint?
-            var p1 = points[0]
-            path.move(to: p1)
-            for i in 1..<points.count {
-                let p2 = points[i]
-                var p3: CGPoint?
-                if i < points.count - 1 {
-                    p3 = points[i+1]
-                }
+        ForEach(plots, id: \.id) { plot in
+            switch plot.plotStyle {
+            /** 線形で描画 */
+            case .Path:
+                let points = plot.points
+                Path { path in
+                    var oldControlP: CGPoint?
+                    var p1 = points[0]
+                    path.move(to: p1)
+                    for i in 1..<points.count {
+                        let p2 = points[i]
+                        var p3: CGPoint?
+                        if i < points.count - 1 {
+                            p3 = points[i+1]
+                        }
 
-                let newControlP = self.controlPointForPoints(p1: p1, p2: p2, next: p3)
+                        let newControlP = self.controlPointForPoints(p1: p1, p2: p2, next: p3)
 
-                path.addCurve(to: p2, control1: oldControlP ?? p1, control2: newControlP ?? p2)
+                        path.addCurve(to: p2, control1: oldControlP ?? p1, control2: newControlP ?? p2)
 
-                p1 = p2
-                oldControlP = antipodalFor(point: newControlP, center: p2)
+                        p1 = p2
+                        oldControlP = antipodalFor(point: newControlP, center: p2)
+                    }
+                }.stroke(Color.white, style: StrokeStyle(lineWidth: 2, lineCap: .round))
+                
+            case .Dot:
+            /** 単独プロットは点で描画 */
+                Circle()
+                    .fill()
+                    .foregroundColor(.white)
+                    .frame(width: 5, height: 5)
+                    .position(plot.points[0])
+            case .None:
+            /** プロット対象なし */
+                AnyView(_fromValue: 0)
             }
-        }.stroke(Color.white, style: StrokeStyle(lineWidth: 2, lineCap: .round))
-        
+        }
     }
 
     /// located on the opposite side from the center point
@@ -194,23 +244,50 @@ public struct LinerGraph: View {
         return controlPoint
     }
     
-    private func getPoints(_ datas: [GraphData], scale: GraphScaleData, barAreaWidth: CGFloat, graphHeight: CGFloat) -> [CGPoint] {
+    /**
+    　連続なプロット群リストを作成する
+     　　
+     - note:
+        `GraphPlotSeries.points`には連続な座標を登録し、座標が欠けた時点で別のプロット群を作成する
+     */
+    private func getPoints(_ datas: [GraphData], scale: GraphScaleData, barAreaWidth: CGFloat, graphHeight: CGFloat) -> [GraphPlotSeries] {
         let height: CGFloat = scale.topY - scale.bottomY
-        let points: [CGPoint] = datas.enumerated().map {
+        let points: [CGPoint?] = datas.enumerated().map {
             guard ($0.element.value) > 30  else {
                 return nil
             }
             let x: CGFloat = (CGFloat($0.offset) + 0.5) * (barAreaWidth / 2)
             let y: CGFloat = (1.0 - (CGFloat($0.element.value) - scale.bottomY) / height) * graphHeight
             return CGPoint(x: x, y: y)
-        }.compactMap{ $0 }
+        }
         
-        return points
+        var plots = [GraphPlotSeries]()
+        for point in points{
+            // 初回座標が見つかったらプロット群を作成
+            guard plots.count > 0 else {
+                if (point != nil) {
+                    plots.append(GraphPlotSeries(points: [point!], index: 0))
+                }
+                continue
+            }
+            // nilな座標があればプロット群を区切る
+            guard point != nil else {
+                if (plots.last!.points.count > 0) {
+                    plots.append(GraphPlotSeries(points: [], index: plots.count))
+                }
+                continue
+            }
+            
+            // 座標追加
+            plots[plots.count - 1].points.append(point!)
+        }
+        
+        return plots
     }
     
     mutating private func makeGraphScaleData(_ datas: [Int]) -> GraphScaleData {
-        let maxValue = CGFloat(datas.max()!)
-        let minValue = CGFloat(datas.filter{ $0 > 30 }.min()!)
+        let maxValue = CGFloat(datas.max() ?? 0)
+        let minValue = CGFloat(datas.filter{ $0 > 30 }.min() ?? 0)
         let valueRange = CGFloat(maxValue - minValue)
         let centerValue = (maxValue - minValue) / 2.0 + minValue
         var topValue = (CGFloat(maxValue) * (1.05)).roundedUp(tenPow: 1)
@@ -229,9 +306,11 @@ public struct LinerGraph: View {
     
     public var body: some View {
         let drawHeiht:CGFloat = self.property.graphHeight - (self.property.barWidth + self.property.barOffset)
-        let graphPoints: [CGPoint] = self.getPoints(datas, scale: self.grapScale, barAreaWidth: self.property.barAreaWidth, graphHeight: drawHeiht)
+        let graphPlots: [GraphPlotSeries] = self.getPoints(datas, scale: self.grapScale, barAreaWidth: self.property.barAreaWidth, graphHeight: drawHeiht)
         VStack(alignment: .center, spacing:0, content: {
-            self.quadCurvedPath(points: graphPoints)
+            ZStack {
+                self.quadCurvedPath(plots: graphPlots)
+            }
         })
         .frame(height: self.property.graphHeight)
     }

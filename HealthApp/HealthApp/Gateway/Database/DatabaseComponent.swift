@@ -6,13 +6,15 @@
 //
 
 import Foundation
-import PromiseKit
 import RealmSwift
 import Realm
 
+/**
+　データベースのアクセッサー
+ */
 public class DatabaseComponent {
     
-    public func getStepDatas(from: Date, to: Date) -> Promise<[DailyStepData]> {
+    public func getStepDatas(from: Date, to: Date) -> [DailyStepData] {
         let realm = try! Realm()
         // 同期処理
         let calendar = Calendar.current
@@ -29,24 +31,34 @@ public class DatabaseComponent {
             datas.append(entity)
         }
         
-        return Promise.value(datas)
+        return datas
     }
     
-    public func setStepData(_ entity: DailyStepData) -> Promise<Void> {
+    public func setStepData(_ entity: DailyStepData) {
         let realm = try! Realm()
         let obj = DailyStepDataObject(step: entity.step, date: entity.date, distance: entity.distance)
         try! realm.write {
             realm.add(obj, update: .modified)
         }
+    }
+    
+    public func getTargetSettingData() -> TargetSettingData? {
+        let realm = try! Realm()
+        guard let obj = realm.objects(TargetSettingDataObject.self).sorted(byKeyPath: TargetSettingDataObject.primaryKey()!, ascending:false).first else {
+            return nil
+        }
+        var entity = TargetSettingData()
+        entity.stepTarget = obj.stepTarget
+        entity.settingDate = obj.settingDate
         
-        return Promise.value(())
+        return entity
     }
     
-    public func getTargetSettingData() -> Promise<TargetSettingData?> {
-        Promise.value(nil)
-    }
-    
-    public func setTargetSettingData(_ targetSettingData: TargetSettingData) -> Promise<Void> {
-        Promise.value(())
+    public func setTargetSettingData(_ targetSettingData: TargetSettingData) {
+        let reamlm: Realm = try! Realm()
+        let obj = TargetSettingDataObject(step: targetSettingData.stepTarget, date: targetSettingData.settingDate)
+        try! reamlm.write {
+            reamlm.add(obj, update: .modified)
+        }
     }
 }
