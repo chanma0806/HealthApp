@@ -15,18 +15,28 @@ let BG_FETCHED_STEPS_DATE_KEY = "com.meters.fetched-steps-date"
 let UPDATE_STEP_VALUE: String = "step_fetch_event"
 let PEDOMETER_SAVED_DAY_RANGE = 7
 
+/**
+  歩数フェッチのユースケース
+ 
+ */
 class StepFetchUsecaeService {
-    
+    /** シングルトンなインスタンス */
     static let shared = StepFetchUsecaeService()
     
-    private let pedometer: PedometerComponent
-    private let database: DatabaseComponent
+    // 歩数計コンポーネント
+    private let pedometer: PedometerComponentProtocol
+    // DBコンポーネント
+    private let database: DatabaseComponentProtocol
     
+    // 初期化処理
     private init() {
-        self.pedometer = PedometerComponent.share
-        self.database = DatabaseComponent()
+        self.pedometer = PedometerComponentService.share
+        self.database = DatabaseComponentService()
     }
     
+    /**
+     歩数フェッチを開始する
+     */
     func startFetchStep() {
         var entityContext: DailyStepData?
         self.pedometer.requestStepEvent { step, distance, date in
@@ -38,7 +48,13 @@ class StepFetchUsecaeService {
             }
         }
     }
-        
+     
+    /**
+     指定日の歩数を取得する
+     
+        - Parameters:
+            - date: 取得日
+     */
     func getDailyStep(on date: Date) -> Promise<DailyStepData?> {
         let savedLastDay = Calendar.current.date(byAdding: .day, value: -(PEDOMETER_SAVED_DAY_RANGE - 1), to: Date())!
         let compare = Calendar.current.compare(date, to: savedLastDay, toGranularity: .day)
@@ -62,15 +78,14 @@ class StepFetchUsecaeService {
         }
     }
     
+    /**
+     バックグラウンドでの歩数フェッチを開始する
+     
+     日付更新時に歩数を更新する
+       
+     */
     func requestBackgroundFetch() {
         BGTaskScheduler.shared.register(forTaskWithIdentifier: BGTASK_FETCH_STEPS, using: DispatchQueue.global(), launchHandler: { task in
-            
-            DispatchQueue.main.async {
-                let path = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true).appendingPathComponent("background_feth_log").appendingPathExtension("txt").path
-                let date = Date()
-                let message = "background fecth on: \(date)"
-                FileManager.default.createFile(atPath: path, contents: message.data(using: .utf8), attributes: nil)
-            }
             
             self.fetchStepsFromLastToNow()
                 .done { _ in
@@ -90,6 +105,7 @@ class StepFetchUsecaeService {
         self.submitFetchTask()
     }
     
+    // バックグラウンドタスクに歩数フェッチを登録
     private func submitFetchTask() {
         // 翌日を迎えたらフェッチさせる
         let cal = Calendar.current
@@ -104,6 +120,7 @@ class StepFetchUsecaeService {
         }
     }
     
+    // 歩数計の最終保持日から現在日までの歩数値をフェッチ
     private func fetchStepsFromLastToNow() -> Promise<Void> {
         let savedLastDay = Calendar.current.date(byAdding: .day, value: -PEDOMETER_SAVED_DAY_RANGE, to: Calendar.current.startOfDay(for: Date()))!
         
@@ -129,15 +146,18 @@ class StepFetchUsecaeService {
         (old.date != new.date) || (old.step != new.step) || (old.distance != new.distance)
     }
     
+    // 歩数更新を通知する
     private func postNotify(_ entity: DailyStepData) {
         let notification = Notification(name: .init(UPDATE_STEP_VALUE), object: entity, userInfo: nil)
         NotificationCenter.default.post(notification)
     }
     
+    // 最後に実行したバックグラウンドフェッチの日時を取得
     private func getLastBackgroundFetchedDate() -> Date? {
         UserDefaults().value(forKey: BG_FETCHED_STEPS_DATE_KEY) as? Date
     }
     
+    // 最後に実行したバックグラウンドフェッチの日時を保存
     private func setLastBackgroundFetchedDate() {
         UserDefaults().setValue(Date(), forKey: BG_FETCHED_STEPS_DATE_KEY)
     }

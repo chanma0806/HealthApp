@@ -7,6 +7,13 @@
 
 import SwiftUI
 
+/**
+ ベースのView
+ 
+ - note:
+    本Viewをアプリ画面の最背面とし、
+    ModalUsecaseServiceのリクエストから`AppBaseView`上にモーダルを表示する
+ */
 struct AppBaseView: View, ModalDelegate {
     @State var modalType: ModalType? = nil
     @State var modalContent: ModalContent = ModalContent()

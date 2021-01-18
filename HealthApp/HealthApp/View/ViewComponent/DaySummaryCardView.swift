@@ -49,6 +49,7 @@ struct ChangeObserver<Base: View, Value: Equatable>: View {
     }
 }
 
+/** サマリーカード */
 struct DaySummaryCardView: View {
         
     init (stepValue: Binding<Int>) {
@@ -110,8 +111,8 @@ struct DaySummaryCardView: View {
     }
 }
 
+/** 弧状のプログレスバー */
 struct ProgeressArcBar: Shape {
-    
     var progress: Double
     let radius: CGFloat
     func path(in rect: CGRect) -> Path {

@@ -10,6 +10,9 @@ import PromiseKit
 
 typealias PromiseBlock<T> = () -> Promise<T>
 
+/**
+  PromiseKitのユーティリティ
+ */
 class PromiseUtility {
     
     // プロミスを直列実行する

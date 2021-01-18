@@ -8,6 +8,9 @@
 import Foundation
 import SwiftUI
 
+/**
+  モーダル表示のユースケース
+ */
 class ModalUsecaseService {
     static let share = ModalUsecaseService()
     var delegate: ModalDelegate?
@@ -16,11 +19,23 @@ class ModalUsecaseService {
         
     }
     
+    /**
+     sns投稿モーダルをリクエストする
+     - Parameters:
+       - content: 投稿イメージで参照するカードデータ
+       - dismiss: クローズ処理
+     */
     func requestSNSShareModal(content: ShareCardData, dismiss: @escaping ()->Void) {
         self.delegate?.modalContent = ModalContent(snsShareContent: content, dismissAction: dismiss)
         self.delegate?.recievedModalRequest(type: .SNSShare)
     }
     
+    /**
+     ガイダンス用モーダルをリクエストする
+     - Parameters:
+       - content: 表示コンテンツ
+       - dismiss: クローズ処理
+     */
     func requestIntroductionModal(content: IntroductioContent, dismiss: @escaping ()->Void) {
         self.delegate?.modalContent = ModalContent(introductionContent: content, dismissAction: dismiss)
         self.delegate?.recievedModalRequest(type: .Introduction)
@@ -49,6 +64,7 @@ protocol ModalDelegate {
 }
 
 extension ModalDelegate {
+    // ガイダンスモーダルを表示
     @ViewBuilder func showModalIntroduction(_ dismissAction: @escaping ()->Void) -> some View {
         let content = modalContent.introductionContent!
         GeometryReader { geo in
@@ -79,6 +95,7 @@ extension ModalDelegate {
         }
     }
     
+    // SNS投稿モーダルを表示
     @ViewBuilder func showModalSnsShare(_ dismissAction: @escaping ()->Void) -> some View {
         let shareCardData = self.modalContent.snsShareContent!
         GeometryReader { geo in

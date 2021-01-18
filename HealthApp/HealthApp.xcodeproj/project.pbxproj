@@ -8,10 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		EE05D135257520780026B418 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE05D134257520780026B418 /* SettingView.swift */; };
-		EE33092D256E879400BDB483 /* DatabaseComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE33092C256E879400BDB483 /* DatabaseComponent.swift */; };
+		EE33092D256E879400BDB483 /* DatabaseComponentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE33092C256E879400BDB483 /* DatabaseComponentService.swift */; };
 		EE330932256E882900BDB483 /* DailyStepData.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE330931256E882900BDB483 /* DailyStepData.swift */; };
 		EE330936256E89BE00BDB483 /* TargetSettingData.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE330935256E89BE00BDB483 /* TargetSettingData.swift */; };
-		EE5627FC2551FF7D0078CD87 /* HealthCareComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5627FB2551FF7D0078CD87 /* HealthCareComponent.swift */; };
+		EE5627FC2551FF7D0078CD87 /* HealthCareComponentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5627FB2551FF7D0078CD87 /* HealthCareComponentService.swift */; };
 		EE562805255200C80078CD87 /* PromiseKit in Frameworks */ = {isa = PBXBuildFile; productRef = EE562804255200C80078CD87 /* PromiseKit */; };
 		EE56280C255205790078CD87 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE56280B255205790078CD87 /* HealthKit.framework */; };
 		EE59E592257B6D1300CECA5C /* SociaShareModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE59E591257B6D1300CECA5C /* SociaShareModalView.swift */; };
@@ -27,13 +27,15 @@
 		EE66AB042593676100CE5E95 /* AppBaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE66AB032593676100CE5E95 /* AppBaseView.swift */; };
 		EE74582625999BC4009AA109 /* Arrow.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE74582525999BC4009AA109 /* Arrow.swift */; };
 		EE7458302599B209009AA109 /* ModalUsecaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE74582F2599B209009AA109 /* ModalUsecaseService.swift */; };
-		EE7458542599B380009AA109 /* IntroductionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE74584C2599B380009AA109 /* IntroductionView.swift */; };
 		EE7458552599B380009AA109 /* DashboardUsecaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE74584D2599B380009AA109 /* DashboardUsecaseService.swift */; };
 		EE7458562599B380009AA109 /* SettingUsecaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE74584E2599B380009AA109 /* SettingUsecaseService.swift */; };
 		EE7458582599B380009AA109 /* IntroductionUsecaseServiece.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7458502599B380009AA109 /* IntroductionUsecaseServiece.swift */; };
 		EE7458592599B380009AA109 /* StepFetchUsecaeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7458512599B380009AA109 /* StepFetchUsecaeService.swift */; };
 		EE74585A2599B380009AA109 /* PromiseUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7458532599B380009AA109 /* PromiseUtility.swift */; };
 		EE74892C258F49810070155A /* IntroductionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE74892B258F49810070155A /* IntroductionView.swift */; };
+		EE80321725B5BD6F000CA979 /* DatastoreComponentProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE80321625B5BD6F000CA979 /* DatastoreComponentProtocol.swift */; };
+		EE80321B25B5BDAB000CA979 /* PedometerComponentProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE80321A25B5BDAB000CA979 /* PedometerComponentProtocol.swift */; };
+		EE80322125B5BFA3000CA979 /* HealthCareComponentProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE80322025B5BFA3000CA979 /* HealthCareComponentProtocol.swift */; };
 		EE9C4784256FCFA90039ACAE /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = EE9C4783256FCFA90039ACAE /* Realm */; };
 		EE9C479025722F930039ACAE /* DaySummaryCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE9C478F25722F930039ACAE /* DaySummaryCardView.swift */; };
 		EECB1DC9254D26F600B047E2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EECB1DC8254D26F600B047E2 /* AppDelegate.swift */; };
@@ -45,7 +47,7 @@
 		EECB1DE0254D26F900B047E2 /* HealthAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EECB1DDF254D26F900B047E2 /* HealthAppTests.swift */; };
 		EEE2BF13256E8EC8003B6F99 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = EEE2BF12256E8EC8003B6F99 /* RealmSwift */; };
 		EEE2BF1B256E8F3C003B6F99 /* DailyStepDataObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEE2BF1A256E8F3C003B6F99 /* DailyStepDataObject.swift */; };
-		EEF5CD5F256E72DD00843D8D /* PedometerComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEF5CD5E256E72DD00843D8D /* PedometerComponent.swift */; };
+		EEF5CD5F256E72DD00843D8D /* PedometerComponentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEF5CD5E256E72DD00843D8D /* PedometerComponentService.swift */; };
 		EEF5CD65256E76EA00843D8D /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EEF5CD64256E76EA00843D8D /* CoreMotion.framework */; };
 /* End PBXBuildFile section */
 
@@ -61,11 +63,11 @@
 
 /* Begin PBXFileReference section */
 		EE05D134257520780026B418 /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
-		EE33092C256E879400BDB483 /* DatabaseComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseComponent.swift; sourceTree = "<group>"; };
+		EE33092C256E879400BDB483 /* DatabaseComponentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseComponentService.swift; sourceTree = "<group>"; };
 		EE330931256E882900BDB483 /* DailyStepData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyStepData.swift; sourceTree = "<group>"; };
 		EE330935256E89BE00BDB483 /* TargetSettingData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TargetSettingData.swift; sourceTree = "<group>"; };
 		EE552C4D2554310E004360BD /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		EE5627FB2551FF7D0078CD87 /* HealthCareComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthCareComponent.swift; sourceTree = "<group>"; };
+		EE5627FB2551FF7D0078CD87 /* HealthCareComponentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthCareComponentService.swift; sourceTree = "<group>"; };
 		EE562809255205790078CD87 /* HealthApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HealthApp.entitlements; sourceTree = "<group>"; };
 		EE56280B255205790078CD87 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		EE59E591257B6D1300CECA5C /* SociaShareModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SociaShareModalView.swift; sourceTree = "<group>"; };
@@ -81,13 +83,15 @@
 		EE66AB032593676100CE5E95 /* AppBaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppBaseView.swift; sourceTree = "<group>"; };
 		EE74582525999BC4009AA109 /* Arrow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Arrow.swift; sourceTree = "<group>"; };
 		EE74582F2599B209009AA109 /* ModalUsecaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalUsecaseService.swift; sourceTree = "<group>"; };
-		EE74584C2599B380009AA109 /* IntroductionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroductionView.swift; sourceTree = "<group>"; };
 		EE74584D2599B380009AA109 /* DashboardUsecaseService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardUsecaseService.swift; sourceTree = "<group>"; };
 		EE74584E2599B380009AA109 /* SettingUsecaseService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingUsecaseService.swift; sourceTree = "<group>"; };
 		EE7458502599B380009AA109 /* IntroductionUsecaseServiece.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroductionUsecaseServiece.swift; sourceTree = "<group>"; };
 		EE7458512599B380009AA109 /* StepFetchUsecaeService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StepFetchUsecaeService.swift; sourceTree = "<group>"; };
 		EE7458532599B380009AA109 /* PromiseUtility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PromiseUtility.swift; sourceTree = "<group>"; };
-		EE74892B258F49810070155A /* IntroductionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = IntroductionView.swift; path = Usecase/IntroductionView.swift; sourceTree = "<group>"; };
+		EE74892B258F49810070155A /* IntroductionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroductionView.swift; sourceTree = "<group>"; };
+		EE80321625B5BD6F000CA979 /* DatastoreComponentProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatastoreComponentProtocol.swift; sourceTree = "<group>"; };
+		EE80321A25B5BDAB000CA979 /* PedometerComponentProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PedometerComponentProtocol.swift; sourceTree = "<group>"; };
+		EE80322025B5BFA3000CA979 /* HealthCareComponentProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthCareComponentProtocol.swift; sourceTree = "<group>"; };
 		EE9C478F25722F930039ACAE /* DaySummaryCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaySummaryCardView.swift; sourceTree = "<group>"; };
 		EECB1DC5254D26F600B047E2 /* meters.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = meters.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EECB1DC8254D26F600B047E2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -102,7 +106,7 @@
 		EECB1DE1254D26F900B047E2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EECB1DEA254D26F900B047E2 /* HealthAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthAppUITests.swift; sourceTree = "<group>"; };
 		EEE2BF1A256E8F3C003B6F99 /* DailyStepDataObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyStepDataObject.swift; sourceTree = "<group>"; };
-		EEF5CD5E256E72DD00843D8D /* PedometerComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PedometerComponent.swift; sourceTree = "<group>"; };
+		EEF5CD5E256E72DD00843D8D /* PedometerComponentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PedometerComponentService.swift; sourceTree = "<group>"; };
 		EEF5CD64256E76EA00843D8D /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -129,6 +133,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		EE2C5BF025AF250C00E6F0C3 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				EE6534A9254DB04200F1698A /* ViewComponent */,
+				EE05D134257520780026B418 /* SettingView.swift */,
+				EE59E591257B6D1300CECA5C /* SociaShareModalView.swift */,
+				EECB1DCC254D26F600B047E2 /* DashboardView.swift */,
+				EE74892B258F49810070155A /* IntroductionView.swift */,
+				EE66AB032593676100CE5E95 /* AppBaseView.swift */,
+				EE74582F2599B209009AA109 /* ModalUsecaseService.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		EE330930256E880400BDB483 /* Entity */ = {
 			isa = PBXGroup;
 			children = (
@@ -166,18 +184,18 @@
 			path = Graph;
 			sourceTree = "<group>";
 		};
-		EE6534A9254DB04200F1698A /* UIComponent */ = {
+		EE6534A9254DB04200F1698A /* ViewComponent */ = {
 			isa = PBXGroup;
 			children = (
-				EE6534B5254DB0D200F1698A /* UIPart */,
+				EE6534B5254DB0D200F1698A /* ViewParts */,
 				EE6534C1254E552400F1698A /* HealthCardView.swift */,
 				EE9C478F25722F930039ACAE /* DaySummaryCardView.swift */,
 				EE6534C9254E561E00F1698A /* ColorDefine.swift */,
 			);
-			path = UIComponent;
+			path = ViewComponent;
 			sourceTree = "<group>";
 		};
-		EE6534B5254DB0D200F1698A /* UIPart */ = {
+		EE6534B5254DB0D200F1698A /* ViewParts */ = {
 			isa = PBXGroup;
 			children = (
 				EE5CFEA625516AA7009FB23C /* Graph */,
@@ -187,18 +205,16 @@
 				EE5A38BC257A610000EB34FF /* CustomNavigationView.swift */,
 				EE74582525999BC4009AA109 /* Arrow.swift */,
 			);
-			path = UIPart;
+			path = ViewParts;
 			sourceTree = "<group>";
 		};
 		EE74584B2599B380009AA109 /* Usecase */ = {
 			isa = PBXGroup;
 			children = (
-				EE74584C2599B380009AA109 /* IntroductionView.swift */,
 				EE74584D2599B380009AA109 /* DashboardUsecaseService.swift */,
 				EE74584E2599B380009AA109 /* SettingUsecaseService.swift */,
 				EE7458502599B380009AA109 /* IntroductionUsecaseServiece.swift */,
 				EE7458512599B380009AA109 /* StepFetchUsecaeService.swift */,
-				EE74582F2599B209009AA109 /* ModalUsecaseService.swift */,
 				EE7458522599B380009AA109 /* Utility */,
 			);
 			path = Usecase;
@@ -210,6 +226,26 @@
 				EE7458532599B380009AA109 /* PromiseUtility.swift */,
 			);
 			path = Utility;
+			sourceTree = "<group>";
+		};
+		EE80321425B5BD31000CA979 /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				EE80321525B5BD4F000CA979 /* GatewayInterface */,
+				EE330930256E880400BDB483 /* Entity */,
+				EE74584B2599B380009AA109 /* Usecase */,
+			);
+			path = Domain;
+			sourceTree = "<group>";
+		};
+		EE80321525B5BD4F000CA979 /* GatewayInterface */ = {
+			isa = PBXGroup;
+			children = (
+				EE80321625B5BD6F000CA979 /* DatastoreComponentProtocol.swift */,
+				EE80321A25B5BDAB000CA979 /* PedometerComponentProtocol.swift */,
+				EE80322025B5BFA3000CA979 /* HealthCareComponentProtocol.swift */,
+			);
+			path = GatewayInterface;
 			sourceTree = "<group>";
 		};
 		EECB1DBC254D26F600B047E2 = {
@@ -236,17 +272,11 @@
 			isa = PBXGroup;
 			children = (
 				EE562809255205790078CD87 /* HealthApp.entitlements */,
-				EE330930256E880400BDB483 /* Entity */,
+				EE80321425B5BD31000CA979 /* Domain */,
 				EE5627FA2551FF5C0078CD87 /* Gateway */,
-				EE6534A9254DB04200F1698A /* UIComponent */,
-				EE74584B2599B380009AA109 /* Usecase */,
+				EE2C5BF025AF250C00E6F0C3 /* View */,
 				EECB1DC8254D26F600B047E2 /* AppDelegate.swift */,
 				EECB1DCA254D26F600B047E2 /* SceneDelegate.swift */,
-				EE05D134257520780026B418 /* SettingView.swift */,
-				EE59E591257B6D1300CECA5C /* SociaShareModalView.swift */,
-				EECB1DCC254D26F600B047E2 /* DashboardView.swift */,
-				EE74892B258F49810070155A /* IntroductionView.swift */,
-				EE66AB032593676100CE5E95 /* AppBaseView.swift */,
 				EECB1DCE254D26F900B047E2 /* Assets.xcassets */,
 				EECB1DD3254D26F900B047E2 /* LaunchScreen.storyboard */,
 				EECB1DD6254D26F900B047E2 /* Info.plist */,
@@ -284,7 +314,7 @@
 		EEE2BF16256E8EF3003B6F99 /* HealthCare */ = {
 			isa = PBXGroup;
 			children = (
-				EE5627FB2551FF7D0078CD87 /* HealthCareComponent.swift */,
+				EE5627FB2551FF7D0078CD87 /* HealthCareComponentService.swift */,
 			);
 			path = HealthCare;
 			sourceTree = "<group>";
@@ -292,7 +322,7 @@
 		EEE2BF17256E8F06003B6F99 /* Pedometer */ = {
 			isa = PBXGroup;
 			children = (
-				EEF5CD5E256E72DD00843D8D /* PedometerComponent.swift */,
+				EEF5CD5E256E72DD00843D8D /* PedometerComponentService.swift */,
 			);
 			path = Pedometer;
 			sourceTree = "<group>";
@@ -301,7 +331,7 @@
 			isa = PBXGroup;
 			children = (
 				EEE2BF19256E8F24003B6F99 /* DataObject */,
-				EE33092C256E879400BDB483 /* DatabaseComponent.swift */,
+				EE33092C256E879400BDB483 /* DatabaseComponentService.swift */,
 			);
 			path = Database;
 			sourceTree = "<group>";
@@ -428,16 +458,17 @@
 				EE05D135257520780026B418 /* SettingView.swift in Sources */,
 				EE74585A2599B380009AA109 /* PromiseUtility.swift in Sources */,
 				EE7458552599B380009AA109 /* DashboardUsecaseService.swift in Sources */,
-				EE33092D256E879400BDB483 /* DatabaseComponent.swift in Sources */,
+				EE33092D256E879400BDB483 /* DatabaseComponentService.swift in Sources */,
 				EE5A38BD257A610000EB34FF /* CustomNavigationView.swift in Sources */,
-				EE7458542599B380009AA109 /* IntroductionView.swift in Sources */,
 				EE74892C258F49810070155A /* IntroductionView.swift in Sources */,
 				EE6534CF254E592300F1698A /* CircleArrow.swift in Sources */,
 				EE7458302599B209009AA109 /* ModalUsecaseService.swift in Sources */,
-				EEF5CD5F256E72DD00843D8D /* PedometerComponent.swift in Sources */,
+				EEF5CD5F256E72DD00843D8D /* PedometerComponentService.swift in Sources */,
 				EE74582625999BC4009AA109 /* Arrow.swift in Sources */,
+				EE80321725B5BD6F000CA979 /* DatastoreComponentProtocol.swift in Sources */,
 				EE5CFEB025516B62009FB23C /* BarGraphView.swift in Sources */,
 				EE330936256E89BE00BDB483 /* TargetSettingData.swift in Sources */,
+				EE80322125B5BFA3000CA979 /* HealthCareComponentProtocol.swift in Sources */,
 				EE7458592599B380009AA109 /* StepFetchUsecaeService.swift in Sources */,
 				EECB1DC9254D26F600B047E2 /* AppDelegate.swift in Sources */,
 				EE66AB042593676100CE5E95 /* AppBaseView.swift in Sources */,
@@ -445,6 +476,7 @@
 				EECB1DCB254D26F600B047E2 /* SceneDelegate.swift in Sources */,
 				EE6534CA254E561E00F1698A /* ColorDefine.swift in Sources */,
 				EE59E592257B6D1300CECA5C /* SociaShareModalView.swift in Sources */,
+				EE80321B25B5BDAB000CA979 /* PedometerComponentProtocol.swift in Sources */,
 				EE5CFEA825516AE8009FB23C /* LinerGraphView.swift in Sources */,
 				EE5A38C5257A70A400EB34FF /* TargetSettingDataObject.swift in Sources */,
 				EE6534D4254E5B6D00F1698A /* SyncButton.swift in Sources */,
@@ -453,7 +485,7 @@
 				EE9C479025722F930039ACAE /* DaySummaryCardView.swift in Sources */,
 				EE6534BA254DB0F600F1698A /* Triangle.swift in Sources */,
 				EE6534C2254E552400F1698A /* HealthCardView.swift in Sources */,
-				EE5627FC2551FF7D0078CD87 /* HealthCareComponent.swift in Sources */,
+				EE5627FC2551FF7D0078CD87 /* HealthCareComponentService.swift in Sources */,
 				EE7458582599B380009AA109 /* IntroductionUsecaseServiece.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

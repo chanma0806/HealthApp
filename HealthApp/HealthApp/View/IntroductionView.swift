@@ -24,6 +24,7 @@ struct IntroductioContent {
     let imgaeSizeRatio: CGSize
 }
 
+/** ガイダンス画面 */
 struct IntroductionView: View {
     
     @EnvironmentObject var setting: SettingData

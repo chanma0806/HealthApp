@@ -21,6 +21,9 @@ let MIN_TARGET_STEP = 1000
 
 let TARGET_STEP_CHANGE_RANGE = 500
 
+/**
+ 設定画面
+*/
 struct SettingView: View {
     
     enum ButtonType: Int {

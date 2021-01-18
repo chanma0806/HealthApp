@@ -13,12 +13,15 @@ let INITIAL_STEP_TARGET: Int = 10000
 
 let DID_SHOW_INTRODUCTION_KEY = "did_show_introduction"
 
+/**
+  設定画面のユースケース
+ */
 class SettingUsecaseServicce {
-    private let database: DatabaseComponent
-    private var health: HealthCareComponent
+    private let database: DatabaseComponentProtocol
+    private var health: HealthCareComponentProtocol
     
     init () {
-        self.database = DatabaseComponent()
+        self.database = DatabaseComponentService()
         self.health = HealthCareComponentService.share
     }
     

@@ -1,5 +1,5 @@
 //
-//  HealthCareComponent.swift
+//  HealthCareComponentService.swift
 //  HealthApp
 //
 //  Created by 丸山大幸 on 2020/11/04.
@@ -11,66 +11,18 @@ import HealthKit
 
 let HEALTH_COOPERATION_KEY = "health-cooperation-key"
 
-enum HealthComponentError: Error {
-    case notCoopreationEnabled
-}
-
-protocol HealthCareEntity {
-    var date: Date { get }
-    var values: [Int]  { get }
-}
-
-public struct DayHeartrRateEntity: HealthCareEntity {
-    let date: Date
-    let values: [Int]
-}
-
-public struct DayStepEntity: HealthCareEntity {
-    let date: Date
-    let values: [Int]
-}
-
-public struct DayBurnCalorieEntity: HealthCareEntity {
-    let date: Date
-    let values: [Int]
-}
-
-public protocol HealthCareComponent {
+/**
+ HealthCareComponentProtocolの実装クラス
+ 
+ */
+public class HealthCareComponentService: HealthCareComponentProtocol {
     
-    /**
-    　ヘルケア連携が有効か
-     */
-    var isCooperation: Bool { get set }
-    
-    /**
-     アクセス許可をリクエストする
-     */
-    func requestAuthorization() -> Promise<Void>
-    
-    /**
-     心拍数を取得する
-     */
-    func getHeartRates(from: Date, to: Date) -> Promise<[DayHeartrRateEntity]>
-    
-    /**
-     歩数を取得する
-     */
-    func getSteps(from: Date, to: Date) -> Promise<[DayStepEntity]>
-    
-    /**
-     - Attention: 消費カロリーを取得する
-     */
-    func getBurnCalories(from: Date, to: Date) -> Promise<[DayBurnCalorieEntity]>
-    
-}
-
-public class HealthCareComponentService: HealthCareComponent {
-    
+    /** シングルトンなインスタンス */
     static let share = HealthCareComponentService()
         
-    /** HealthKit */
+    // HealthKit
     private let healthStore: HKHealthStore
-    /** isCooperationの内部変数 */
+    // isCooperationの内部変数
     private var _isCooperation: Bool?
     
     private init() {
@@ -118,8 +70,8 @@ public class HealthCareComponentService: HealthCareComponent {
         return promise
     }
     
-    public func getHeartRates(from: Date, to: Date) -> Promise<[DayHeartrRateEntity]> {
-        let promise = Promise<[DayHeartrRateEntity]> { seal in
+    public func getHeartRates(from: Date, to: Date) -> Promise<[DayHeartrRateDto]> {
+        let promise = Promise<[DayHeartrRateDto]> { seal in
             self.queryFirstly()
             .done { _ in
                 self.exequteSampleQuery(identifier: .heartRate, from: from, to: to) { (query, results, error) in
@@ -131,12 +83,12 @@ public class HealthCareComponentService: HealthCareComponent {
                     let dict: Dictionary<String, [HKQuantitySample]> = self.collectSamplesAtDay(samples)
                     // 日ごとのデータをエンティティに変換
                     let bpm = HKUnit.count().unitDivided(by: .minute())
-                    let entities: [DayHeartrRateEntity] = self.convertTo30minEntities(
+                    let entities: [DayHeartrRateDto] = self.convertTo30minEntities(
                         dict: dict,
                         unit: bpm,
                         converter: { (dayDict: Dictionary<String, [Double]>, day: Date) in
                             self.convertToHearRateEntity(from: dayDict, day: day)
-                    }) as! [DayHeartrRateEntity]
+                    }) as! [DayHeartrRateDto]
 
                     seal.fulfill(entities)
                 }
@@ -156,8 +108,8 @@ public class HealthCareComponentService: HealthCareComponent {
         return promise
     }
     
-    public func getSteps(from: Date, to: Date) -> Promise<[DayStepEntity]> {
-        let promise = Promise<[DayStepEntity]> { seal in
+    public func getSteps(from: Date, to: Date) -> Promise<[DayStepDto]> {
+        let promise = Promise<[DayStepDto]> { seal in
             self.queryFirstly()
             .done { _ in
                 //TODO: wacth > iPhoneの優先順でマージ処理を追加
@@ -171,12 +123,12 @@ public class HealthCareComponentService: HealthCareComponent {
                     
                     // 日付ごとにデータ抽出
                     let dict: Dictionary<String, [HKQuantitySample]> = self.collectSamplesAtDay(samples)
-                    let entities: [DayStepEntity] = self.convertToHourEntities(
+                    let entities: [DayStepDto] = self.convertToHourEntities(
                         dict: dict,
                         unit: .count(),
                         converter: {(dayDict: Dictionary<String, [Double]>, day: Date) in
                             self.convertToStepEntity(from: dayDict, day: day)
-                        }) as! [DayStepEntity]
+                        }) as! [DayStepDto]
 
                     seal.fulfill(entities)
                 }
@@ -196,8 +148,8 @@ public class HealthCareComponentService: HealthCareComponent {
         return promise
     }
     
-    public func getBurnCalories(from: Date, to: Date) -> Promise<[DayBurnCalorieEntity]> {
-        let promise = Promise<[DayBurnCalorieEntity]> { seal in
+    public func getBurnCalories(from: Date, to: Date) -> Promise<[DayBurnCalorieDto]> {
+        let promise = Promise<[DayBurnCalorieDto]> { seal in
             self.queryFirstly()
             .done { _ in
                 self.exequteSampleQuery(identifier: .activeEnergyBurned, from: from, to: to) { (query, results, error) in
@@ -209,12 +161,12 @@ public class HealthCareComponentService: HealthCareComponent {
                     
                     // 日付ごとにデータ抽出
                     let dict: Dictionary<String, [HKQuantitySample]> = self.collectSamplesAtDay(samples)
-                    let entities: [DayBurnCalorieEntity] = self.convertToHourEntities(
+                    let entities: [DayBurnCalorieDto] = self.convertToHourEntities(
                         dict: dict,
                         unit: .kilocalorie(),
                         converter: {(dayDict: Dictionary<String, [Double]>, day: Date) in
                             self.convertToBurnCalorieEntity(from: dayDict, day: day)
-                        }) as! [DayBurnCalorieEntity]
+                        }) as! [DayBurnCalorieDto]
 
                     seal.fulfill(entities)
                 }
@@ -259,7 +211,7 @@ public class HealthCareComponentService: HealthCareComponent {
     }
     
     // 心拍エンティティのコンバーター
-    private func convertToHearRateEntity(from dict:Dictionary<String, [Double]>, day: Date) -> DayHeartrRateEntity {
+    private func convertToHearRateEntity(from dict:Dictionary<String, [Double]>, day: Date) -> DayHeartrRateDto {
         var values = [Int]()
         let every30mins: [String] = [Int]((0..<(24 * 2))).map{(index: Int) in String(Double(index) * 0.5)}
         for minKey in every30mins {
@@ -269,12 +221,12 @@ public class HealthCareComponentService: HealthCareComponent {
             }
             values.append(Int(every30minValues.mean()))
         }
-        let entity = DayHeartrRateEntity(date: day, values: values)
+        let entity = DayHeartrRateDto(date: day, values: values)
         return entity
     }
     
     // 歩数エンティティのコンバーター
-    private func convertToStepEntity(from dict:Dictionary<String, [Double]>, day: Date) -> DayStepEntity {
+    private func convertToStepEntity(from dict:Dictionary<String, [Double]>, day: Date) -> DayStepDto {
         var values = [Int]()
         let hours_24: [String] = [Int]((0...23)).map{(hour: Int) in String(hour)}
         for hourKey in hours_24 {
@@ -284,12 +236,12 @@ public class HealthCareComponentService: HealthCareComponent {
             }
             values.append(Int(hourValues.total()))
         }
-        let entity = DayStepEntity(date: day, values: values)
+        let entity = DayStepDto(date: day, values: values)
         return entity
     }
     
     // 消費カロリーエンティティのコンバーター
-    private func convertToBurnCalorieEntity(from dict:Dictionary<String, [Double]>, day: Date) -> DayBurnCalorieEntity {
+    private func convertToBurnCalorieEntity(from dict:Dictionary<String, [Double]>, day: Date) -> DayBurnCalorieDto {
         var values = [Int]()
         let hours_24: [String] = [Int]((0...23)).map{(hour: Int) in String(hour)}
         for hourKey in hours_24 {
@@ -299,7 +251,7 @@ public class HealthCareComponentService: HealthCareComponent {
             }
             values.append(Int(hourValues.total()))
         }
-        let entity = DayBurnCalorieEntity(date: day, values: values)
+        let entity = DayBurnCalorieDto(date: day, values: values)
         return entity
     }
     
@@ -319,9 +271,9 @@ public class HealthCareComponentService: HealthCareComponent {
     }
     
     //　エンティティへの変換
-    private func convertToHourEntities(dict: Dictionary<String, [HKQuantitySample]>, unit: HKUnit, converter:(_  dict:Dictionary<String, [Double]>, _ day: Date) -> HealthCareEntity) -> [HealthCareEntity] {
+    private func convertToHourEntities(dict: Dictionary<String, [HKQuantitySample]>, unit: HKUnit, converter:(_  dict:Dictionary<String, [Double]>, _ day: Date) -> HealthCareDto) -> [HealthCareDto] {
         let calendar = Calendar.current
-        var entities = [HealthCareEntity]()
+        var entities = [HealthCareDto]()
         for dateKey in dict.keys {
             // 時間ごとにデータを抽出
             var dayDict: Dictionary<String, [Double]> = [:]
@@ -343,9 +295,9 @@ public class HealthCareComponentService: HealthCareComponent {
     }
     
     //　エンティティへの変換
-    private func convertTo30minEntities(dict: Dictionary<String, [HKQuantitySample]>, unit: HKUnit, converter:(_  dict:Dictionary<String, [Double]>, _ day: Date) -> HealthCareEntity) -> [HealthCareEntity] {
+    private func convertTo30minEntities(dict: Dictionary<String, [HKQuantitySample]>, unit: HKUnit, converter:(_  dict:Dictionary<String, [Double]>, _ day: Date) -> HealthCareDto) -> [HealthCareDto] {
         let calendar = Calendar.current
-        var entities = [HealthCareEntity]()
+        var entities = [HealthCareDto]()
         for dateKey in dict.keys {
             // 時間ごとにデータを抽出
             var dayDict: Dictionary<String, [Double]> = [:]
@@ -403,6 +355,7 @@ extension Array where Element == Double {
 }
 
 private extension Array where Element == HKSample {
+    // デバイス名でフィルタリングする
     func filtered(deviceNames: [String]) -> [HKSample] {
         let result = self.filter { (sample: HKSample) in
             guard let deviceName = sample.device?.name, deviceNames.contains(deviceName) else {

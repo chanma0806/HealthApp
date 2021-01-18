@@ -17,8 +17,11 @@ let MIN_STEPS: Int = 0
 let MAX_CALORIE: Int = 1000
 let MIN_CALORIE: Int = 0
 
+/**
+  ダッシュボード画面のユースケース
+ */
 class DashboardUsecaseService {
-    let healthComponet: HealthCareComponent
+    let healthComponet: HealthCareComponentService
     
     init() {
         self.healthComponet = HealthCareComponentService.share
@@ -28,7 +31,7 @@ class DashboardUsecaseService {
         self.healthComponet.requestAuthorization()
     }
     
-    func getHeartRate(on date: Date) -> Promise<DayHeartrRateEntity> {
+    func getHeartRate(on date: Date) -> Promise<DayHeartrRateDto> {
         
 //        let data = [
 //            80, /** 0 */
@@ -83,18 +86,18 @@ class DashboardUsecaseService {
 //
 //        return Promise.value(DayHeartrRateEntity(date: date, values: data))
         
-        let promise = Promise<DayHeartrRateEntity> { seal in
+        let promise = Promise<DayHeartrRateDto> { seal in
             self.healthComponet.getHeartRates(from: date, to: date)
-            .done { (enities: [DayHeartrRateEntity]) in
+            .done { (enities: [DayHeartrRateDto]) in
                 guard enities.count != 0 else {
-                    let zeroEntity = DayHeartrRateEntity(date: date, values: [0])
+                    let zeroEntity = DayHeartrRateDto(date: date, values: [0])
                     seal.fulfill(zeroEntity)
                     return
                 }
 
                 // バリデーション後に返却
                 let values = enities[0].values.validated(max: MAX_HEART_RATE, min: MIN_HEART_RATE)
-                let entity = DayHeartrRateEntity(date: enities[0].date, values: values)
+                let entity = DayHeartrRateDto(date: enities[0].date, values: values)
                 seal.fulfill(entity)
             }
             .catch { error in
@@ -105,7 +108,7 @@ class DashboardUsecaseService {
         return promise
     }
     
-    func getStep(on date: Date) -> Promise<DayStepEntity> {
+    func getStep(on date: Date) -> Promise<DayStepDto> {
 //        let data = [
 //            0, /* 0 */
 //            0, /* 1 */
@@ -134,18 +137,18 @@ class DashboardUsecaseService {
 //        ]
 //
 //        return Promise.value(DayStepEntity(date: date, values: data))
-        let promise = Promise<DayStepEntity> { seal in
+        let promise = Promise<DayStepDto> { seal in
             self.healthComponet.getSteps(from: date, to: date)
-            .done { (enities: [DayStepEntity]) in
+            .done { (enities: [DayStepDto]) in
                 guard enities.count != 0 else {
-                    let zeroEntity = DayStepEntity(date: date, values: [0])
+                    let zeroEntity = DayStepDto(date: date, values: [0])
                     seal.fulfill(zeroEntity)
                     return
                 }
 
                 // バリデーション後に返却
                 let values = enities[0].values.validated(max: MAX_STEPS, min: MIN_STEPS)
-                let entity = DayStepEntity(date: enities[0].date, values: values)
+                let entity = DayStepDto(date: enities[0].date, values: values)
                 seal.fulfill(entity)
             }
             .catch { error in
@@ -156,13 +159,13 @@ class DashboardUsecaseService {
         return promise
     }
     
-    func getBurnCalorie(on date: Date) -> Promise<DayBurnCalorieEntity> {
-        let promise = Promise<DayBurnCalorieEntity> { seal in
+    func getBurnCalorie(on date: Date) -> Promise<DayBurnCalorieDto> {
+        let promise = Promise<DayBurnCalorieDto> { seal in
             when(fulfilled: self.healthComponet.getSteps(from: date, to: date),
                  self.healthComponet.getBurnCalories(from: date, to: date))
-                .done { (stepEnties: [DayStepEntity] , calorieEnties: [DayBurnCalorieEntity]) in
+                .done { (stepEnties: [DayStepDto] , calorieEnties: [DayBurnCalorieDto]) in
                     guard stepEnties.count != 0 else {
-                        let zeroEntity = DayBurnCalorieEntity(date: date, values: [0])
+                        let zeroEntity = DayBurnCalorieDto(date: date, values: [0])
                         seal.fulfill(zeroEntity)
                         return
                     }
@@ -177,7 +180,7 @@ class DashboardUsecaseService {
                 
                 // バリデーション
                 calories = calories.validated(max: MAX_CALORIE, min: MIN_CALORIE)
-                let entity = DayBurnCalorieEntity(date: date, values: calories)
+                let entity = DayBurnCalorieDto(date: date, values: calories)
 
                 seal.fulfill(entity)
             }

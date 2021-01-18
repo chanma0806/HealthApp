@@ -8,6 +8,13 @@
 import SwiftUI
 import PromiseKit
 
+/**
+ ダッシュボード画面
+ 
+ - note:
+    設定画面のナビゲーションをカスタマイズしているため
+    `CustomNavigationView`でラップ
+ */
 public struct DashboardView: View {
     public var body: some View {
         GeometryReader { geo in
@@ -80,6 +87,7 @@ struct DashboardLayout {
     }
 }
 
+/** ダッシュボード画面本体 */
 struct DashboardViewContext: View, NavigateReuest {
     var delegate: NavigateReuestDelegate?
     
@@ -212,15 +220,15 @@ struct DashboardViewContext: View, NavigateReuest {
         .then { _ in
             self.dashboardUsecase.getHeartRate(on: self.selectedDate)
         }
-        .then { (entity: DayHeartrRateEntity) -> Promise<DayStepEntity> in
+        .then { (entity: DayHeartrRateDto) -> Promise<DayStepDto> in
             self.dashboardData.heartRateData = entity.values
             return self.dashboardUsecase.getStep(on: self.selectedDate)
         }
-        .then { (entity: DayStepEntity) -> Promise<DayBurnCalorieEntity> in
+        .then { (entity: DayStepDto) -> Promise<DayBurnCalorieDto> in
             self.dashboardData.stepData = entity.values
             return self.dashboardUsecase.getBurnCalorie(on: self.selectedDate)
         }
-        .done { (entity: DayBurnCalorieEntity) in
+        .done { (entity: DayBurnCalorieDto) in
             self.dashboardData.burnCalorieData = entity.values
         }
         .catch { _ in
@@ -231,6 +239,7 @@ struct DashboardViewContext: View, NavigateReuest {
 
 typealias DayChanged = (_ changedDay: Date) -> Void
 
+/** 日付ヘッダー  */
 struct DaySlider: View {
     let dayChanged: DayChanged
     @State var date: Date = Date() {
@@ -308,6 +317,7 @@ struct DaySlider: View {
     }
 }
 
+/** 三角ボタン */
 struct TriangleButton: View {
     let action: ()->Void
     init(_ action: @escaping ()->Void) {
@@ -324,6 +334,7 @@ struct TriangleButton: View {
     }
 }
 
+/** メニューボタン */
 struct MenuButton: View {
     var body: some View {
         VStack(alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/, spacing: 5, content: {

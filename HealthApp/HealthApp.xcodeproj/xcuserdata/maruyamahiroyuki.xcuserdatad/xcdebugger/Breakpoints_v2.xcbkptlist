@@ -218,8 +218,8 @@
             filePath = "HealthApp/Usecase/DashboardUsecaseService.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "87"
-            endingLineNumber = "87"
+            startingLineNumber = "90"
+            endingLineNumber = "90"
             landmarkName = "getHeartRate(on:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -234,8 +234,8 @@
             filePath = "HealthApp/Gateway/HealthCare/HealthCareComponent.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "123"
-            endingLineNumber = "123"
+            startingLineNumber = "70"
+            endingLineNumber = "70"
             landmarkName = "getHeartRates(from:to:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -250,8 +250,8 @@
             filePath = "HealthApp/Gateway/HealthCare/HealthCareComponent.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "125"
-            endingLineNumber = "125"
+            startingLineNumber = "72"
+            endingLineNumber = "72"
             landmarkName = "getHeartRates(from:to:)"
             landmarkType = "7">
             <Locations>
@@ -298,8 +298,8 @@
             filePath = "HealthApp/Usecase/DashboardUsecaseService.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "96"
-            endingLineNumber = "96"
+            startingLineNumber = "99"
+            endingLineNumber = "99"
             landmarkName = "getHeartRate(on:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -330,8 +330,8 @@
             filePath = "HealthApp/Gateway/HealthCare/HealthCareComponent.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "165"
-            endingLineNumber = "165"
+            startingLineNumber = "112"
+            endingLineNumber = "112"
             landmarkName = "getSteps(from:to:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -362,8 +362,8 @@
             filePath = "HealthApp/Usecase/DashboardUsecaseService.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "138"
-            endingLineNumber = "138"
+            startingLineNumber = "141"
+            endingLineNumber = "141"
             landmarkName = "getStep(on:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -394,8 +394,8 @@
             filePath = "HealthApp/Usecase/DashboardUsecaseService.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "140"
-            endingLineNumber = "140"
+            startingLineNumber = "143"
+            endingLineNumber = "143"
             landmarkName = "getStep(on:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -506,8 +506,8 @@
             filePath = "HealthApp/Gateway/HealthCare/HealthCareComponent.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "127"
-            endingLineNumber = "127"
+            startingLineNumber = "74"
+            endingLineNumber = "74"
             landmarkName = "getHeartRates(from:to:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -522,8 +522,8 @@
             filePath = "HealthApp/Gateway/HealthCare/HealthCareComponent.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "126"
-            endingLineNumber = "126"
+            startingLineNumber = "73"
+            endingLineNumber = "73"
             landmarkName = "getHeartRates(from:to:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -538,8 +538,8 @@
             filePath = "HealthApp/Gateway/HealthCare/HealthCareComponent.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "131"
-            endingLineNumber = "131"
+            startingLineNumber = "78"
+            endingLineNumber = "78"
             landmarkName = "getHeartRates(from:to:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -554,8 +554,8 @@
             filePath = "HealthApp/Gateway/HealthCare/HealthCareComponent.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "211"
-            endingLineNumber = "211"
+            startingLineNumber = "158"
+            endingLineNumber = "158"
             landmarkName = "getBurnCalories(from:to:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -570,8 +570,8 @@
             filePath = "HealthApp/Gateway/HealthCare/HealthCareComponent.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "174"
-            endingLineNumber = "174"
+            startingLineNumber = "121"
+            endingLineNumber = "121"
             landmarkName = "getSteps(from:to:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -586,8 +586,8 @@
             filePath = "HealthApp/Gateway/HealthCare/HealthCareComponent.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "173"
-            endingLineNumber = "173"
+            startingLineNumber = "120"
+            endingLineNumber = "120"
             landmarkName = "getSteps(from:to:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -602,25 +602,9 @@
             filePath = "HealthApp/Gateway/HealthCare/HealthCareComponent.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "415"
-            endingLineNumber = "415"
+            startingLineNumber = "362"
+            endingLineNumber = "362"
             landmarkName = "filtered(deviceNames:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "9D25F5F2-54CA-40F6-AA4C-3FB1BDD6D692"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "HealthApp/Usecase/IntroductionUsecaseServiece.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "33"
-            endingLineNumber = "33"
-            landmarkName = "requestAuthorizationForPedmeter()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -634,8 +618,8 @@
             filePath = "HealthApp/Usecase/StepFetchUsecaeService.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "90"
-            endingLineNumber = "90"
+            startingLineNumber = "105"
+            endingLineNumber = "105"
             landmarkName = "requestBackgroundFetch()"
             landmarkType = "7">
          </BreakpointContent>
@@ -666,8 +650,8 @@
             filePath = "HealthApp/Usecase/DashboardUsecaseService.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "172"
-            endingLineNumber = "172"
+            startingLineNumber = "175"
+            endingLineNumber = "175"
             landmarkName = "getBurnCalorie(on:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -682,8 +666,8 @@
             filePath = "HealthApp/Usecase/DashboardUsecaseService.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "164"
-            endingLineNumber = "164"
+            startingLineNumber = "167"
+            endingLineNumber = "167"
             landmarkName = "getBurnCalorie(on:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -698,8 +682,8 @@
             filePath = "HealthApp/Usecase/DashboardUsecaseService.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "182"
-            endingLineNumber = "182"
+            startingLineNumber = "185"
+            endingLineNumber = "185"
             landmarkName = "getBurnCalorie(on:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -714,8 +698,8 @@
             filePath = "HealthApp/Gateway/HealthCare/HealthCareComponent.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "219"
-            endingLineNumber = "219"
+            startingLineNumber = "166"
+            endingLineNumber = "166"
             landmarkName = "getBurnCalories(from:to:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -730,8 +714,8 @@
             filePath = "HealthApp/Gateway/HealthCare/HealthCareComponent.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "212"
-            endingLineNumber = "212"
+            startingLineNumber = "159"
+            endingLineNumber = "159"
             landmarkName = "getBurnCalories(from:to:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -746,8 +730,8 @@
             filePath = "HealthApp/Usecase/DashboardUsecaseService.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "149"
-            endingLineNumber = "149"
+            startingLineNumber = "152"
+            endingLineNumber = "152"
             landmarkName = "getStep(on:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -762,8 +746,8 @@
             filePath = "HealthApp/Usecase/DashboardUsecaseService.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "98"
-            endingLineNumber = "98"
+            startingLineNumber = "101"
+            endingLineNumber = "101"
             landmarkName = "getHeartRate(on:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -778,8 +762,8 @@
             filePath = "HealthApp/Gateway/HealthCare/HealthCareComponent.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "107"
-            endingLineNumber = "107"
+            startingLineNumber = "54"
+            endingLineNumber = "54"
             landmarkName = "requestAuthorization()"
             landmarkType = "7">
          </BreakpointContent>
@@ -794,8 +778,8 @@
             filePath = "HealthApp/Gateway/HealthCare/HealthCareComponent.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "106"
-            endingLineNumber = "106"
+            startingLineNumber = "53"
+            endingLineNumber = "53"
             landmarkName = "requestAuthorization()"
             landmarkType = "7">
             <Locations>
@@ -842,8 +826,8 @@
             filePath = "HealthApp/Gateway/HealthCare/HealthCareComponent.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "108"
-            endingLineNumber = "108"
+            startingLineNumber = "55"
+            endingLineNumber = "55"
             landmarkName = "requestAuthorization()"
             landmarkType = "7">
          </BreakpointContent>
@@ -890,8 +874,8 @@
             filePath = "HealthApp/Usecase/SettingUsecaseService.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "68"
-            endingLineNumber = "68"
+            startingLineNumber = "71"
+            endingLineNumber = "71"
             landmarkName = "setHealthCooperation(enabled:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -906,8 +890,8 @@
             filePath = "HealthApp/Gateway/HealthCare/HealthCareComponent.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "110"
-            endingLineNumber = "110"
+            startingLineNumber = "57"
+            endingLineNumber = "57"
             landmarkName = "requestAuthorization()"
             landmarkType = "7">
          </BreakpointContent>
@@ -922,8 +906,8 @@
             filePath = "HealthApp/Gateway/HealthCare/HealthCareComponent.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "375"
-            endingLineNumber = "375"
+            startingLineNumber = "322"
+            endingLineNumber = "322"
             landmarkName = "queryFirstly()"
             landmarkType = "7">
          </BreakpointContent>
@@ -938,8 +922,8 @@
             filePath = "HealthApp/Gateway/HealthCare/HealthCareComponent.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "379"
-            endingLineNumber = "379"
+            startingLineNumber = "326"
+            endingLineNumber = "326"
             landmarkName = "queryFirstly()"
             landmarkType = "7">
          </BreakpointContent>
@@ -954,8 +938,8 @@
             filePath = "HealthApp/Gateway/HealthCare/HealthCareComponent.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "89"
-            endingLineNumber = "89"
+            startingLineNumber = "36"
+            endingLineNumber = "36"
             landmarkName = "isCooperation"
             landmarkType = "24">
          </BreakpointContent>
@@ -970,8 +954,8 @@
             filePath = "HealthApp/Gateway/HealthCare/HealthCareComponent.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "96"
-            endingLineNumber = "96"
+            startingLineNumber = "43"
+            endingLineNumber = "43"
             landmarkName = "requestAuthorization()"
             landmarkType = "7">
          </BreakpointContent>

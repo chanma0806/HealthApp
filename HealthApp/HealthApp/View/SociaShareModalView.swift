@@ -13,6 +13,7 @@ let CARD_IMAGE_WIDTH: CGFloat = 281.6
 let CARD_IMAGE_HEIGHT: CGFloat = 204.8
 let SHARE_TEXT = "#運動をもっとポップに\n#meters"
 
+/** SNSシェアのカード描画参照するデータ */
 struct ShareCardData {
     var summaryTotalStep: Int
     var steps: [Int]
@@ -20,17 +21,27 @@ struct ShareCardData {
     var calories: [Int]
 }
 
+/** SNSシェアを起動するプロトコル */
 protocol SocialSharePost {
     
 }
-
 extension SocialSharePost {
+    /**
+     SNS投稿をする
+     - Parameters :
+     
+      - content: SNS投稿の画像に変換するView
+      - dismissAction: SNS投稿終了時のアクション
+     */
     @ViewBuilder
     func postShare<Content: View>(@ViewBuilder content:()->Content, dismissAction: @escaping ()->Void) -> some View {
         ShareHost(content: content, dismissAction: dismissAction)
     }
 }
 
+/**
+ SNS投稿モーダル
+ */
 struct SociaShareModalView: View, SocialSharePost {
     @EnvironmentObject var setting: SettingData
     @State var page: Int
@@ -109,6 +120,7 @@ struct ShareContent {
     var text: String
 }
 
+/** UIActivityViewControllerのラッパー */
 class SnsShareViewController<Content>: UIViewController where Content: View {
     var hosting: UIHostingController<Content>
     var handler: UIActivityViewController.CompletionWithItemsHandler?
@@ -144,6 +156,7 @@ class SnsShareViewController<Content>: UIViewController where Content: View {
     }
 }
 
+/** SnsShareViewControllerのホスト*/
 struct ShareHost<Content>: UIViewControllerRepresentable where Content: View {
     var content: Content
     let action: ()->Void
@@ -166,6 +179,7 @@ struct ShareHost<Content>: UIViewControllerRepresentable where Content: View {
     }
 }
 
+/** SNSモーダルに表示する投稿イメージ選択(カルーセル) */
 struct Carousel: UIViewRepresentable {
     
     typealias UIViewType = UIScrollView
@@ -238,6 +252,7 @@ struct Carousel: UIViewRepresentable {
     }
 }
 
+/** SNS投稿イメージ  */
 struct PostContentList: View {
     @EnvironmentObject var setting: SettingData
     
@@ -295,6 +310,7 @@ struct PostContentList: View {
     }
 }
 
+/** ページビュー */
 struct PageViewControlView: UIViewRepresentable {
     @Binding var page: Int
     var pageMax: Int
