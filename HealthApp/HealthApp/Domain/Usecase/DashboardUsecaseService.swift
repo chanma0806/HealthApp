@@ -17,14 +17,29 @@ let MIN_STEPS: Int = 0
 let MAX_CALORIE: Int = 1000
 let MIN_CALORIE: Int = 0
 
+#if DEBUG
+
+class DashboardUsecaseFactory {
+    static func getTestableInstance(health: HealthCareComponentProtocol) -> DashboardUsecaseService {
+        return DashboardUsecaseService(health: health)
+    }
+}
+
+#endif
+
+
 /**
   ダッシュボード画面のユースケース
  */
 class DashboardUsecaseService {
-    let healthComponet: HealthCareComponentService
+    let healthComponet: HealthCareComponentProtocol
     
     init() {
         self.healthComponet = HealthCareComponentService.share
+    }
+    
+    fileprivate init(health: HealthCareComponentProtocol) {
+        self.healthComponet = health
     }
     
     func requestHealthAccess() -> Promise<Void> {
@@ -32,60 +47,6 @@ class DashboardUsecaseService {
     }
     
     func getHeartRate(on date: Date) -> Promise<DayHeartrRateDto> {
-        
-//        let data = [
-//            80, /** 0 */
-//            79, /** 1 */
-//            80, /** 2 */
-//            75, /** 3 */
-//            71, /** 4 */
-//            75, /** 5 */
-//            0, /** 6 */
-//            0, /** 7 */
-//            0, /** 8 */
-//            0, /** 9 */
-//            0, /** 10 */
-//            0, /** 11 */
-//            0, /** 12 */
-//            0, /** 13 */
-//            0, /** 14 */
-//            0, /** 15 */
-//            0, /** 16 */
-//            0, /** 17 */
-//            0, /** 18 */
-//            0, /** 19 */
-//            0, /** 20 */
-//            84, /** 21 */
-//            84, /** 22 */
-//            85, /** 23 */
-//            94, /** 24 */
-//            104, /** 25 */
-//            99, /** 26 */
-//            96, /** 27 */
-//            114, /** 28 */
-//            121, /** 29 */
-//            109, /** 30 */
-//            102, /** 31 */
-//            101, /** 32 */
-//            100, /** 33 */
-//            98, /** 34 */
-//            99, /** 35 */
-//            97, /** 36 */
-//            95, /** 37 */
-//            96, /** 38 */
-//            95, /** 39 */
-//            94, /** 40 */
-//            88, /** 41 */
-//            86, /** 42 */
-//            92, /** 43 */
-//            85, /** 44 */
-//            82, /** 45 */
-//            80, /** 46 */
-//            77, /** 47 */
-//        ]
-//
-//        return Promise.value(DayHeartrRateEntity(date: date, values: data))
-        
         let promise = Promise<DayHeartrRateDto> { seal in
             self.healthComponet.getHeartRates(from: date, to: date)
             .done { (enities: [DayHeartrRateDto]) in
@@ -109,34 +70,6 @@ class DashboardUsecaseService {
     }
     
     func getStep(on date: Date) -> Promise<DayStepDto> {
-//        let data = [
-//            0, /* 0 */
-//            0, /* 1 */
-//            0, /* 2 */
-//            0, /* 3 */
-//            0, /* 4 */
-//            0, /* 5 */
-//            0, /* 6 */
-//            0, /* 7 */
-//            0, /* 8 */
-//            0, /* 9 */
-//            0, /* 10 */
-//            133, /* 11 */
-//            966, /* 12 */
-//            51, /* 13 */
-//            3310, /* 14 */
-//            589, /* 15 */
-//            109, /* 16 */
-//            224, /* 17 */
-//            16, /* 18 */
-//            0, /* 19 */
-//            0, /* 20 */
-//            43, /* 21 */
-//            24, /* 22 */
-//            0, /* 23 */
-//        ]
-//
-//        return Promise.value(DayStepEntity(date: date, values: data))
         let promise = Promise<DayStepDto> { seal in
             self.healthComponet.getSteps(from: date, to: date)
             .done { (enities: [DayStepDto]) in
@@ -164,11 +97,6 @@ class DashboardUsecaseService {
             when(fulfilled: self.healthComponet.getSteps(from: date, to: date),
                  self.healthComponet.getBurnCalories(from: date, to: date))
                 .done { (stepEnties: [DayStepDto] , calorieEnties: [DayBurnCalorieDto]) in
-                    guard stepEnties.count != 0 else {
-                        let zeroEntity = DayBurnCalorieDto(date: date, values: [0])
-                        seal.fulfill(zeroEntity)
-                        return
-                    }
                 var calories = calorieEnties.count > 0 ? calorieEnties[0].values : [Int](repeating: 0, count: 24)
                 let steps = stepEnties.count > 0 ? stepEnties[0].values : []
                 /** カロリー値がない時間帯は歩数から算出  */

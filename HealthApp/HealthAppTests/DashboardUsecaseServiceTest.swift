@@ -6,37 +6,184 @@
 //
 
 import XCTest
+@testable import meters
 
 class DashboardUsecaseServiceTest: XCTestCase {
 
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-
-        // In UI tests it is usually best to stop immediately when a failure occurs.
-        continueAfterFailure = false
-
-        // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
+    override func setUp() {
+        
     }
 
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+    override func tearDown() {
+        
     }
-
-    func testExample() throws {
-        // UI tests must launch the application that they test.
-        let app = XCUIApplication()
-        app.launch()
-
-        // Use recording to get started writing UI tests.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    
+    func testGetHeartRate() throws {
+        XCTContext.runActivity(named: "正常系", block: { act in
+            XCTContext.runActivity(named: "境界値 最大値 onポインt", block: { act in
+                let exp = XCTestExpectation()
+                let health = HealthCareComponentMock()
+                // １件/30分
+                var values = [Int](repeating: 0, count: 24 * 2)
+                let REPLACE_INDEX = 10
+                values[REPLACE_INDEX] = MAX_HEART_RATE
+                let dto = DayHeartrRateDto(date: Date(), values: values)
+                var healthParam = HealthCareComponentMockParam()
+                healthParam.heartRates = [dto]
+                health.param = healthParam
+                let usecase = getUsecase(health: health)
+                usecase.getHeartRate(on: Date())
+                    .done { ret in
+                        // バリデーション後の評価
+                        XCTAssertEqual(ret.values.count, dto.values.count)
+                        XCTAssertEqual(ret.values[REPLACE_INDEX], MAX_HEART_RATE)
+                        exp.fulfill()
+                    }
+                    .catch { error in
+                        XCTFail()
+                        exp.fulfill()
+                    }
+                wait(for: [exp], timeout: 5)
+            })
+            XCTContext.runActivity(named: "境界値 最小値 offポインt", block: { act in
+                let exp = XCTestExpectation()
+                let health = HealthCareComponentMock()
+                // １件/30分
+                var values = [Int](repeating: 0, count: 24 * 2)
+                let REPLACE_INDEX = 10
+                values[REPLACE_INDEX] = MIN_HEART_RATE - 1
+                let dto = DayHeartrRateDto(date: Date(), values: values)
+                var healthParam = HealthCareComponentMockParam()
+                healthParam.heartRates = [dto]
+                health.param = healthParam
+                let usecase = getUsecase(health: health)
+                usecase.getHeartRate(on: Date())
+                    .done { ret in
+                        // バリデーション後の評価
+                        XCTAssertEqual(ret.values.count, dto.values.count)
+                        XCTAssertEqual(ret.values[REPLACE_INDEX], MIN_HEART_RATE)
+                        exp.fulfill()
+                    }
+                    .catch { error in
+                        XCTFail()
+                        exp.fulfill()
+                    }
+                wait(for: [exp], timeout: 5)
+            })
+        })
     }
-
-    func testLaunchPerformance() throws {
-        if #available(macOS 10.15, iOS 13.0, tvOS 13.0, *) {
-            // This measures how long it takes to launch your application.
-            measure(metrics: [XCTApplicationLaunchMetric()]) {
-                XCUIApplication().launch()
-            }
-        }
+        
+    func testGetStep() throws {
+        XCTContext.runActivity(named: "正常系", block: { act in
+            XCTContext.runActivity(named: "境界値 最小値 onポインt", block: { act in
+                let exp = XCTestExpectation()
+                let health = HealthCareComponentMock()
+                // １件 / 時間
+                var values = [Int](repeating: 0, count: 24)
+                let REPLACE_INDEX = 10
+                values[REPLACE_INDEX] = MIN_STEPS
+                let dto = DayStepDto(date: Date(), values: values)
+                var healthParam = HealthCareComponentMockParam()
+                healthParam.steps = [dto]
+                health.param = healthParam
+                let usecase = getUsecase(health: health)
+                usecase.getStep(on: Date())
+                    .done { ret in
+                        // バリデーション後の評価
+                        XCTAssertEqual(ret.values.count, dto.values.count)
+                        XCTAssertEqual(ret.values[REPLACE_INDEX], MIN_STEPS)
+                        exp.fulfill()
+                    }
+                    .catch { error in
+                        XCTFail()
+                        exp.fulfill()
+                    }
+                wait(for: [exp], timeout: 5)
+            })
+            XCTContext.runActivity(named: "境界値 最大値 offポインt", block: { act in
+                let exp = XCTestExpectation()
+                let health = HealthCareComponentMock()
+                // １件/1時間
+                var values = [Int](repeating: 0, count: 24)
+                let REPLACE_INDEX = 10
+                values[REPLACE_INDEX] = MAX_STEPS + 1
+                let dto = DayStepDto(date: Date(), values: values)
+                var healthParam = HealthCareComponentMockParam()
+                healthParam.steps = [dto]
+                health.param = healthParam
+                let usecase = getUsecase(health: health)
+                usecase.getStep(on: Date())
+                    .done { ret in
+                        // バリデーション後の評価
+                        XCTAssertEqual(ret.values.count, dto.values.count)
+                        XCTAssertEqual(ret.values[REPLACE_INDEX], MAX_STEPS)
+                        exp.fulfill()
+                    }
+                    .catch { error in
+                        XCTFail()
+                        exp.fulfill()
+                    }
+                wait(for: [exp], timeout: 5)
+            })
+        })
+    }
+    
+    func testGetBurnCalorie() throws {
+        XCTContext.runActivity(named: "正常系", block: { act in
+            XCTContext.runActivity(named: "境界値 最大値 onポインt", block: { act in
+                let exp = XCTestExpectation()
+                let health = HealthCareComponentMock()
+                // １件 / 時間
+                var values = [Int](repeating: 0, count: 24)
+                let REPLACE_INDEX = 10
+                values[REPLACE_INDEX] = MAX_CALORIE
+                let dto = DayBurnCalorieDto(date: Date(), values: values)
+                var healthParam = HealthCareComponentMockParam()
+                healthParam.calories = [dto]
+                health.param = healthParam
+                let usecase = getUsecase(health: health)
+                usecase.getBurnCalorie(on: Date())
+                    .done { ret in
+                        // バリデーション後の評価
+                        XCTAssertEqual(ret.values.count, dto.values.count)
+                        XCTAssertEqual(ret.values[REPLACE_INDEX], MAX_CALORIE)
+                        exp.fulfill()
+                    }
+                    .catch { error in
+                        XCTFail()
+                        exp.fulfill()
+                    }
+                wait(for: [exp], timeout: 5)
+            })
+            XCTContext.runActivity(named: "境界値 最小値 offポイント", block: { act in
+                let exp = XCTestExpectation()
+                let health = HealthCareComponentMock()
+                // １件/1時間
+                var values = [Int](repeating: 0, count: 24)
+                let REPLACE_INDEX = 10
+                values[REPLACE_INDEX] = MIN_CALORIE - 1
+                let dto = DayBurnCalorieDto(date: Date(), values: values)
+                var healthParam = HealthCareComponentMockParam()
+                healthParam.calories = [dto]
+                health.param = healthParam
+                let usecase = getUsecase(health: health)
+                usecase.getBurnCalorie(on: Date())
+                    .done { ret in
+                        // バリデーション後の評価
+                        XCTAssertEqual(ret.values.count, dto.values.count)
+                        XCTAssertEqual(ret.values[REPLACE_INDEX], MIN_CALORIE)
+                        exp.fulfill()
+                    }
+                    .catch { error in
+                        XCTFail()
+                        exp.fulfill()
+                    }
+                wait(for: [exp], timeout: 5)
+            })
+        })
+    }
+    
+    private func getUsecase(health: HealthCareComponentMock) -> DashboardUsecaseService {
+        return DashboardUsecaseFactory.getTestableInstance(health: health)
     }
 }
