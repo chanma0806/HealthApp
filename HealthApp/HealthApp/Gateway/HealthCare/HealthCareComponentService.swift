@@ -8,6 +8,7 @@
 import Foundation
 import PromiseKit
 import HealthKit
+import OSLog
 
 let HEALTH_COOPERATION_KEY = "health-cooperation-key"
 
@@ -75,6 +76,11 @@ public class HealthCareComponentService: HealthCareComponentProtocol {
             self.queryFirstly()
             .done { _ in
                 self.exequteSampleQuery(identifier: .heartRate, from: from, to: to) { (query, results, error) in
+                    guard error != nil else {
+                        os_log("%s", error!.localizedDescription)
+                        seal.reject(error!)
+                        return
+                    }
                     guard let samples = results else {
                         seal.fulfill([])
                         return
@@ -114,6 +120,11 @@ public class HealthCareComponentService: HealthCareComponentProtocol {
             .done { _ in
                 //TODO: wacth > iPhoneの優先順でマージ処理を追加
                 self.exequteSampleQuery(identifier: .stepCount, from: from, to: to) { (query, results, error) in
+                    guard error != nil else {
+                        os_log("%s", error!.localizedDescription)
+                        seal.reject(error!)
+                        return
+                    }
                     guard var samples = results else {
                         seal.fulfill([])
                         return
@@ -153,11 +164,17 @@ public class HealthCareComponentService: HealthCareComponentProtocol {
             self.queryFirstly()
             .done { _ in
                 self.exequteSampleQuery(identifier: .activeEnergyBurned, from: from, to: to) { (query, results, error) in
-                    guard var samples = results else {
-                        seal.fulfill([])
+                    
+                    guard error != nil else {
+                        os_log("%s", error!.localizedDescription)
+                        seal.reject(error!)
                         return
                     }
                     
+                    guard let samples = results else {
+                        seal.fulfill([])
+                        return
+                    }
                     
                     // 日付ごとにデータ抽出
                     let dict: Dictionary<String, [HKQuantitySample]> = self.collectSamplesAtDay(samples)
