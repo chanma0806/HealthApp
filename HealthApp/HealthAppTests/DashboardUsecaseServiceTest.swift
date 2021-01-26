@@ -1,5 +1,5 @@
 //
-//  HealthAppUITests.swift
+//  DashboardUsecaseService.swift
 //  HealthAppUITests
 //
 //  Created by 丸山大幸 on 2020/10/31.
@@ -7,7 +7,7 @@
 
 import XCTest
 
-class HealthAppUITests: XCTestCase {
+class DashboardUsecaseServiceTest: XCTestCase {
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.

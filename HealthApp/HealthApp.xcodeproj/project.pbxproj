@@ -19,6 +19,7 @@
 		EE5A38C5257A70A400EB34FF /* TargetSettingDataObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5A38C4257A70A400EB34FF /* TargetSettingDataObject.swift */; };
 		EE5CFEA825516AE8009FB23C /* LinerGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5CFEA725516AE8009FB23C /* LinerGraphView.swift */; };
 		EE5CFEB025516B62009FB23C /* BarGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5CFEAF25516B62009FB23C /* BarGraphView.swift */; };
+		EE5D65CD25B9AA76008E1D70 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = EE5D65CF25B9AA76008E1D70 /* InfoPlist.strings */; };
 		EE6534BA254DB0F600F1698A /* Triangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE6534B9254DB0F600F1698A /* Triangle.swift */; };
 		EE6534C2254E552400F1698A /* HealthCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE6534C1254E552400F1698A /* HealthCardView.swift */; };
 		EE6534CA254E561E00F1698A /* ColorDefine.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE6534C9254E561E00F1698A /* ColorDefine.swift */; };
@@ -36,6 +37,7 @@
 		EE80321725B5BD6F000CA979 /* DatastoreComponentProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE80321625B5BD6F000CA979 /* DatastoreComponentProtocol.swift */; };
 		EE80321B25B5BDAB000CA979 /* PedometerComponentProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE80321A25B5BDAB000CA979 /* PedometerComponentProtocol.swift */; };
 		EE80322125B5BFA3000CA979 /* HealthCareComponentProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE80322025B5BFA3000CA979 /* HealthCareComponentProtocol.swift */; };
+		EE80323825B70ED7000CA979 /* TextDefine.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE80323725B70ED7000CA979 /* TextDefine.swift */; };
 		EE9C4784256FCFA90039ACAE /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = EE9C4783256FCFA90039ACAE /* Realm */; };
 		EE9C479025722F930039ACAE /* DaySummaryCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE9C478F25722F930039ACAE /* DaySummaryCardView.swift */; };
 		EECB1DC9254D26F600B047E2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EECB1DC8254D26F600B047E2 /* AppDelegate.swift */; };
@@ -43,8 +45,8 @@
 		EECB1DCD254D26F600B047E2 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EECB1DCC254D26F600B047E2 /* DashboardView.swift */; };
 		EECB1DCF254D26F900B047E2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EECB1DCE254D26F900B047E2 /* Assets.xcassets */; };
 		EECB1DD2254D26F900B047E2 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EECB1DD1254D26F900B047E2 /* Preview Assets.xcassets */; };
-		EECB1DD5254D26F900B047E2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EECB1DD3254D26F900B047E2 /* LaunchScreen.storyboard */; };
-		EECB1DE0254D26F900B047E2 /* HealthAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EECB1DDF254D26F900B047E2 /* HealthAppTests.swift */; };
+		EECC851725B9A46800664070 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = EECC851A25B9A46800664070 /* Localizable.strings */; };
+		EECC851825B9A46800664070 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = EECC851A25B9A46800664070 /* Localizable.strings */; };
 		EEE2BF13256E8EC8003B6F99 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = EEE2BF12256E8EC8003B6F99 /* RealmSwift */; };
 		EEE2BF1B256E8F3C003B6F99 /* DailyStepDataObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEE2BF1A256E8F3C003B6F99 /* DailyStepDataObject.swift */; };
 		EEF5CD5F256E72DD00843D8D /* PedometerComponentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEF5CD5E256E72DD00843D8D /* PedometerComponentService.swift */; };
@@ -75,6 +77,9 @@
 		EE5A38C4257A70A400EB34FF /* TargetSettingDataObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TargetSettingDataObject.swift; sourceTree = "<group>"; };
 		EE5CFEA725516AE8009FB23C /* LinerGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinerGraphView.swift; sourceTree = "<group>"; };
 		EE5CFEAF25516B62009FB23C /* BarGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarGraphView.swift; sourceTree = "<group>"; };
+		EE5D65CE25B9AA76008E1D70 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		EE5D65D225B9AA79008E1D70 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		EE5D65DD25B9AE64008E1D70 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EE6534B9254DB0F600F1698A /* Triangle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Triangle.swift; sourceTree = "<group>"; };
 		EE6534C1254E552400F1698A /* HealthCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthCardView.swift; sourceTree = "<group>"; };
 		EE6534C9254E561E00F1698A /* ColorDefine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorDefine.swift; sourceTree = "<group>"; };
@@ -92,6 +97,7 @@
 		EE80321625B5BD6F000CA979 /* DatastoreComponentProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatastoreComponentProtocol.swift; sourceTree = "<group>"; };
 		EE80321A25B5BDAB000CA979 /* PedometerComponentProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PedometerComponentProtocol.swift; sourceTree = "<group>"; };
 		EE80322025B5BFA3000CA979 /* HealthCareComponentProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthCareComponentProtocol.swift; sourceTree = "<group>"; };
+		EE80323725B70ED7000CA979 /* TextDefine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextDefine.swift; sourceTree = "<group>"; };
 		EE9C478F25722F930039ACAE /* DaySummaryCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaySummaryCardView.swift; sourceTree = "<group>"; };
 		EECB1DC5254D26F600B047E2 /* meters.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = meters.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EECB1DC8254D26F600B047E2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -99,12 +105,10 @@
 		EECB1DCC254D26F600B047E2 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
 		EECB1DCE254D26F900B047E2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EECB1DD1254D26F900B047E2 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		EECB1DD4254D26F900B047E2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		EECB1DD6254D26F900B047E2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EECB1DDB254D26F900B047E2 /* MetersTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MetersTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		EECB1DDF254D26F900B047E2 /* HealthAppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthAppTests.swift; sourceTree = "<group>"; };
 		EECB1DE1254D26F900B047E2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		EECB1DEA254D26F900B047E2 /* HealthAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthAppUITests.swift; sourceTree = "<group>"; };
+		EECC851925B9A46800664070 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		EECC851B25B9A47C00664070 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		EEE2BF1A256E8F3C003B6F99 /* DailyStepDataObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyStepDataObject.swift; sourceTree = "<group>"; };
 		EEF5CD5E256E72DD00843D8D /* PedometerComponentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PedometerComponentService.swift; sourceTree = "<group>"; };
 		EEF5CD64256E76EA00843D8D /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
@@ -143,6 +147,7 @@
 				EE74892B258F49810070155A /* IntroductionView.swift */,
 				EE66AB032593676100CE5E95 /* AppBaseView.swift */,
 				EE74582F2599B209009AA109 /* ModalUsecaseService.swift */,
+				EE80323725B70ED7000CA979 /* TextDefine.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -184,9 +189,20 @@
 			path = Graph;
 			sourceTree = "<group>";
 		};
+		EE5D65E125B9AE74008E1D70 /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				EE5D65CF25B9AA76008E1D70 /* InfoPlist.strings */,
+				EECC851A25B9A46800664070 /* Localizable.strings */,
+				EE5D65DD25B9AE64008E1D70 /* Info.plist */,
+			);
+			path = Resource;
+			sourceTree = "<group>";
+		};
 		EE6534A9254DB04200F1698A /* ViewComponent */ = {
 			isa = PBXGroup;
 			children = (
+				EE5CFEA625516AA7009FB23C /* Graph */,
 				EE6534B5254DB0D200F1698A /* ViewParts */,
 				EE6534C1254E552400F1698A /* HealthCardView.swift */,
 				EE9C478F25722F930039ACAE /* DaySummaryCardView.swift */,
@@ -198,7 +214,6 @@
 		EE6534B5254DB0D200F1698A /* ViewParts */ = {
 			isa = PBXGroup;
 			children = (
-				EE5CFEA625516AA7009FB23C /* Graph */,
 				EE6534B9254DB0F600F1698A /* Triangle.swift */,
 				EE6534CE254E592300F1698A /* CircleArrow.swift */,
 				EE6534D3254E5B6D00F1698A /* SyncButton.swift */,
@@ -278,9 +293,8 @@
 				EECB1DC8254D26F600B047E2 /* AppDelegate.swift */,
 				EECB1DCA254D26F600B047E2 /* SceneDelegate.swift */,
 				EECB1DCE254D26F900B047E2 /* Assets.xcassets */,
-				EECB1DD3254D26F900B047E2 /* LaunchScreen.storyboard */,
-				EECB1DD6254D26F900B047E2 /* Info.plist */,
 				EECB1DD0254D26F900B047E2 /* Preview Content */,
+				EE5D65E125B9AE74008E1D70 /* Resource */,
 			);
 			path = HealthApp;
 			sourceTree = "<group>";
@@ -296,7 +310,6 @@
 		EECB1DDE254D26F900B047E2 /* HealthAppTests */ = {
 			isa = PBXGroup;
 			children = (
-				EECB1DDF254D26F900B047E2 /* HealthAppTests.swift */,
 				EECB1DE1254D26F900B047E2 /* Info.plist */,
 			);
 			path = HealthAppTests;
@@ -306,7 +319,6 @@
 			isa = PBXGroup;
 			children = (
 				EE552C4D2554310E004360BD /* Info.plist */,
-				EECB1DEA254D26F900B047E2 /* HealthAppUITests.swift */,
 			);
 			path = HealthAppUITests;
 			sourceTree = "<group>";
@@ -412,7 +424,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
-				Base,
+				ja,
 			);
 			mainGroup = EECB1DBC254D26F600B047E2;
 			packageReferences = (
@@ -434,7 +446,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EECB1DD5254D26F900B047E2 /* LaunchScreen.storyboard in Resources */,
+				EECC851725B9A46800664070 /* Localizable.strings in Resources */,
+				EE5D65CD25B9AA76008E1D70 /* InfoPlist.strings in Resources */,
 				EECB1DD2254D26F900B047E2 /* Preview Assets.xcassets in Resources */,
 				EECB1DCF254D26F900B047E2 /* Assets.xcassets in Resources */,
 			);
@@ -444,6 +457,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EECC851825B9A46800664070 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -487,6 +501,7 @@
 				EE6534C2254E552400F1698A /* HealthCardView.swift in Sources */,
 				EE5627FC2551FF7D0078CD87 /* HealthCareComponentService.swift in Sources */,
 				EE7458582599B380009AA109 /* IntroductionUsecaseServiece.swift in Sources */,
+				EE80323825B70ED7000CA979 /* TextDefine.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -494,7 +509,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EECB1DE0254D26F900B047E2 /* HealthAppTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -509,12 +523,22 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		EECB1DD3254D26F900B047E2 /* LaunchScreen.storyboard */ = {
+		EE5D65CF25B9AA76008E1D70 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				EECB1DD4254D26F900B047E2 /* Base */,
+				EE5D65CE25B9AA76008E1D70 /* en */,
+				EE5D65D225B9AA79008E1D70 /* ja */,
 			);
-			name = LaunchScreen.storyboard;
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		EECC851A25B9A46800664070 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				EECC851925B9A46800664070 /* en */,
+				EECC851B25B9A47C00664070 /* ja */,
+			);
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -524,6 +548,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -585,6 +610,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -646,12 +672,14 @@
 				DEVELOPMENT_ASSET_PATHS = "\"HealthApp/Preview Content\"";
 				DEVELOPMENT_TEAM = MZU2PY4WRX;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = HealthApp/Info.plist;
+				INFOPLIST_FILE = HealthApp/Resource/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.0.1;
+				OTHER_SWIFT_FLAGS = "-D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = meters.chanma.com;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -669,12 +697,14 @@
 				DEVELOPMENT_ASSET_PATHS = "\"HealthApp/Preview Content\"";
 				DEVELOPMENT_TEAM = MZU2PY4WRX;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = HealthApp/Info.plist;
+				INFOPLIST_FILE = HealthApp/Resource/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.0.1;
+				OTHER_SWIFT_FLAGS = "-D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = meters.chanma.com;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
