@@ -23,6 +23,7 @@ class DashboardUsecaseServiceTest: XCTestCase {
             XCTContext.runActivity(named: "境界値 最大値 onポインt", block: { act in
                 let exp = XCTestExpectation()
                 let health = HealthCareComponentMock()
+                // ヘルスケアから取得されるダミーを用意
                 // １件/30分
                 var values = [Int](repeating: 0, count: 24 * 2)
                 let REPLACE_INDEX = 10
@@ -48,6 +49,7 @@ class DashboardUsecaseServiceTest: XCTestCase {
             XCTContext.runActivity(named: "境界値 最小値 offポインt", block: { act in
                 let exp = XCTestExpectation()
                 let health = HealthCareComponentMock()
+                // ヘルスケアから取得されるダミーを用意
                 // １件/30分
                 var values = [Int](repeating: 0, count: 24 * 2)
                 let REPLACE_INDEX = 10
@@ -78,6 +80,7 @@ class DashboardUsecaseServiceTest: XCTestCase {
             XCTContext.runActivity(named: "境界値 最小値 onポインt", block: { act in
                 let exp = XCTestExpectation()
                 let health = HealthCareComponentMock()
+                // ヘルスケアから取得されるダミーを用意
                 // １件 / 時間
                 var values = [Int](repeating: 0, count: 24)
                 let REPLACE_INDEX = 10
@@ -103,6 +106,7 @@ class DashboardUsecaseServiceTest: XCTestCase {
             XCTContext.runActivity(named: "境界値 最大値 offポインt", block: { act in
                 let exp = XCTestExpectation()
                 let health = HealthCareComponentMock()
+                // ヘルスケアから取得されるダミーを用意
                 // １件/1時間
                 var values = [Int](repeating: 0, count: 24)
                 let REPLACE_INDEX = 10
@@ -133,6 +137,7 @@ class DashboardUsecaseServiceTest: XCTestCase {
             XCTContext.runActivity(named: "境界値 最大値 onポインt", block: { act in
                 let exp = XCTestExpectation()
                 let health = HealthCareComponentMock()
+                // ヘルスケアから取得されるダミーを用意
                 // １件 / 時間
                 var values = [Int](repeating: 0, count: 24)
                 let REPLACE_INDEX = 10
@@ -158,6 +163,7 @@ class DashboardUsecaseServiceTest: XCTestCase {
             XCTContext.runActivity(named: "境界値 最小値 offポイント", block: { act in
                 let exp = XCTestExpectation()
                 let health = HealthCareComponentMock()
+                // ヘルスケアから取得されるダミーを用意
                 // １件/1時間
                 var values = [Int](repeating: 0, count: 24)
                 let REPLACE_INDEX = 10
@@ -179,6 +185,38 @@ class DashboardUsecaseServiceTest: XCTestCase {
                         exp.fulfill()
                     }
                 wait(for: [exp], timeout: 5)
+            })
+            XCTContext.runActivity(named: "補正", block: { act in
+                let exp = XCTestExpectation()
+                let health = HealthCareComponentMock()
+                // １件/1時間
+                // ヘルスケアから取得されるダミーを用意
+                let values = [Int](repeating: 0, count: 24)
+                let REPLACE_INDEX = 10
+                let calorieDto = DayBurnCalorieDto(date: Date(), values: values)
+                var healthParam = HealthCareComponentMockParam()
+                healthParam.calories = [calorieDto]
+                
+                // 補正時に参照される歩数値もダミーで用意
+                var stepValues = [Int](repeating: 0, count: 24)
+                stepValues[REPLACE_INDEX] = 8000
+                let stepDto = DayStepDto(date: Date(), values: stepValues)
+                healthParam.steps = [stepDto]
+                health.param = healthParam
+                let usecase = getUsecase(health: health)
+                usecase.getBurnCalorie(on: Date())
+                    .done { ret in
+                        // バリデーション後の評価
+                        XCTAssertEqual(ret.values.count, calorieDto.values.count)
+                        /** 歩数による補正により取得結果のカロリーの方が大きい */
+                        XCTAssertGreaterThan(ret.values[REPLACE_INDEX], calorieDto.values[REPLACE_INDEX])
+                        exp.fulfill()
+                    }
+                    .catch { error in
+                        XCTFail()
+                        exp.fulfill()
+                    }
+                wait(for: [exp], timeout: 1000)
             })
         })
     }
