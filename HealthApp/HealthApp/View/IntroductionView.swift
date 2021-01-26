@@ -10,11 +10,8 @@ import PromiseKit
 
 let STEP_GUIDANCE_IMAGE = "pedmetor-authorization-sample"
 let STEP_PHONE_ICON = "phone-step"
-let STEP_GUIDANCE_TEXT = "お使いのiPhoneから歩数データを取得します"
-
 let HEALTH_GUIDANCE_IMAGE = "health-authorization-sample"
 let HEALTH_ICON = "health-icon"
-let HEALTH_GUIDANCE_TEXT = "「ヘルスケア」のデータをアプリに表示します"
 
 struct IntroductioContent {
     let imageSrc: String
@@ -36,12 +33,12 @@ struct IntroductionView: View {
         get {
             [IntroductioContent(imageSrc: STEP_PHONE_ICON,
                                 modalImageSrc: STEP_GUIDANCE_IMAGE,
-                               explainText: STEP_GUIDANCE_TEXT,
+                               explainText: AppText.STR_INTRODUCTION_STEP_EXPLAIN.localized,
                                guidanceType: .Pedmeter,
                                imgaeSizeRatio: CGSize(width: 0.3, height: 0.3)),
             IntroductioContent(imageSrc: HEALTH_ICON,
                                modalImageSrc: HEALTH_GUIDANCE_IMAGE,
-                              explainText: HEALTH_GUIDANCE_TEXT,
+                               explainText: AppText.STR_INTRODUCTION_HEALTH_EXPLAIN.localized,
                               guidanceType: .HealthCare,
                               imgaeSizeRatio: CGSize(width: 0.25, height: 0.25)),]
         }

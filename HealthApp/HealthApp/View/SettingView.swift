@@ -9,16 +9,8 @@ import SwiftUI
 import UIKit
 import PromiseKit
 
-let STR_TARGET_STEP = "1日の歩数目標"
-let targetStep = 10000
-let STR_SYNC_HEALTH = "ヘルスケア連携"
-let STR_SECTION_SETTING = "項目"
-let STR_SETTING_FINISH = "完了"
-let SETTING_TITLE = "設定"
-
 let MAX_TARGET_STEP = 50000
 let MIN_TARGET_STEP = 1000
-
 let TARGET_STEP_CHANGE_RANGE = 500
 
 /**
@@ -41,7 +33,7 @@ struct SettingView: View {
     var body: some View {
         GeometryReader { geo in
             List {
-                FixedSection(header: Text(STR_TARGET_STEP), content: {
+                FixedSection(header: Text(AppText.STR_SETTING_TARGET_STEP.localized), content: {
                     HStack {
                         Button(action: {
                             tappedTargetEditAction(.Plus)
@@ -87,9 +79,9 @@ struct SettingView: View {
                     .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 10))
                     .fixedSize()
                 })
-                FixedSection(header: Text(STR_SECTION_SETTING), content: {
+                FixedSection(header: Text(AppText.STR_SETTING_SECTION.localized), content: {
                     Toggle(isOn: self.$healthCooperationEnabled, label: {
-                        Text(STR_SYNC_HEALTH)
+                        Text(AppText.STR_SETTING_SYNC_HEALTH.localized)
                     })
                 })
             }
@@ -100,13 +92,13 @@ struct SettingView: View {
             }
             .navigationBarBackButtonHidden(true)
             /** クローズボタン */
-            .navigationBarItems(leading: Button(STR_SETTING_FINISH, action: {
+            .navigationBarItems(leading: Button(AppText.STR_SETTING_FINISH.localized, action: {
                 _ = self.tappedCloseView()
                 .done { _ in
                     presentation.wrappedValue.dismiss()
                 }
             }))
-            .navigationBarTitle(Text(SETTING_TITLE), displayMode: .inline)
+            .navigationBarTitle(Text(AppText.STR_SETTING_TITLE.localized), displayMode: .inline)
         }
         .background(Color.clear)
     }

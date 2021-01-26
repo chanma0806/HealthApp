@@ -8,10 +8,10 @@
 import SwiftUI
 import UIKit
 
-let STR_SNS_SHARE_BUTTON = "投稿"
 let CARD_IMAGE_WIDTH: CGFloat = 281.6
 let CARD_IMAGE_HEIGHT: CGFloat = 204.8
-let SHARE_TEXT = "#運動をもっとポップに\n#meters"
+let STR_SHARE_BUTTON = "投稿"
+let STR_SHARE_TEXT = "#運動をもっとポップに\n#meters"
 
 /** SNSシェアのカード描画参照するデータ */
 struct ShareCardData {
@@ -91,7 +91,7 @@ struct SociaShareModalView: View, SocialSharePost {
                 Button(action: {
                     tapped.toggle()
                 }, label: {
-                    Text(STR_SNS_SHARE_BUTTON)
+                    Text(AppText.STR_SHARE_BUTTON.localized)
                         .font(.system(size: 16.0))
                         .bold()
                 })
@@ -150,7 +150,7 @@ class SnsShareViewController<Content>: UIViewController where Content: View {
     }
     
     func share() {
-        let shareActivity = UIActivityViewController(activityItems: [hosting.view.asImage(), SHARE_TEXT], applicationActivities: nil)
+        let shareActivity = UIActivityViewController(activityItems: [hosting.view.asImage(), AppText.STR_SHARE_TEXT.localized], applicationActivities: nil)
         shareActivity.completionWithItemsHandler = self.handler
         self.present(shareActivity, animated: true, completion: nil)
     }
