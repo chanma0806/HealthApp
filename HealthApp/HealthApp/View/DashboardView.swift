@@ -232,7 +232,7 @@ struct DashboardViewContext: View, NavigateReuest {
             self.dashboardData.burnCalorieData = entity.values
         }
         .catch { _ in
-            
+            // dashboardUsecaseからはrejectされない
         }
     }
 }

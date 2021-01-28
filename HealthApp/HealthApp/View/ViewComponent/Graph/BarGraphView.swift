@@ -16,7 +16,7 @@ public enum GraphType {
 }
 
 /**
-    バーグラフビュー
+    グラフビュー
  */
 public struct GraphView: View {
     let rawDatas: [Int]
