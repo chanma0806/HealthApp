@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import OSLog
 import PromiseKit
 
 let MAX_HEART_RATE: Int = 200
@@ -62,7 +63,10 @@ class DashboardUsecaseService {
                 seal.fulfill(entity)
             }
             .catch { error in
-                seal.reject(error)
+                os_log("%s", "\(String(describing: self)).\(#function): \(error.localizedDescription)")
+                
+                let zeroEntity = DayHeartrRateDto(date: date, values: [0])
+                seal.fulfill(zeroEntity)
             }
         }
 
@@ -85,7 +89,10 @@ class DashboardUsecaseService {
                 seal.fulfill(entity)
             }
             .catch { error in
-                seal.reject(error)
+                os_log("%s", "\(String(describing: self)).\(#function): \(error.localizedDescription)")
+                
+                let zeroEntity = DayStepDto(date: date, values: [0])
+                seal.fulfill(zeroEntity)
             }
         }
 
@@ -113,7 +120,10 @@ class DashboardUsecaseService {
                 seal.fulfill(entity)
             }
             .catch { error in
-                seal.reject(error)
+                os_log("%s", "\(String(describing: self)).\(#function): \(error.localizedDescription)")
+                
+                let zeroEntity = DayBurnCalorieDto(date: date, values: [0])
+                seal.fulfill(zeroEntity)
             }
         }
         

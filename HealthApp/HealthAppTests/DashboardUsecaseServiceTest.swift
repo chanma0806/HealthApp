@@ -21,7 +21,7 @@ class DashboardUsecaseServiceTest: XCTestCase {
     func testGetHeartRate() throws {
         XCTContext.runActivity(named: "正常系", block: { act in
             XCTContext.runActivity(named: "境界値 最大値 onポインt", block: { act in
-                let exp = XCTestExpectation()
+                let exp = expectation(description: "test")
                 let health = HealthCareComponentMock()
                 // ヘルスケアから取得されるダミーを用意
                 // １件/30分
@@ -47,7 +47,7 @@ class DashboardUsecaseServiceTest: XCTestCase {
                 wait(for: [exp], timeout: 5)
             })
             XCTContext.runActivity(named: "境界値 最小値 offポインt", block: { act in
-                let exp = XCTestExpectation()
+                let exp = expectation(description: "test")
                 let health = HealthCareComponentMock()
                 // ヘルスケアから取得されるダミーを用意
                 // １件/30分
@@ -73,12 +73,32 @@ class DashboardUsecaseServiceTest: XCTestCase {
                 wait(for: [exp], timeout: 5)
             })
         })
+        XCTContext.runActivity(named: "異常系", block: { act in
+            let exp = expectation(description: "test")
+            
+            var healthParam = HealthCareComponentMockParam()
+            healthParam.rejectReasonOnGetHeartRates = NSError(domain: "test", code: -1, userInfo: nil)
+            let health = HealthCareComponentMock()
+            health.param = healthParam
+            let usecase = getUsecase(health: health)
+            usecase.getHeartRate(on: Date())
+                .done { ret in
+                    /** reject発生時は0埋めのentityを返却 */
+                    XCTAssertEqual(ret.values.max(), 0)
+                    exp.fulfill()
+                }
+                .catch { error in
+                    XCTFail()
+                    exp.fulfill()
+                }
+            wait(for: [exp], timeout: 5)
+        })
     }
         
     func testGetStep() throws {
         XCTContext.runActivity(named: "正常系", block: { act in
             XCTContext.runActivity(named: "境界値 最小値 onポインt", block: { act in
-                let exp = XCTestExpectation()
+                let exp = expectation(description: "test")
                 let health = HealthCareComponentMock()
                 // ヘルスケアから取得されるダミーを用意
                 // １件 / 時間
@@ -104,7 +124,7 @@ class DashboardUsecaseServiceTest: XCTestCase {
                 wait(for: [exp], timeout: 5)
             })
             XCTContext.runActivity(named: "境界値 最大値 offポインt", block: { act in
-                let exp = XCTestExpectation()
+                let exp = expectation(description: "test")
                 let health = HealthCareComponentMock()
                 // ヘルスケアから取得されるダミーを用意
                 // １件/1時間
@@ -130,12 +150,31 @@ class DashboardUsecaseServiceTest: XCTestCase {
                 wait(for: [exp], timeout: 5)
             })
         })
+        XCTContext.runActivity(named: "異常系", block: { act in
+            let exp = expectation(description: "test")
+            var healthParam = HealthCareComponentMockParam()
+            healthParam.rejectReasonOnGetSteps = NSError(domain: "test", code: -1, userInfo: nil)
+            let health = HealthCareComponentMock()
+            health.param = healthParam
+            let usecase = getUsecase(health: health)
+            usecase.getStep(on: Date())
+                .done { ret in
+                    /** reject発生時は0埋めのentityを返却 */
+                    XCTAssertEqual(ret.values.max(), 0)
+                    exp.fulfill()
+                }
+                .catch { error in
+                    XCTFail()
+                    exp.fulfill()
+                }
+            wait(for: [exp], timeout: 5)
+        })
     }
     
     func testGetBurnCalorie() throws {
         XCTContext.runActivity(named: "正常系", block: { act in
             XCTContext.runActivity(named: "境界値 最大値 onポインt", block: { act in
-                let exp = XCTestExpectation()
+                let exp = expectation(description: "test")
                 let health = HealthCareComponentMock()
                 // ヘルスケアから取得されるダミーを用意
                 // １件 / 時間
@@ -161,7 +200,7 @@ class DashboardUsecaseServiceTest: XCTestCase {
                 wait(for: [exp], timeout: 5)
             })
             XCTContext.runActivity(named: "境界値 最小値 offポイント", block: { act in
-                let exp = XCTestExpectation()
+                let exp = expectation(description: "test")
                 let health = HealthCareComponentMock()
                 // ヘルスケアから取得されるダミーを用意
                 // １件/1時間
@@ -187,7 +226,7 @@ class DashboardUsecaseServiceTest: XCTestCase {
                 wait(for: [exp], timeout: 5)
             })
             XCTContext.runActivity(named: "補正", block: { act in
-                let exp = XCTestExpectation()
+                let exp = expectation(description: "test")
                 let health = HealthCareComponentMock()
                 // １件/1時間
                 // ヘルスケアから取得されるダミーを用意
@@ -216,8 +255,27 @@ class DashboardUsecaseServiceTest: XCTestCase {
                         XCTFail()
                         exp.fulfill()
                     }
-                wait(for: [exp], timeout: 1000)
+                wait(for: [exp], timeout: 5)
             })
+        })
+        XCTContext.runActivity(named: "異常系", block: { act in
+            let exp = expectation(description: "test")
+            var healthParam = HealthCareComponentMockParam()
+            healthParam.rejectReasonOnGetBurnCalorie = NSError(domain: "test", code: -1, userInfo: nil)
+            let health = HealthCareComponentMock()
+            health.param = healthParam
+            let usecase = getUsecase(health: health)
+            usecase.getBurnCalorie(on: Date())
+                .done { ret in
+                    /** reject発生時は0埋めのentityを返却 */
+                    XCTAssertEqual(ret.values.max(), 0)
+                    exp.fulfill()
+                }
+                .catch { error in
+                    XCTFail()
+                    exp.fulfill()
+                }
+            wait(for: [exp], timeout: 5)
         })
     }
     
