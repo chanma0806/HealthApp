@@ -29,20 +29,26 @@ class SettingUsecaseServicce {
    　 目標値を保存する
      */
     func setTargteSetting(_ target: TargetSettingData) {
-        database.setTargetSettingData(target)
+        _ = database.setTargetSettingData(target)
     }
     
     /**
      目標値を取得する
      */
     func getTargetSetting() -> TargetSettingData {
-        let setting = database.getTargetSettingData()
-        guard let settingContext = setting else {
+        let result = database.getTargetSettingData()
+        switch result {
+        case .failure(_):
             let initialSetting = TargetSettingData(step: INITIAL_STEP_TARGET)
             return initialSetting
+        case .success(let setting):
+            guard let settingContext = setting else {
+                let initialSetting = TargetSettingData(step: INITIAL_STEP_TARGET)
+                return initialSetting
+            }
+            
+            return settingContext
         }
-        
-        return settingContext
     }
     
     /**

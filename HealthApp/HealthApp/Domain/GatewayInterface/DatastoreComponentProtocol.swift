@@ -18,7 +18,7 @@ protocol DatabaseComponentProtocol {
         - from: 範囲開始日
         - to: 範囲終了日
      */
-    func getStepDatas(from: Date, to: Date) -> [DailyStepData]
+    func getStepDatas(from: Date, to: Date) -> Result<[DailyStepData], DatabaseError>
     
     /**
      歩数を保存する
@@ -26,12 +26,12 @@ protocol DatabaseComponentProtocol {
      - Parameter entity: 歩数データ
      
      */
-    func setStepData(_ entity: DailyStepData)
+    func setStepData(_ entity: DailyStepData) -> Result<Void, DatabaseError>
         
     /**
     　目標設定を取得する
      */
-    func getTargetSettingData() -> TargetSettingData?
+    func getTargetSettingData() -> Result<TargetSettingData?, DatabaseError>
     
     
     /**
@@ -39,5 +39,5 @@ protocol DatabaseComponentProtocol {
      
      - Parameter targetSettingData: 目標設定
      */
-    func setTargetSettingData(_ targetSettingData: TargetSettingData)
+    func setTargetSettingData(_ targetSettingData: TargetSettingData) -> Result<Void, DatabaseError>
 }

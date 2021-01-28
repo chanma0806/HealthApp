@@ -59,7 +59,14 @@ class StepFetchUsecaeService {
         let savedLastDay = Calendar.current.date(byAdding: .day, value: -(PEDOMETER_SAVED_DAY_RANGE - 1), to: Date())!
         let compare = Calendar.current.compare(date, to: savedLastDay, toGranularity: .day)
         if compare == .orderedAscending {
-            let entities: [DailyStepData] = self.database.getStepDatas(from: date, to: date)
+            var entities: [DailyStepData] = []
+            let result = self.database.getStepDatas(from: date, to: date)
+            switch result {
+            case .success(let steps):
+                entities = steps
+            case .failure(_):
+                break
+            }
             guard entities.count > 0 else {
                 return Promise.value(nil)
             }
@@ -69,7 +76,15 @@ class StepFetchUsecaeService {
             return self.pedometer.getPastStep(on: date)
             .then { (ret: DailyStepData) -> Promise<Void> in
                 entity = ret
-                self.database.setStepData(ret)
+                let result = self.database.setStepData(ret)
+                
+                switch (result) {
+                case .failure(let dbError):
+                    os_log("%s", "\(String(describing: self)).\(#function): failure")
+                case .success():
+                    break
+                }
+                
                 return Promise.value(())
             }
             .then { (_) -> Promise<DailyStepData?> in
